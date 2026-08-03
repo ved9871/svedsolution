@@ -1,0 +1,60 @@
+# Decap CMS — the WordPress-style editor for this site.
+# Sign in at https://svedsolution.com/admin/ with GitHub.
+# Saving a post commits markdown to the repo, which triggers a Cloudflare Pages
+# rebuild. New post is live in roughly 60 seconds.
+
+backend:
+  name: github
+  repo: ved9871/svedsolution
+  branch: main
+  base_url: https://svedsolution.com
+  auth_endpoint: api/auth
+
+publish_mode: editorial_workflow
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+site_url: https://svedsolution.com
+logo_url: https://svedsolution.com/assets/logo.png
+
+collections:
+  - name: blog
+    label: Blog posts
+    label_singular: Blog post
+    folder: content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    summary: "{{title}} — {{category}} — {{date}}"
+    sortable_fields: [date, title, category]
+    fields:
+      - { name: title, label: "Title (aim for under 60 characters)", widget: string }
+      - { name: slug, label: "URL slug", widget: string, hint: "Lowercase, hyphens only. Becomes /insights/your-slug/" }
+      - { name: description, label: "Meta description (under 155 characters)", widget: text }
+      - name: answer
+        label: "Direct answer block"
+        widget: text
+        required: false
+        hint: "30-80 words answering the title question outright. This is the passage AI is most likely to quote. Leave blank to skip the block."
+      - name: category
+        label: Category
+        widget: select
+        options: [GEO, AEO, "LLM SEO", Technical, Semantic, "On-Page", Strategy, Measurement, "Case Study"]
+      - { name: date, label: "Date (also used as last-updated)", widget: date, format: "YYYY-MM-DD" }
+      - { name: author, label: Author, widget: string, default: "Ved Prakash" }
+      - { name: readtime, label: "Read time", widget: string, default: "8 min" }
+      - name: body
+        label: Body
+        widget: markdown
+        hint: "Lead with the answer. Use tables, lists and step frameworks — these get quoted. Avoid story intros."
+
+  - name: settings
+    label: Site settings
+    files:
+      - name: contact
+        label: Contact details
+        file: content/settings/contact.yml
+        fields:
+          - { name: email, label: Email, widget: string }
+          - { name: phone_display, label: "Phone (display)", widget: string }
+          - { name: phone_raw, label: "Phone (tel: link)", widget: string }
+          - { name: whatsapp, label: "WhatsApp number (digits only)", widget: string }

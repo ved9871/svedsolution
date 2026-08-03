@@ -1,0 +1,9 @@
+# Canonical host — Cloudflare Pages serves both, pick one.
+https://www.svedsolution.com/*  https://svedsolution.com/:splat  301
+
+# Friendly short paths
+/audit        /ai-visibility-audit   301
+/geo          /generative-engine-optimization   301
+/blog         /insights   301
+/blog/*       /insights/:splat   301
+/why-geo      /why-llm-seo-now   301
