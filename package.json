@@ -1,0 +1,16 @@
+{
+  "name": "svedsolution",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "svedsolution.com - AI visibility & 360 SEO agency site",
+  "scripts": {
+    "build": "python3 build.py || python build.py",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "serve": "python -m http.server 8787 --directory dist"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

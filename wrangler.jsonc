@@ -1,0 +1,26 @@
+{
+  // Used when svedsolution is deployed as a Worker with static assets.
+  // Classic Cloudflare Pages projects ignore `main` and use functions/ instead.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "svedsolution",
+  "main": "src/index.js",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Send API traffic to the Worker before the static asset layer answers it.
+    "run_worker_first": ["/api/*"]
+  },
+
+  "observability": {
+    "enabled": true
+  }
+
+  // Bindings and secrets are configured in the dashboard, not committed here:
+  //   KV namespace binding  AUDIT_KV   (optional - edge cache is the fallback)
+  //   Environment variables PSI_KEY, RESEND_KEY, TO_EMAIL,
+  //                         GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
+}

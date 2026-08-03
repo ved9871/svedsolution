@@ -8,7 +8,7 @@
  */
 export async function onRequestGet({ request, env }) {
   if (!env.GITHUB_CLIENT_ID) {
-    return new Response('GITHUB_CLIENT_ID is not configured in Pages environment variables.', { status: 500 });
+    return new Response('GITHUB_CLIENT_ID is not set. Add it under Settings > Variables and Secrets, then redeploy.', { status: 500 });
   }
   const origin = new URL(request.url).origin;
   const auth = new URL('https://github.com/login/oauth/authorize');
