@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leads &amp; Subscribers — SVED Solution</title>
+<style>
+  :root{--ink:#070C12;--navy:#0B1219;--panel:#101A24;--line:#22303F;--green:#00FFB2;--text:#C6D4E2;--dim:#8496A9;--faint:#5C6E80;--white:#fff;--red:#FF5C5C}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--navy);color:var(--text);font:15px/1.6 Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+  header{border-bottom:1px solid var(--line);padding:18px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--ink)}
+  h1{font:600 1.15rem Poppins,system-ui,sans-serif;color:var(--white);margin:0;letter-spacing:-.02em}
+  .wrap{padding:26px}
+  input,select,button{font:inherit;border-radius:6px;border:1px solid var(--line);padding:10px 14px;background:var(--panel);color:var(--white)}
+  input:focus,select:focus{outline:none;border-color:var(--green)}
+  button{cursor:pointer;background:var(--green);color:var(--ink);border-color:var(--green);font-weight:600}
+  button.ghost{background:transparent;color:var(--white);border-color:var(--line);font-weight:500}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:22px}
+  .stat{background:var(--panel);padding:18px}
+  .stat b{display:block;font:700 1.7rem Poppins,sans-serif;color:var(--green);line-height:1}
+  .stat span{display:block;font-size:.8rem;color:var(--dim);margin-top:6px}
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:900px}
+  th{background:#16202B;color:var(--faint);text-align:left;padding:12px 14px;font:500 .68rem/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;position:sticky;top:0}
+  td{padding:12px 14px;border-top:1px solid #1A2530;vertical-align:top}
+  td.msg{max-width:340px;color:var(--dim)}
+  .tag{font:500 .68rem/1 'JetBrains Mono',monospace;padding:4px 9px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase}
+  .t-enquiry{background:rgba(0,255,178,.12);color:var(--green)}
+  .t-newsletter{background:rgba(0,165,255,.12);color:#5CC8FF}
+  .t-audit{background:rgba(255,176,32,.12);color:#FFB020}
+  a{color:var(--green)}
+  .msgbox{padding:16px 18px;border-radius:8px;margin-bottom:18px;font-size:.9rem}
+  .err{background:rgba(255,92,92,.1);border:1px solid rgba(255,92,92,.3);color:#FF9B9B}
+  .empty{padding:60px 20px;text-align:center;color:var(--faint)}
+  .login{max-width:400px;margin:14vh auto;padding:32px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+  .login h1{margin-bottom:8px}
+  .login p{color:var(--dim);font-size:.9rem;margin:0 0 20px}
+  .login input{width:100%;margin-bottom:12px}
+  .login button{width:100%}
+  .del{background:none;border:0;color:var(--faint);cursor:pointer;padding:2px 6px;font-size:1rem}
+  .del:hover{color:var(--red)}
+</style>
+</head>
+<body>
+
+<div id="login" class="login">
+  <h1>Leads &amp; Subscribers</h1>
+  <p>Enter the admin token you set as <code>ADMIN_TOKEN</code> in Cloudflare Pages.</p>
+  <input type="password" id="token" placeholder="Admin token" autocomplete="current-password">
+  <button id="signin">Sign in</button>
+  <div id="loginerr" style="color:#FF9B9B;font-size:.85rem;margin-top:12px"></div>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <h1>Leads &amp; Subscribers</h1>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="/admin/" style="font-size:.86rem">&larr; Blog CMS</a>
+      <button class="ghost" id="logout">Sign out</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <div id="err"></div>
+    <div class="stats" id="stats"></div>
+    <div class="bar">
+      <select id="filter">
+        <option value="">All submissions</option>
+        <option value="enquiry">Enquiries</option>
+        <option value="newsletter">Newsletter subscribers</option>
+        <option value="audit">Audit leads</option>
+      </select>
+      <input id="search" placeholder="Search name, email, website..." style="flex:1;min-width:220px">
+      <button id="refresh" class="ghost">Refresh</button>
+      <button id="csv">Export CSV</button>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr>
+          <th>Received</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th>
+          <th>Website</th><th>Service</th><th>Revenue</th><th>Message</th><th></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div id="empty" class="empty" hidden>No submissions yet.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'sved_admin_token';
+  var token = sessionStorage.getItem(KEY) || '';
+  var all = [];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[<>&"]/g, function (c) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
+    });
+  };
+
+  function api(qs) {
+    return fetch('/api/leads' + (qs || ''), { headers: { authorization: 'Bearer ' + token } });
+  }
+
+  function signIn(t) {
+    token = t;
+    return api('?limit=1').then(function (r) {
+      if (r.status === 401) throw new Error('Wrong token.');
+      if (r.status === 503) return r.json().then(function (j) { throw new Error(j.error); });
+      if (!r.ok) throw new Error('Server returned ' + r.status);
+      sessionStorage.setItem(KEY, token);
+      $('login').hidden = true;
+      $('app').hidden = false;
+      return load();
+    });
+  }
+
+  function load() {
+    return api('?limit=5000').then(function (r) { return r.json(); }).then(function (d) {
+      if (d.error) { $('err').innerHTML = '<div class="msgbox err">' + esc(d.error) + '</div>'; return; }
+      $('err').innerHTML = '';
+      all = d.leads || [];
+      var c = d.counts || {};
+      $('stats').innerHTML =
+        stat(d.count || 0, 'Total submissions') +
+        stat(c.enquiry || 0, 'Enquiries') +
+        stat(c.newsletter || 0, 'Newsletter subscribers') +
+        stat(c.audit || 0, 'Audit leads');
+      render();
+    });
+  }
+
+  function stat(n, label) {
+    return '<div class="stat"><b>' + n + '</b><span>' + label + '</span></div>';
+  }
+
+  function render() {
+    var type = $('filter').value;
+    var q = $('search').value.trim().toLowerCase();
+    var rows = all.filter(function (l) {
+      if (type && l.type !== type) return false;
+      if (!q) return true;
+      return ['name', 'email', 'website', 'message', 'phone'].some(function (f) {
+        return (l[f] || '').toLowerCase().indexOf(q) > -1;
+      });
+    });
+
+    $('empty').hidden = rows.length > 0;
+    $('rows').innerHTML = rows.map(function (l) {
+      var when = l.received ? new Date(l.received) : null;
+      return '<tr>' +
+        '<td style="white-space:nowrap">' + (when ? when.toLocaleDateString() + '<br><span style="color:#5C6E80;font-size:.78rem">' + when.toLocaleTimeString() + '</span>' : '') + '</td>' +
+        '<td><span class="tag t-' + esc(l.type) + '">' + esc(l.type) + '</span></td>' +
+        '<td>' + esc(l.name) + '</td>' +
+        '<td><a href="mailto:' + esc(l.email) + '">' + esc(l.email) + '</a></td>' +
+        '<td>' + esc(l.phone) + '</td>' +
+        '<td>' + (l.website ? '<a href="' + esc(l.website) + '" target="_blank" rel="noopener noreferrer">' + esc(l.website) + '</a>' : '') + '</td>' +
+        '<td>' + esc(l.service) + '</td>' +
+        '<td>' + esc(l.revenue) + '</td>' +
+        '<td class="msg">' + esc(l.message) + '</td>' +
+        '<td><button class="del" data-id="' + esc(l.key || '') + '" title="Delete">&times;</button></td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  $('signin').onclick = function () {
+    $('loginerr').textContent = '';
+    signIn($('token').value.trim()).catch(function (e) { $('loginerr').textContent = e.message; });
+  };
+  $('token').onkeydown = function (e) { if (e.key === 'Enter') $('signin').click(); };
+  $('filter').onchange = render;
+  $('search').oninput = render;
+  $('refresh').onclick = load;
+  $('logout').onclick = function () { sessionStorage.removeItem(KEY); location.reload(); };
+
+  $('csv').onclick = function () {
+    var type = $('filter').value;
+    // Token travels in the query string here because a download navigation
+    // cannot carry an Authorization header.
+    var url = '/api/leads?format=csv&token=' + encodeURIComponent(token) + (type ? '&type=' + type : '');
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  if (token) signIn(token).catch(function () { sessionStorage.removeItem(KEY); });
+})();
+</script>
+</body>
+</html>

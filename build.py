@@ -33,7 +33,28 @@ OFFICES = [
 ]
 
 SISTER = ("Web3Tech Network", "https://www.web3technetwork.com",
-          "Blockchain, crypto and Web3 SEO &amp; development")
+          "Blockchain, crypto and Web3 marketing &amp; SEO")
+
+# Legal / trust signals — GST REG-06 certificate, issued 21/09/2018.
+# City-level only: the certificate's principal place of business is a
+# residential address, so the street line is deliberately not published.
+GSTIN = "07FBEPS5516R1ZU"
+LEGAL_NAME = "Ved Prakash Singh"
+TRADE_NAME = "SVED Solution"
+GST_SINCE = "2018"
+REG_CITY = "New Delhi, India"
+
+# Social profiles carried over from the Web3Tech Network group.
+SOCIALS = [
+    ("LinkedIn", "in", "https://www.linkedin.com/company/web3-tech-network/"),
+    ("X", "X", "https://x.com/Web3TechNetwork"),
+    ("YouTube", "YT", "https://www.youtube.com/channel/UCLEeUbTJUO4d7nALNrh1USQ"),
+    ("Telegram", "TG", "https://t.me/web3tech_network"),
+    ("Medium", "M", "https://medium.com/@web3technetwork"),
+    ("Facebook", "f", "https://www.facebook.com/people/Web3-Tech-Network/61578176009714/"),
+    ("Pinterest", "P", "https://pinterest.com/Web3technetwork/"),
+]
+FOUNDER_LINKEDIN = "https://www.linkedin.com/in/ved-prakash-s1990/"
 
 # --------------------------------------------------------------------------
 # Navigation
@@ -63,7 +84,22 @@ NAV = """
       <a href="services.html#consulting">SEO Consulting</a>
     </div>
   </div>
-  <a href="industries.html" data-nav="industries">Industries</a>
+  <div class="has-drop">
+    <a href="industries.html" data-nav="industries">Industries &#9662;</a>
+    <div class="drop" style="min-width:460px">
+      <div class="drop-head">Industries we deliver for</div>
+      <a href="healthcare-ivf-seo.html">Healthcare, IVF &amp; Clinics</a>
+      <a href="ecommerce-d2c-seo.html">Ecommerce &amp; D2C</a>
+      <a href="saas-ai-product-seo.html">SaaS &amp; AI Products</a>
+      <a href="web3-crypto-seo.html">Web3, Crypto &amp; Blockchain</a>
+      <a href="it-services-app-development-seo.html">IT Services &amp; App Development</a>
+      <a href="education-edtech-seo.html">Education &amp; EdTech</a>
+      <a href="financial-services-seo.html">Financial Services</a>
+      <a href="local-business-seo.html">Local, Retail &amp; Studios</a>
+      <a href="agency-white-label-seo.html">Agencies &amp; White-Label</a>
+      <a href="industries.html">All industries &rarr;</a>
+    </div>
+  </div>
   <a href="use-cases.html" data-nav="use-cases">Use Cases</a>
   <a href="why-llm-seo-now.html" data-nav="why">Why LLM SEO Now</a>
   <div class="has-drop">
@@ -111,11 +147,7 @@ FOOTER = f"""
         <p style="margin-top:14px;font-size:.83rem"><span class="faint">Sister brand:</span><br>
           <a href="{SISTER[1]}" rel="noopener">{SISTER[0]}</a> <span class="faint">&mdash; {SISTER[2]}</span></p>
         <div class="socials" style="margin-top:18px">
-          <a href="#" aria-label="LinkedIn">in</a>
-          <a href="#" aria-label="YouTube">YT</a>
-          <a href="#" aria-label="X">X</a>
-          <a href="#" aria-label="Telegram">TG</a>
-          <a href="#" aria-label="Medium">M</a>
+          {"".join(f'<a href="{u}" target="_blank" rel="noopener" aria-label="{n}" title="{n}">{ic}</a>' for n, ic, u in SOCIALS)}
         </div>
       </div>
       <div>
@@ -154,12 +186,18 @@ FOOTER = f"""
       <div class="news">
         <h5>The AI Visibility Brief</h5>
         <p class="faint" style="font-size:.86rem;margin-bottom:14px">What changed in AI search this week, and what to do about it. Every Tuesday.</p>
-        <form onsubmit="return false">
-          <input type="email" placeholder="you@company.com" aria-label="Email">
-          <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center">Subscribe</button>
+        <form class="sved-form" data-type="newsletter">
+          <input type="email" name="email" placeholder="you@company.com" aria-label="Email" required>
+          <button class="btn btn-primary btn-sm" type="submit" style="width:100%;justify-content:center">Subscribe</button>
+          <p class="form-status" role="status"></p>
         </form>
         <p class="faint" style="font-size:.76rem;margin-top:10px">Free with the AI Search Playbook PDF.</p>
       </div>
+    </div>
+    <div class="foot-legal">
+      <span><strong>{TRADE_NAME}</strong> &middot; Proprietor: {LEGAL_NAME}</span>
+      <span>GSTIN <strong class="mono">{GSTIN}</strong></span>
+      <span>GST-registered since {GST_SINCE} &middot; {REG_CITY}</span>
     </div>
     <div class="foot-bottom">
       <div>&copy; 2026 SVED Solution. All rights reserved. &middot; <a href="mailto:{EMAIL}" style="color:var(--text-faint)">{EMAIL}</a></div>
@@ -173,6 +211,10 @@ FOOTER = f"""
 </footer>
 """
 
+GA_ID = "G-JJXBTFSP4Z"
+CALENDLY = "https://calendly.com/prakashved155/15min"
+TAGLINE = "Top 1&#37; SEO Service Provider in India"
+
 SHELL = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -181,31 +223,53 @@ SHELL = """<!DOCTYPE html>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://svedsolution.com/{slug}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="author" content="Ved Prakash">
+<meta name="keywords" content="{keywords}">
+<meta property="og:site_name" content="SVED Solution">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_IN">
 <meta property="og:url" content="https://svedsolution.com/{slug}">
+<meta property="og:image" content="https://svedsolution.com/assets/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="https://svedsolution.com/assets/og-image.svg">
+<meta name="geo.region" content="IN-WB">
+<meta name="geo.placename" content="Kolkata">
 <meta name="theme-color" content="#0B1219">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script type="application/ld+json">{schema}</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
 </head>
 <body>
-<div class="preview-note">PREVIEW BUILD &mdash; svedsolution.com first draft &middot; content and figures are anonymised client data &middot; not live</div>
+<a href="#main" class="skip-link">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
-    <a href="index.html" class="logo"><span class="logo-mark">SV</span>SVED<span>.</span></a>
+    <a href="index.html" class="logo" aria-label="SVED Solution home">{logo}</a>
     {nav}
     <div class="header-cta">
       <a href="ai-visibility-audit.html" class="btn btn-ghost btn-sm">Free AI Audit</a>
-      <a href="contact.html" class="btn btn-primary btn-sm">Book a call</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+      <a href="CALENDLY_URL" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Book a call</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
     </div>
   </div>
 </header>
-<main>
+<main id="main">
 {body}
 </main>
 {footer}
@@ -213,6 +277,19 @@ SHELL = """<!DOCTYPE html>
 </body>
 </html>
 """
+
+# Inline SVG wordmark — no external request, scales crisply, matches the palette.
+LOGO_SVG = """<svg class="logo-svg" width="132" height="30" viewBox="0 0 132 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SVED Solution">
+  <defs><linearGradient id="svg-grad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#00FFB2"/><stop offset="100%" stop-color="#00A5FF"/>
+  </linearGradient></defs>
+  <rect x="0" y="2" width="26" height="26" rx="7" fill="url(#svg-grad)"/>
+  <path d="M7.6 19.4c.9.8 2.2 1.3 3.5 1.3 1.5 0 2.4-.6 2.4-1.6 0-1-.8-1.4-2.4-1.8l-1-.2c-2.2-.5-3.4-1.6-3.4-3.5 0-2.2 1.8-3.7 4.4-3.7 1.5 0 2.9.5 3.8 1.3l-1.2 1.8c-.7-.6-1.7-1-2.7-1-1.2 0-2 .5-2 1.4 0 .8.6 1.2 2.1 1.6l1 .2c2.4.6 3.7 1.6 3.7 3.6 0 2.4-2 3.9-4.8 3.9-1.9 0-3.6-.6-4.7-1.7z" fill="#070C12"/>
+  <path d="M18.4 9.9h2.6l-3.9 11h-2.4z" fill="#070C12" opacity=".55"/>
+  <text x="34" y="21" font-family="Poppins, sans-serif" font-size="17" font-weight="700" letter-spacing="-.4" fill="currentColor">SVED</text>
+  <circle cx="93" cy="19" r="2.6" fill="#00FFB2"/>
+  <text x="101" y="21" font-family="Poppins, sans-serif" font-size="10.5" font-weight="500" letter-spacing=".4" fill="#8496A9">SEO</text>
+</svg>"""
 
 ORG_SCHEMA = """{
   "@context":"https://schema.org",
@@ -223,7 +300,7 @@ ORG_SCHEMA = """{
   "url":"https://svedsolution.com/",
   "email":"hello@svedsolution.com",
   "description":"AI visibility and 360 SEO agency specialising in Generative Engine Optimization (GEO), Answer Engine Optimization (AEO) and LLM SEO.",
-  "slogan":"The AI Visibility Agency",
+  "slogan":"Top 1% SEO Service Provider in India",
   "areaServed":["US","GB","CA","AU","IN","AE"],
   "knowsAbout":["Generative Engine Optimization","Answer Engine Optimization","LLM SEO","Technical SEO","Semantic SEO","Entity SEO","AI Overviews"],
   "address":[
@@ -232,6 +309,18 @@ ORG_SCHEMA = """{
     {"@type":"PostalAddress","addressLocality":"Oswego","addressRegion":"NY","postalCode":"13126","addressCountry":"US"}
   ],
   "telephone":"+917846045690",
+  "legalName":"Ved Prakash Singh",
+  "taxID":"07FBEPS5516R1ZU",
+  "vatID":"07FBEPS5516R1ZU",
+  "foundingDate":"2018-09-21",
+  "priceRange":"$$",
+  "founder":{"@type":"Person","name":"Ved Prakash","jobTitle":"Founder & Head of Strategy","sameAs":["https://www.linkedin.com/in/ved-prakash-s1990/"]},
+  "hasCredential":[
+    {"@type":"EducationalOccupationalCredential","credentialCategory":"certification","name":"Semrush Certified"},
+    {"@type":"EducationalOccupationalCredential","credentialCategory":"certification","name":"Microsoft Advertising Certified"},
+    {"@type":"EducationalOccupationalCredential","credentialCategory":"certification","name":"Google Shopping Certified"},
+    {"@type":"EducationalOccupationalCredential","credentialCategory":"certification","name":"Google Analytics 4 Certified"}
+  ],
   "contactPoint":[
     {"@type":"ContactPoint","telephone":"+917846045690","email":"hello@svedsolution.com","contactType":"sales","areaServed":["AE","IN","US","GB"],"availableLanguage":["English","Hindi","Bengali"]}
   ],
@@ -297,12 +386,12 @@ PAGES["index"] = dict(
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="badge"><span class="dot"></span> Now booking Q4 2026 &mdash; 3 GEO retainers open</div>
+      <div class="badge"><span class="dot"></span> Top 1&#37; SEO Service Provider in India</div>
       <h1>Google ranks pages.<br>AI <span class="hl">recommends brands</span>.</h1>
-      <p class="hero-sub">SVED Solution is a 360&deg; SEO agency built for the answer engine era. We make your brand the one ChatGPT, Perplexity, Gemini and Google AI Overviews name &mdash; then we show you the citation count.</p>
+      <p class="hero-sub">SVED Solution is a 360&deg; SEO agency built for the answer engine era. We make your brand the one ChatGPT, Perplexity, Gemini, Claude, DeepSeek and Copilot name &mdash; then we show you the citation count.</p>
       <div class="btn-row">
         <a class="btn btn-primary btn-lg" href="ai-visibility-audit.html">Run a free AI visibility audit</a>
-        <a class="btn btn-ghost btn-lg" href="why-llm-seo-now.html">Why LLM SEO, now</a>
+        <a class="btn btn-ghost btn-lg" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-min call</a>
       </div>
       <p class="faint" style="font-size:.85rem;margin-top:20px">No card. No call required. 12 eligibility checks in about 60 seconds.</p>
     </div>
@@ -327,10 +416,50 @@ PAGES["index"] = dict(
 <section class="sec-sm band-alt">
   <div class="wrap">
     <p class="faint center mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:24px">We optimise for every surface that answers a question</p>
-    <div class="strip">
-      <span>ChatGPT</span><span>Perplexity</span><span>Google AI Overviews</span><span>Gemini</span>
-      <span>Claude</span><span>Copilot</span><span>Google Search</span><span>Bing</span>
+    <!--PLATFORMS-->
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <p class="faint center mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px">Certified &amp; accredited</p>
+    <!--CERTS-->
+  </div>
+</section>
+
+<section class="sec-sm band-alt">
+  <div class="wrap">
+    <p class="faint center mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px">Trusted by brands across 9 industries</p>
+    <div class="clogos" style="justify-content:center">
+      <span class="clogo">Origyn IVF</span><span class="clogo">Mothers Lap IVF</span>
+      <span class="clogo">Kass Care</span><span class="clogo">BD Herbals</span>
+      <span class="clogo">Konch.ai</span><span class="clogo">DXB Apps</span>
+      <span class="clogo">Inceptial Tech</span><span class="clogo">Medhavi Skills University</span>
+      <span class="clogo">Sesame Bankhall Group</span><span class="clogo">Crawford's Metal Detecting</span>
+      <span class="clogo">NodeWaves</span><span class="clogo">Web3Tech Network</span>
+      <span class="clogo">ARS Web Tech</span><span class="clogo">Srisa Laser Cosmoderma</span>
+      <span class="clogo">Ameei Care</span><span class="clogo">Oasis Art Play Studio</span>
+      <span class="clogo">Jhulelal Trading</span><span class="clogo">Monisha London</span>
+      <span class="clogo">Smoke Screen</span>
     </div>
+  </div>
+</section>
+
+<section class="sec band-dark">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">The market</div>
+      <h2>GEO is a $17 billion market by 2034.</h2>
+      <p class="lead dim">Independent forecasting, not our opinion. The window to establish category authority is open now and closing as budgets move.</p>
+    </div>
+    <div class="stat-band">
+      <div class="stat"><b>40.6&#37;</b><span>Global GEO market CAGR, 2026&ndash;2034</span></div>
+      <div class="stat"><b>$17.1B</b><span>Forecast global GEO market by 2034, from $1.09B in 2026</span></div>
+      <div class="stat"><b>45.1&#37;</b><span>Asia-Pacific CAGR &mdash; the fastest-growing region worldwide</span></div>
+      <div class="stat"><b>65&#37;</b><span>Of digital enterprises already investing in generative AI optimisation</span></div>
+      <div class="stat"><b>30&#37;</b><span>Potential reduction in customer acquisition cost via GEO</span></div>
+    </div>
+    <p class="faint center" style="font-size:.8rem;margin-top:18px">Source: Dimension Market Research, Generative Engine Optimization Market report.</p>
   </div>
 </section>
 
@@ -887,19 +1016,148 @@ PAGES["services"] = dict(
 # ==========================================================================
 # INDUSTRIES
 # ==========================================================================
+# Industries are grounded in the real client roster, so every page can name the
+# work rather than describe a hypothetical vertical.
 INDUSTRIES = [
-    ("SaaS &amp; Software", "&#9636;", "Comparison and alternatives pages, integration-led programmatic expansion, G2 and Capterra citation stacks. Buyers research in ChatGPT before they ever reach your site."),
-    ("Ecommerce &amp; DTC", "&#9679;", "Category architecture, faceted navigation, variant schema and shopping-surface visibility. Our deepest citation dataset comes from this vertical."),
-    ("Healthcare &amp; Medical", "&#10010;", "YMYL-grade E-E-A-T, credentialed authorship, medical review workflows and local practice visibility. AI is conservative here &mdash; entity trust is everything."),
-    ("Legal &amp; Professional Services", "&#9878;", "Practice-area architecture, jurisdiction targeting, credential schema and review velocity. High-value, high-scrutiny queries."),
-    ("Finance &amp; Fintech", "&#9650;", "Regulatory-safe content, calculator and tool pages that earn citations, and the authorship signals YMYL categories demand."),
-    ("Real Estate &amp; Property", "&#9750;", "Location page systems, listing schema, market-report content that gets cited, and local pack dominance."),
-    ("Travel &amp; Hospitality", "&#9992;", "Destination clusters, itinerary content built for retrieval, review platform presence and seasonal demand capture."),
-    ("Education &amp; EdTech", "&#9998;", "Course and programme schema, question-led content that AI quotes directly, and institutional entity authority."),
-    ("Manufacturing &amp; Industrial", "&#9881;", "Technical spec pages, distributor architecture, long-cycle B2B intent and the trade-publication citations models trust."),
-    ("Home &amp; Local Services", "&#8962;", "Service-area page systems, Google Business Profile, review generation and multi-location scaling."),
-    ("Agencies &amp; Resellers", "&#9783;", "White-label delivery under NDA. Audits through full retained execution with branded reporting. We stay invisible."),
-    ("Web3 &amp; Crypto", "&#9672;", "Community-first citation building, technical documentation SEO and the credibility signals a sceptical category requires."),
+    dict(slug="healthcare-ivf-seo", name="Healthcare, IVF &amp; Clinics", icon="&#10010;",
+         short="YMYL-grade E-E-A-T, credentialed authorship, treatment-page architecture and multi-location local visibility. AI is most conservative here, so entity trust decides everything.",
+         clients=["Origyn IVF", "Mothers Lap IVF", "Srisa Laser Cosmoderma", "Ameei Care Physiotherapy"],
+         kw="healthcare SEO India, IVF clinic SEO, fertility clinic SEO, dermatology SEO, medical SEO agency",
+         pains=["Treatment pages that rank but never convert enquiries",
+                "Competing clinics outranking you on every city + treatment query",
+                "AI Overviews answering patient questions without naming your clinic",
+                "Multiple locations cannibalising each other's rankings"],
+         plays=["MedicalWebPage, Physician and MedicalClinic schema on every treatment page",
+                "Doctor entity building: credentials, registrations, Person schema, authored content",
+                "City + treatment landing architecture that scales without cannibalisation",
+                "Review velocity systems on Google Business Profile and Practo",
+                "Patient-question content built as direct answers for AI retrieval"]),
+
+    dict(slug="ecommerce-d2c-seo", name="Ecommerce &amp; D2C", icon="&#9679;",
+         short="Category architecture, faceted navigation, variant schema and shopping-surface visibility. Our deepest AI citation dataset comes from this vertical.",
+         clients=["Kass Care", "BD Herbals", "Crawford's Metal Detecting", "Monisha London"],
+         kw="ecommerce SEO India, D2C SEO agency, Shopify SEO, product page SEO, ecommerce GEO",
+         pains=["Category pages outranked by marketplaces you also sell on",
+                "Thousands of variant URLs burning crawl budget",
+                "Product pages invisible in AI shopping answers",
+                "Traffic growing while revenue stays flat"],
+         plays=["Money-page keyword mapping before a single page is written",
+                "Product, Offer, AggregateRating and Review schema across the catalogue",
+                "Faceted navigation and parameter control to end index bloat",
+                "Comparison and buying-guide content — the format AI quotes most",
+                "GA4 ecommerce measurement so organic revenue is provable"]),
+
+    dict(slug="saas-ai-product-seo", name="SaaS &amp; AI Products", icon="&#9636;",
+         short="Pipeline over pageviews. Bottom-of-funnel first, comparison and alternatives pages, then integration-led programmatic expansion.",
+         clients=["Konch.ai"],
+         kw="SaaS SEO agency, B2B SaaS SEO, AI product SEO, SaaS GEO services",
+         pains=["Buyers evaluate you in ChatGPT before they ever load your site",
+                "Competitors own every “best X” and “alternatives” query",
+                "Blog traffic that never becomes a trial",
+                "No presence on G2, Capterra or Product Hunt"],
+         plays=["Inverted-funnel sequencing: BoFu commercial pages ship first",
+                "Comparison, alternatives and integration page systems",
+                "SoftwareApplication and Offer schema with pricing exposed",
+                "G2, Capterra, Product Hunt and Reddit citation stack",
+                "Documentation SEO, which AI models retrieve heavily"]),
+
+    dict(slug="web3-crypto-seo", name="Web3, Crypto &amp; Blockchain", icon="&#9672;",
+         short="Delivered with our subsidiary Web3Tech Network: community-first citation building, tokenomics documentation SEO and the credibility signals a sceptical category demands.",
+         clients=["Web3Tech Network (subsidiary)", "NodeWaves"],
+         kw="Web3 SEO, crypto SEO agency, blockchain SEO, token marketing, NFT SEO",
+         pains=["Paid channels ban crypto advertising outright",
+                "Search engines apply extra scrutiny to token projects",
+                "Community lives on Telegram and X, invisible to search",
+                "Whitepapers and docs that no crawler can parse"],
+         plays=["Community management and social campaigns across crypto channels",
+                "Influencer marketing matched to project stage and chain",
+                "SEO built for tokenomics docs, whitepapers and explorer pages",
+                "Reddit, Medium and Telegram citation footprint",
+                "Trust signals: audits, team entities, verifiable contract data"]),
+
+    dict(slug="it-services-app-development-seo", name="IT Services &amp; App Development", icon="&#9881;",
+         short="Long sales cycles, high deal values and buyers who compare five vendors in one AI prompt. Service-page depth plus founder authority.",
+         clients=["DXB Apps", "Inceptial Tech", "ARS Web Tech"],
+         kw="IT services SEO, app development company SEO, software company SEO, B2B tech SEO",
+         pains=["Indistinguishable from a hundred other dev agencies in search",
+                "Enquiries arrive price-shopping, not pre-sold",
+                "Geo-targeted queries dominated by directories like Clutch",
+                "No named expert associated with the company"],
+         plays=["Service × technology × geography page architecture",
+                "Case-study content with real, verifiable engineering detail",
+                "Clutch, GoodFirms and DesignRush citation placement",
+                "Founder-as-entity: bylines, podcasts, technical writing",
+                "Documentation and open-source artefacts as citation bait"]),
+
+    dict(slug="education-edtech-seo", name="Education &amp; EdTech", icon="&#9998;",
+         short="Course and programme schema, admissions-intent capture, and the institutional entity authority AI models require before recommending a place to study.",
+         clients=["Medhavi Skills University"],
+         kw="education SEO India, university SEO, EdTech SEO, admissions SEO, course page SEO",
+         pains=["Admissions traffic concentrated into a short annual window",
+                "Aggregator sites outranking the institution's own pages",
+                "Prospective students asking AI which university to choose",
+                "Course pages with no structured data at all"],
+         plays=["Course, EducationalOccupationalProgram and FAQPage schema",
+                "Programme × specialisation × eligibility page architecture",
+                "Placement and outcome data published as citable evidence",
+                "Accreditation and recognition signals made machine-readable",
+                "Student-question content built for direct AI answers"]),
+
+    dict(slug="financial-services-seo", name="Financial Services &amp; Insurance", icon="&#9650;",
+         short="Regulatory-safe content, calculator and tool pages that earn citations, and the authorship signals YMYL categories demand before anything ranks.",
+         clients=["Sesame Bankhall Group (UK)"],
+         kw="financial services SEO, fintech SEO agency, insurance SEO, mortgage broker SEO, YMYL SEO",
+         pains=["Compliance review slowing every piece of content",
+                "YMYL scrutiny suppressing pages that would otherwise rank",
+                "Intermediary and B2B audiences that generic SEO misses",
+                "Regulatory constraints on claims and comparisons"],
+         plays=["Compliance-aware editorial workflow with named reviewers",
+                "Calculators and tools built as linkable, citable assets",
+                "Author credentials and FinancialService schema",
+                "Regulatory and industry-body citation footprint",
+                "Adviser-facing content distinct from consumer content"]),
+
+    dict(slug="local-business-seo", name="Local, Retail &amp; Studios", icon="&#8962;",
+         short="Service-area architecture, Google Business Profile, review velocity and the local entity signals that decide map-pack placement.",
+         clients=["Oasis Art Play Studio", "Jhulelal Trading", "Smoke Screen"],
+         kw="local SEO India, Google Business Profile optimization, local SEO agency, map pack SEO",
+         pains=["Invisible in the map pack despite being physically closest",
+                "Inconsistent name, address and phone across directories",
+                "Competitors with more reviews winning by default",
+                "“Near me” queries going to aggregators"],
+         plays=["Google Business Profile optimisation and posting cadence",
+                "NAP consistency audit and citation cleanup",
+                "LocalBusiness schema with accurate service-area markup",
+                "Review generation systems that stay policy-compliant",
+                "Location and service-area landing page architecture"]),
+
+    dict(slug="security-loss-prevention-seo", name="Security &amp; Loss Prevention", icon="&#9919;",
+         short="Niche B2B with tiny search volumes and very high deal values. Category-education content plus specification-grade product pages that procurement teams and AI both trust.",
+         clients=["Smoke Screen (UK)"],
+         kw="security systems SEO, B2B security SEO, loss prevention marketing, security technology SEO",
+         pains=["Search volumes too small for conventional keyword strategy",
+                "Specifiers and installers research very differently from end users",
+                "Long procurement cycles with several decision-makers",
+                "Category terms dominated by generic dictionary results"],
+         plays=["Category-education content that creates demand rather than chasing it",
+                "Specification-grade product pages built for technical evaluation",
+                "Standards and compliance content, for example EN50131",
+                "Application-led architecture: retail, ATM, warehouse, jewellery",
+                "Trade publication and installer-network citation building"]),
+
+    dict(slug="agency-white-label-seo", name="Agencies &amp; White-Label", icon="&#9783;",
+         short="Full delivery under your brand, under NDA. Audits through retained execution with branded reporting. We stay invisible to your client.",
+         clients=["Confidential &mdash; NDA"],
+         kw="white label SEO India, white label GEO, SEO reseller, outsourced SEO agency",
+         pains=["Clients asking for GEO you cannot yet deliver",
+                "Capacity ceiling blocking new retainers",
+                "Cost of hiring senior SEO in-house",
+                "Reporting that eats delivery hours"],
+         plays=["NDA-backed anonymous delivery under your brand",
+                "Branded reporting in your template and tone",
+                "Scalable capacity from single audits to full retainers",
+                "Your account manager stays the only client contact",
+                "GEO and AI visibility as a new line you can sell tomorrow"]),
 ]
 
 PAGES["industries"] = dict(
@@ -915,7 +1173,9 @@ PAGES["industries"] = dict(
 <section class="sec">
   <div class="wrap">
     <div class="grid g3">
-      {"".join(f'<div class="card"><div class="card-icon">{ic}</div><h3>{n}</h3><p>{d}</p></div>' for n, ic, d in INDUSTRIES)}
+      {"".join(f'''<a class="card card-link" href="/{i["slug"]}/">
+        <div class="card-icon">{i["icon"]}</div><h3>{i["name"]}</h3><p>{i["short"]}</p>
+        <span class="card-more">{i["name"].split("&amp;")[0].strip()} SEO &rarr;</span></a>''' for i in INDUSTRIES)}
     </div>
   </div>
 </section>
@@ -1046,9 +1306,41 @@ PAGES["case-studies"] = dict(
       </div>
     </div>
 
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px">
+      <div style="padding:36px 36px 0"><span class="card-num">CASE 02 &middot; CRAWFORD'S METAL DETECTING &middot; UK ECOMMERCE</span>
+        <h2 style="margin-bottom:.4rem">Ranking #1 for a 27,100-a-month head term</h2>
+        <p class="dim" style="max-width:70ch">A UK specialist retailer competing against manufacturer sites and national chains. Category architecture, product schema and a buying-guide content programme took the single most valuable term in the category outright.</p>
+      </div>
+      <div class="kpis" style="border:0;border-radius:0;margin-top:28px">
+        <div class="kpi"><div class="kpi-val">#1</div><div class="kpi-lab">for &ldquo;metal detectors&rdquo; &mdash; 27,100 searches/mo</div></div>
+        <div class="kpi"><div class="kpi-val">1,393</div><div class="kpi-lab">organic keywords ranking</div></div>
+        <div class="kpi"><div class="kpi-val">853</div><div class="kpi-lab">referring domains</div></div>
+        <div class="kpi"><div class="kpi-val">2,923</div><div class="kpi-lab">AI citations in 29 days</div></div>
+      </div>
+      <div style="padding:28px 36px 36px">
+        <p style="font-size:.93rem;color:var(--text-dim);margin-bottom:0"><strong>Also holding position 1 for:</strong> &ldquo;metal detector shops near me&rdquo;, &ldquo;minelab manticore&rdquo;, &ldquo;waterproof metal detector&rdquo;, &ldquo;pinpointer metal detector&rdquo;, &ldquo;metal detecting shovels&rdquo; and &ldquo;gold panning kit&rdquo;. The buying-guide content also drives the AI citation volume in Case 01 &mdash; the same pages do both jobs.</p>
+      </div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px">
+      <div style="padding:36px 36px 0"><span class="card-num">CASE 03 &middot; SMOKE SCREEN &middot; UK B2B SECURITY</span>
+        <h2 style="margin-bottom:.4rem">From 2 ranking keywords to 95 in twelve months</h2>
+        <p class="dim" style="max-width:70ch">Security fog systems: a niche B2B category with low search volume, high deal values and long procurement cycles. We built category-education content and specification-grade product pages from a standing start.</p>
+      </div>
+      <div class="kpis" style="border:0;border-radius:0;margin-top:28px">
+        <div class="kpi"><div class="kpi-val">2 &rarr; 95</div><div class="kpi-lab">ranking keywords, Aug 2025 to Jul 2026</div></div>
+        <div class="kpi"><div class="kpi-val">0 &rarr; 213</div><div class="kpi-lab">monthly organic sessions</div></div>
+        <div class="kpi"><div class="kpi-val">7</div><div class="kpi-lab">keywords now in the top 3</div></div>
+        <div class="kpi"><div class="kpi-val">316</div><div class="kpi-lab">referring domains</div></div>
+      </div>
+      <div style="padding:28px 36px 36px">
+        <p style="font-size:.93rem;color:var(--text-dim);margin-bottom:0"><strong>Why the numbers look small and are not:</strong> in a category where a single installation is a five-figure contract, 213 highly-qualified monthly sessions against a previous baseline of zero is a channel that pays for itself several times over. Volume is the wrong metric here; qualification is the right one.</p>
+      </div>
+    </div>
+
     <div class="grid g2">
       <div class="card">
-        <span class="card-num">CASE 02 &middot; B2B SERVICES &middot; UNITED STATES</span>
+        <span class="card-num">CASE 04 &middot; B2B SERVICES &middot; UNITED STATES</span>
         <h3>Position 8&ndash;20 recovery programme</h3>
         <p style="margin-bottom:16px">Fourteen pages with real impressions permanently stuck below the fold. No new content, no new links &mdash; page-level query extraction, intent-gap diagnosis, title and meta rewrites for CTR, and targeted internal linking.</p>
         <div class="tbl-wrap"><table style="min-width:0">
@@ -1181,9 +1473,10 @@ PAGES["insights"] = dict(
     <div class="eyebrow" style="justify-content:center">Newsletter</div>
     <h2>The AI Visibility Brief</h2>
     <p class="lead dim">What changed in AI search this week and what to do about it. Every Tuesday, free, with the AI Search Playbook PDF on signup.</p>
-    <form class="audit-form" style="max-width:520px;margin:2rem auto 0;justify-content:center" onsubmit="return false">
-      <input type="email" placeholder="you@company.com" aria-label="Email">
+    <form class="audit-form sved-form" data-type="newsletter" style="max-width:520px;margin:2rem auto 0;justify-content:center">
+      <input type="email" name="email" placeholder="you@company.com" aria-label="Email" required style="flex:1 1 320px;width:auto">
       <button class="btn btn-primary" type="submit">Get the playbook</button>
+      <p class="form-status" role="status" style="flex:1 1 100%"></p>
     </form>
   </div>
 </section>
@@ -1273,9 +1566,30 @@ PAGES["resources"] = dict(
   </div>
 </section>
 
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Our stack</div>
+      <h2>The tools every engagement runs on</h2>
+      <p class="lead dim">No black boxes. You get access to the same dashboards we work from, and every claim in your report traces back to one of these sources.</p>
+    </div>
+    <!--TOOLS-->
+  </div>
+</section>
+
+<section class="sec band-dark">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Credentials</div>
+      <h2>Certified across the platforms that matter</h2>
+    </div>
+    <!--CERTS-->
+  </div>
+</section>
+
 {cta("Want the SOP library for your in-house team?",
      "Consulting engagements include the full 39-SOP library and a handover session at $30 per hour.",
-     primary=("Book a consulting session", "contact.html"),
+     primary=("Book a consulting session", CALENDLY),
      secondary=("Run the free audit", "ai-visibility-audit.html"))}
 """)
 
@@ -1364,39 +1678,43 @@ PAGES["contact"] = dict(
   <div class="wrap">
     <div class="grid g2" style="gap:52px;align-items:start">
       <div>
-        <form class="card" style="padding:32px" onsubmit="return false">
+        <form class="card sved-form" id="contact-form" style="padding:32px">
           <h3 style="margin-bottom:20px">Start a conversation</h3>
           <div class="grid g2" style="gap:14px;margin-bottom:14px">
-            <input class="news-input" type="text" placeholder="Full name" style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--white);padding:13px 15px;border-radius:6px;font-family:inherit">
-            <input type="email" placeholder="Work email" style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--white);padding:13px 15px;border-radius:6px;font-family:inherit">
+            <input name="name" type="text" placeholder="Full name" required aria-label="Full name">
+            <input name="email" type="email" placeholder="Work email" required aria-label="Work email">
           </div>
-          <input type="url" placeholder="Website URL" style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--white);padding:13px 15px;border-radius:6px;font-family:inherit;margin-bottom:14px">
-          <select style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--text-dim);padding:13px 15px;border-radius:6px;font-family:inherit;margin-bottom:14px">
-            <option>What do you need help with?</option>
+          <input name="phone" type="tel" placeholder="Phone or WhatsApp (optional)" aria-label="Phone" style="margin-bottom:14px">
+          <input name="website" type="text" placeholder="Website URL" aria-label="Website" style="margin-bottom:14px">
+          <select name="service" aria-label="Service" style="margin-bottom:14px">
+            <option value="">What do you need help with?</option>
             <option>AI visibility / GEO</option>
             <option>AI Overviews traffic loss</option>
             <option>Technical SEO / migration</option>
             <option>Content &amp; rankings</option>
+            <option>Ecommerce SEO</option>
+            <option>Local SEO</option>
             <option>White-label delivery</option>
             <option>Hourly consulting ($30/hr)</option>
           </select>
-          <select style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--text-dim);padding:13px 15px;border-radius:6px;font-family:inherit;margin-bottom:14px">
-            <option>Monthly revenue (helps us scope)</option>
+          <select name="revenue" aria-label="Monthly revenue" style="margin-bottom:14px">
+            <option value="">Monthly revenue (helps us scope)</option>
             <option>Under $50k</option><option>$50k&ndash;$250k</option>
             <option>$250k&ndash;$1M</option><option>$1M+</option>
           </select>
-          <textarea rows="4" placeholder="What is happening? Paste your audit score if you have one." style="width:100%;background:var(--navy-900);border:1px solid var(--line);color:var(--white);padding:13px 15px;border-radius:6px;font-family:inherit;margin-bottom:18px"></textarea>
-          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center">Send message</button>
-          <p class="faint" style="font-size:.78rem;margin-top:12px;text-align:center">We reply within one business day.</p>
+          <textarea name="message" rows="4" placeholder="What is happening? Paste your audit score if you have one." aria-label="Message" style="margin-bottom:18px"></textarea>
+          <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" >
+          <button class="btn btn-primary btn-lg" type="submit" style="width:100%;justify-content:center">Send message</button>
+          <p class="form-status" role="status"></p>
+          <p class="faint" style="font-size:.78rem;margin-top:12px;text-align:center">We reply within one business day. Or <a href="CALENDLY_URL" target="_blank" rel="noopener">book a 15-minute call</a>.</p>
         </form>
       </div>
       <div>
         <div class="card" style="margin-bottom:20px">
           <h3>Book directly</h3>
           <p style="margin-bottom:18px">Skip the form. Grab a 30-minute slot with the strategist who will run your audit.</p>
-          <div style="background:var(--navy-900);border:1px dashed var(--line);border-radius:8px;padding:36px;text-align:center">
-            <p class="mono faint" style="font-size:.8rem;margin:0">Calendly embed<br>renders here in production</p>
-          </div>
+          <a class="btn btn-primary btn-lg" style="width:100%;justify-content:center" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-minute call</a>
+          <p class="faint" style="font-size:.8rem;margin-top:12px;text-align:center">Opens Calendly. Pick any slot that suits you.</p>
         </div>
         <div class="card" style="margin-bottom:20px">
           <h3>Other ways in</h3>
@@ -1552,6 +1870,132 @@ def post_page(p):
 """
 
 
+# ==========================================================================
+# AI platforms, certifications and tooling
+#
+# Platform marks are drawn as inline SVG rather than hot-linked. The strict
+# CSP blocks external images, third-party logo files carry trademark and
+# hosting constraints, and inline SVG costs zero requests. Each is a simple
+# geometric mark plus the platform name in text - referential use, not a
+# reproduction of the official logo.
+# ==========================================================================
+AI_PLATFORMS = [
+    ("ChatGPT", "#10A37F", '<circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 8v16M8.5 12l15 8M8.5 20l15-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'),
+    ("Google Gemini", "#4285F4", '<path d="M16 4c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12 6.4-.6 11.4-5.6 12-12z" fill="currentColor"/>'),
+    ("Perplexity", "#20808D", '<rect x="5" y="5" width="22" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 5v22M5 16h22" stroke="currentColor" stroke-width="2.2"/>'),
+    ("Claude", "#D97757", '<path d="M9 24 16 7l7 17M12 19h8" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
+    ("DeepSeek", "#4D6BFE", '<path d="M6 20c4-10 16-10 20 0" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="16" cy="12" r="3" fill="currentColor"/>'),
+    ("Microsoft Copilot", "#0078D4", '<path d="M16 6c5 0 8 4 8 8s-3 12-8 12-8-7-8-12 3-8 8-8z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="16" cy="14" r="2.6" fill="currentColor"/>'),
+    ("Google AI Overviews", "#EA4335", '<circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 6a10 10 0 0 1 10 10h-10z" fill="currentColor"/>'),
+    ("Grok", "#FFFFFF", '<path d="M7 25 25 7M7 7l18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'),
+]
+
+SEO_TOOLS = [
+    ("Google Search Console", "Performance data, indexing and Core Web Vitals straight from Google."),
+    ("Google Analytics 4", "Attribution, conversions and the revenue side of organic."),
+    ("Bing Webmaster Tools", "Indexing and IndexNow. Bing is what feeds Microsoft Copilot."),
+    ("Ahrefs", "Backlinks, keyword difficulty and competitor SERP reads."),
+    ("Semrush", "Keyword research, position tracking and competitive gap analysis."),
+    ("Screaming Frog", "Full technical crawls, redirect mapping and log-file analysis."),
+    ("Google PageSpeed Insights", "Core Web Vitals field and lab data on every audit."),
+    ("Schema Markup Validator", "Every JSON-LD block validated before it ships."),
+    ("Google Rich Results Test", "Confirms structured data is actually eligible."),
+    ("Merkle Technical SEO Tools", "Hreflang, robots.txt and structured-data testing."),
+    ("Google Tag Manager", "Event tracking, conversion wiring and tag governance."),
+    ("Looker Studio", "Client dashboards blended across GSC, GA4 and rank data."),
+]
+
+CERTIFICATIONS = [
+    ("Semrush Certified", "SEO Toolkit &amp; Technical SEO"),
+    ("Microsoft Advertising Certified", "Bing &amp; Copilot ecosystem"),
+    ("Google Shopping Certified", "Merchant Center &amp; product feeds"),
+    ("Google Analytics 4 Certified", "Measurement &amp; attribution"),
+]
+
+
+def platform_strip():
+    marks = "".join(
+        f'''<div class="pmark" title="{n}">
+          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" style="color:{c}">{p}</svg>
+          <span>{n}</span></div>''' for n, c, p in AI_PLATFORMS)
+    return f'<div class="pmarks">{marks}</div>'
+
+
+def cert_strip():
+    return '<div class="certs">' + "".join(
+        f'''<div class="cert"><div class="cert-tick">&#10003;</div>
+        <div><strong>{n}</strong><span>{d}</span></div></div>''' for n, d in CERTIFICATIONS) + '</div>'
+
+
+def tools_grid():
+    def initials(name):
+        parts = [w for w in re.split(r"[\s&]+", name) if w and w[0].isalnum()]
+        return "".join(w[0] for w in parts[:3]).upper()
+    return '<div class="tools">' + "".join(
+        f'''<div class="tool"><div class="tool-ico">{initials(n)}</div>
+        <div><strong>{n}</strong><span>{d}</span></div></div>''' for n, d in SEO_TOOLS) + '</div>'
+
+
+def industry_page(i):
+    pains = "".join(f"<li>{p}</li>" for p in i["pains"])
+    plays = "".join(f'<div class="crow"><span class="lbl">{n:02d}</span><span class="val" style="text-align:left;flex:1">{p}</span></div>'
+                    for n, p in enumerate(i["plays"], 1))
+    clients = "".join(f'<span class="clogo">{c}</span>' for c in i["clients"])
+    label = i["name"].replace("&amp;", "and")
+    return f"""
+{phero(f'<a href="index.html">Home</a> / <a href="industries.html">Industries</a> / {i["name"]}',
+       'Industry', f'{i["name"]} SEO &amp; AI visibility', i["short"])}
+
+<section class="sec-sm band-alt">
+  <div class="wrap">
+    <p class="faint mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px">Clients we have delivered this for</p>
+    <div class="clogos">{clients}</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="grid g2" style="gap:52px;align-items:start">
+      <div>
+        <div class="eyebrow">The problem</div>
+        <h2 style="margin-bottom:1.4rem">What we hear from {label.lower()} teams</h2>
+        <ul class="pain-list">{pains}</ul>
+      </div>
+      <div class="panel">
+        <div class="panel-bar"><i class="tdot"></i><i class="tdot"></i><i class="tdot"></i>
+          <span style="margin-left:8px">playbook &mdash; {i["slug"]}</span></div>
+        <div class="panel-body">{plays}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec band-dark">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Where we make you visible</div>
+      <h2>Every surface that answers a {label.lower()} question</h2>
+    </div>
+    {platform_strip()}
+  </div>
+</section>
+
+{faq([
+  (f"How is {label} SEO different from generic SEO?",
+   f"The technical foundations are identical. What changes is the citation stack, the schema types and the intent mix. {label} buyers use different research surfaces, and AI models weight different third-party sources when answering questions in this category. We reverse-engineer which sources actually get cited for your specific vertical during the audit, rather than applying a generic checklist."),
+  ("How long before we see results?",
+   "Traditional ranking improvements typically show inside 60 to 90 days, faster on pages already sitting in positions 8 to 20. AI citations follow the same curve every time: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
+  ("Do you have experience in this specific industry?",
+   f"Yes. The clients listed above are live or completed engagements in {label.lower()}. We will walk you through the actual accounts, anonymised where the client requires it, on a scoping call."),
+  ("What does it cost?",
+   "Consulting is $30 per hour for one-off sessions. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Start with the free AI visibility audit and the priority usually becomes obvious."),
+])}
+
+{cta(f"See how visible you are in {label} AI answers.",
+     "Twelve eligibility checks against your live URL. No card, no call, about sixty seconds.")}
+"""
+
+
 NOT_FOUND_BODY = """
 <section class="phero" style="padding-bottom:40px">
   <div class="wrap">
@@ -1594,9 +2038,24 @@ def to_clean_urls(html, depth=0):
     return html
 
 
-def render(title, desc, slug, body, schema=None):
-    html = SHELL.format(title=title, desc=desc, slug=slug,
-                        schema=schema or ORG_SCHEMA, nav=NAV, body=body, footer=FOOTER)
+DEFAULT_KEYWORDS = ("SEO services India, GEO services, generative engine optimization, "
+                    "answer engine optimization, LLM SEO, AI SEO agency, ChatGPT SEO, "
+                    "Perplexity SEO, AI visibility, technical SEO, SEO agency Kolkata")
+
+
+def render(title, desc, slug, body, schema=None, keywords=None):
+    html = SHELL.format(title=title, desc=desc, slug=slug, keywords=keywords or DEFAULT_KEYWORDS,
+                        schema=schema or ORG_SCHEMA, nav=NAV, logo=LOGO_SVG,
+                        body=body, footer=FOOTER)
+    # Literal placeholders replaced after .format() so braces in the gtag
+    # snippet never have to be escaped twice, and so page bodies can reference
+    # component builders that are defined further down the file.
+    html = (html
+            .replace("GA_MEASUREMENT_ID", GA_ID)
+            .replace("CALENDLY_URL", CALENDLY)
+            .replace("<!--PLATFORMS-->", platform_strip())
+            .replace("<!--CERTS-->", cert_strip())
+            .replace("<!--TOOLS-->", tools_grid()))
     return to_clean_urls(html)
 
 
@@ -1664,6 +2123,17 @@ def build():
         html = render(f'{p["title"]} | SVED Solution', p["desc"],
                       f'insights/{p["slug"]}/', post_page(p), post_schema(p))
         rel = os.path.join("insights", p["slug"], "index.html")
+        written.append((rel.replace("\\", "/"), write(rel, html)))
+
+    # One page per industry, each naming the real clients delivered for.
+    for i in INDUSTRIES:
+        plain = i["name"].replace("&amp;", "and")
+        html = render(
+            f'{plain} SEO Services India | SVED Solution',
+            re.sub(r"<[^>]+>", "", i["short"])[:152],
+            f'{i["slug"]}/', industry_page(i),
+            keywords=i["kw"])
+        rel = os.path.join(i["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
     # Without a 404.html, Cloudflare Pages answers unknown paths with the

@@ -51,6 +51,44 @@
     counters.forEach(function (el) { cio.observe(el); });
   }
 
+  /* ---- Forms: contact + newsletter -> /api/contact ---- */
+  document.querySelectorAll('.sved-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type=submit]');
+      var status = form.querySelector('.form-status');
+      var data = { type: form.dataset.type || 'enquiry', page: location.pathname };
+      new FormData(form).forEach(function (v, k) { if (v) data[k] = v; });
+
+      if (!data.email) { status.textContent = 'Please enter your email address.'; status.className = 'form-status err'; return; }
+
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Sending...';
+      status.textContent = ''; status.className = 'form-status';
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j.error) throw new Error(j.error);
+          form.reset();
+          status.textContent = data.type === 'newsletter'
+            ? 'Subscribed. The AI Search Playbook is on its way.'
+            : 'Thanks. We reply within one business day.';
+          status.className = 'form-status ok';
+          if (window.gtag) gtag('event', 'generate_lead', { form_type: data.type });
+        })
+        .catch(function (err) {
+          status.textContent = err.message || 'Could not send. Please email hello@svedsolution.com.';
+          status.className = 'form-status err';
+        })
+        .finally(function () { btn.disabled = false; btn.textContent = label; });
+    });
+  });
+
   /* ---- Audit tool demo ---- */
   var form = document.getElementById('audit-form');
   if (form) {
