@@ -1552,6 +1552,33 @@ def post_page(p):
 """
 
 
+NOT_FOUND_BODY = """
+<section class="phero" style="padding-bottom:40px">
+  <div class="wrap">
+    <div class="eyebrow">Error 404</div>
+    <h1 style="max-width:16ch">This page does not exist.</h1>
+    <p class="lead dim" style="max-width:60ch;margin-top:1.2rem">The link may be outdated, or the address may have a typo. Here is where most people were heading.</p>
+    <div class="btn-row" style="margin-top:2rem">
+      <a class="btn btn-primary btn-lg" href="ai-visibility-audit.html">Run a free AI visibility audit</a>
+      <a class="btn btn-ghost btn-lg" href="index.html">Back to the homepage</a>
+    </div>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap">
+    <div class="grid g3">
+      <a class="card card-link" href="services.html"><div class="card-icon">&#9670;</div><h3>Services</h3><p>Eighteen services across AI search and core SEO.</p><span class="card-more">Browse services &rarr;</span></a>
+      <a class="card card-link" href="generative-engine-optimization.html"><div class="card-icon">&#10022;</div><h3>GEO</h3><p>Get named by ChatGPT, Perplexity and Gemini.</p><span class="card-more">Explore GEO &rarr;</span></a>
+      <a class="card card-link" href="insights.html"><div class="card-icon">&#9998;</div><h3>Insights</h3><p>Practitioner writing on GEO, AEO and technical SEO.</p><span class="card-more">Read insights &rarr;</span></a>
+      <a class="card card-link" href="case-studies.html"><div class="card-icon">&#9636;</div><h3>Case studies</h3><p>2,923 AI citations in 29 days, and how.</p><span class="card-more">See results &rarr;</span></a>
+      <a class="card card-link" href="use-cases.html"><div class="card-icon">&#9635;</div><h3>Use cases</h3><p>Eight problems, eight documented responses.</p><span class="card-more">Find yours &rarr;</span></a>
+      <a class="card card-link" href="contact.html"><div class="card-icon">&#9993;</div><h3>Contact</h3><p>Talk to the strategist who runs your audit.</p><span class="card-more">Get in touch &rarr;</span></a>
+    </div>
+  </div>
+</section>
+"""
+
+
 # --------------------------------------------------------------------------
 # Render
 # --------------------------------------------------------------------------
@@ -1638,6 +1665,14 @@ def build():
                       f'insights/{p["slug"]}/', post_page(p), post_schema(p))
         rel = os.path.join("insights", p["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
+
+    # Without a 404.html, Cloudflare Pages answers unknown paths with the
+    # homepage and HTTP 200 — a soft 404 that lets search engines index
+    # unlimited duplicates of the home page.
+    written.append(("404.html", write("404.html", render(
+        "Page not found | SVED Solution",
+        "That page does not exist. Find our services, insights or the free AI visibility audit instead.",
+        "404/", NOT_FOUND_BODY))))
 
     copy_tree("assets")
     copy_tree("admin")

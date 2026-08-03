@@ -1,9 +1,13 @@
-# Canonical host — Cloudflare Pages serves both, pick one.
-https://www.svedsolution.com/*  https://svedsolution.com/:splat  301
-
-# Friendly short paths
+# Static rules first — Cloudflare evaluates top-down and warns if plain
+# rules sit below splats or placeholders.
 /audit        /ai-visibility-audit   301
 /geo          /generative-engine-optimization   301
-/blog         /insights   301
-/blog/*       /insights/:splat   301
 /why-geo      /why-llm-seo-now   301
+/blog         /insights   301
+
+# Splat rules last
+/blog/*       /insights/:splat   301
+
+# NOTE: www -> apex is NOT handled here. Cloudflare Pages rejects absolute
+# URLs in _redirects ("Only relative URLs are allowed"). Create a Redirect
+# Rule instead: Dashboard > svedsolution.com > Rules > Redirect Rules.
