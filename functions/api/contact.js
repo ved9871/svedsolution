@@ -71,6 +71,13 @@ export async function onRequestPost({ request, env }) {
   }
 
   // ---- Notify ------------------------------------------------------------
+  // Every lead goes to the Gmail inbox, plus any extra addresses configured.
+  const recipients = [...new Set(
+    ['svedsolution@gmail.com', env.TO_EMAIL, env.CC_EMAIL]
+      .filter(Boolean)
+      .map(a => a.trim().toLowerCase())
+  )];
+
   if (env.RESEND_KEY) {
     const rows = Object.entries(lead)
       .filter(([k]) => k !== 'id')
@@ -82,7 +89,7 @@ export async function onRequestPost({ request, env }) {
         headers: { authorization: `Bearer ${env.RESEND_KEY}`, 'content-type': 'application/json' },
         body: JSON.stringify({
           from: 'SVED Solution <noreply@svedsolution.com>',
-          to: [env.TO_EMAIL || 'hello@svedsolution.com'],
+          to: recipients,
           reply_to: email,
           subject: `${type === 'newsletter' ? 'Newsletter signup' : 'New enquiry'} — ${esc(d.name || email)}`,
           html: `<h2 style="font-family:sans-serif">${type}</h2>

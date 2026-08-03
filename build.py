@@ -4,7 +4,7 @@ SVED Solution — static preview generator.
 Stamps a shared shell (header/footer/head) around per-page content so the
 preview works over file:// and converts cleanly to a Kadence WordPress build.
 """
-import os, re, io
+import os, re, io, datetime as _dt
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
@@ -66,22 +66,23 @@ NAV = """
     <div class="drop">
       <div class="drop-head">AI Search &mdash; primary</div>
       <a href="generative-engine-optimization.html">Generative Engine Optimization</a>
-      <a href="services.html#aeo">Answer Engine Optimization</a>
-      <a href="services.html#llm-seo">LLM SEO</a>
-      <a href="services.html#citation">AI Citation &amp; Entity Building</a>
-      <a href="services.html#monitoring">AI Visibility Monitoring</a>
-      <a href="services.html#aio">Google AI Overviews</a>
+      <a href="/services/answer-engine-optimization/">Answer Engine Optimization</a>
+      <a href="/services/llm-seo/">LLM SEO</a>
+      <a href="/services/ai-citation-entity-building/">AI Citation &amp; Entity Building</a>
+      <a href="/services/ai-visibility-monitoring/">AI Visibility Monitoring</a>
+      <a href="/services/google-ai-overviews-optimization/">Google AI Overviews</a>
       <div class="drop-head">Core SEO</div>
-      <a href="services.html#technical">Technical SEO</a>
-      <a href="services.html#semantic">Semantic &amp; On-Page SEO</a>
-      <a href="services.html#content">Content Strategy</a>
-      <a href="services.html#links">Link Building &amp; Digital PR</a>
-      <a href="services.html#ecommerce">Ecommerce SEO</a>
-      <a href="services.html#saas">SaaS &amp; B2B SEO</a>
-      <a href="services.html#local">Local SEO</a>
-      <a href="services.html#migration">Migrations</a>
-      <a href="services.html#whitelabel">White-Label SEO</a>
-      <a href="services.html#consulting">SEO Consulting</a>
+      <a href="/services/technical-seo/">Technical SEO</a>
+      <a href="/services/semantic-on-page-seo/">Semantic &amp; On-Page SEO</a>
+      <a href="/services/content-strategy/">Content Strategy</a>
+      <a href="/services/link-building-digital-pr/">Link Building &amp; Digital PR</a>
+      <a href="/services/ecommerce-seo/">Ecommerce SEO</a>
+      <a href="/services/saas-b2b-seo/">SaaS &amp; B2B SEO</a>
+      <a href="/services/local-seo/">Local SEO</a>
+      <a href="/services/site-migrations/">Site Migrations</a>
+      <a href="/services/white-label-seo/">White-Label SEO</a>
+      <a href="/services/seo-consulting/">SEO Consulting</a>
+      <a href="services.html">All 18 services &rarr;</a>
     </div>
   </div>
   <div class="has-drop">
@@ -194,13 +195,8 @@ FOOTER = f"""
         <p class="faint" style="font-size:.76rem;margin-top:10px">Free with the AI Search Playbook PDF.</p>
       </div>
     </div>
-    <div class="foot-legal">
-      <span><strong>{TRADE_NAME}</strong> &middot; Proprietor: {LEGAL_NAME}</span>
-      <span>GSTIN <strong class="mono">{GSTIN}</strong></span>
-      <span>GST-registered since {GST_SINCE} &middot; {REG_CITY}</span>
-    </div>
     <div class="foot-bottom">
-      <div>&copy; 2026 SVED Solution. All rights reserved. &middot; <a href="mailto:{EMAIL}" style="color:var(--text-faint)">{EMAIL}</a></div>
+      <div>&copy; 2026 SVED Solution. All rights reserved. &middot; GSTIN <span class="mono">{GSTIN}</span></div>
       <div style="display:flex;gap:20px;flex-wrap:wrap">
         <a href="#" style="color:var(--text-faint)">Privacy</a>
         <a href="#" style="color:var(--text-faint)">Terms</a>
@@ -218,6 +214,15 @@ TAGLINE = "Top 1&#37; SEO Service Provider in India"
 SHELL = """<!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
@@ -251,14 +256,6 @@ SHELL = """<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script type="application/ld+json">{schema}</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-</script>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
@@ -313,7 +310,6 @@ ORG_SCHEMA = """{
     {"@type":"PostalAddress","addressLocality":"Oswego","addressRegion":"NY","postalCode":"13126","addressCountry":"US"}
   ],
   "telephone":"+917846045690",
-  "legalName":"Ved Prakash Singh",
   "taxID":"07FBEPS5516R1ZU",
   "vatID":"07FBEPS5516R1ZU",
   "foundingDate":"2018-09-21",
@@ -433,19 +429,28 @@ PAGES["index"] = dict(
 
 <section class="sec-sm band-alt">
   <div class="wrap">
-    <p class="faint center mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px">Trusted by brands across 9 industries</p>
+    <p class="faint center mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px">19 brands across 10 industries &middot; UK &middot; India &middot; UAE &middot; USA</p>
     <div class="clogos" style="justify-content:center">
-      <span class="clogo">Origyn IVF</span><span class="clogo">Mothers Lap IVF</span>
-      <span class="clogo">Kass Care</span><span class="clogo">BD Herbals</span>
-      <span class="clogo">Konch.ai</span><span class="clogo">DXB Apps</span>
-      <span class="clogo">Inceptial Tech</span><span class="clogo">Medhavi Skills University</span>
-      <span class="clogo">Sesame Bankhall Group</span><span class="clogo">Crawford's Metal Detecting</span>
-      <span class="clogo">NodeWaves</span><span class="clogo">Web3Tech Network</span>
-      <span class="clogo">ARS Web Tech</span><span class="clogo">Srisa Laser Cosmoderma</span>
-      <span class="clogo">Ameei Care</span><span class="clogo">Oasis Art Play Studio</span>
-      <span class="clogo">Jhulelal Trading</span><span class="clogo">Monisha London</span>
-      <span class="clogo">Smoke Screen</span>
+      <span class="clogo">IVF &amp; fertility clinics</span>
+      <span class="clogo">Cosmetic dermatology</span>
+      <span class="clogo">Physiotherapy &amp; rehab</span>
+      <span class="clogo">Specialist ecommerce, UK</span>
+      <span class="clogo">Bio-active skincare D2C</span>
+      <span class="clogo">Ayurvedic wellness</span>
+      <span class="clogo">Fashion label, London</span>
+      <span class="clogo">AI transcription SaaS</span>
+      <span class="clogo">App development, Dubai</span>
+      <span class="clogo">Enterprise software, India</span>
+      <span class="clogo">Tech publishing platform</span>
+      <span class="clogo">Skills university</span>
+      <span class="clogo">Mortgage network, UK</span>
+      <span class="clogo">Security systems, UK</span>
+      <span class="clogo">Layer-2 crypto protocol</span>
+      <span class="clogo">Web3 agency</span>
+      <span class="clogo">Trading &amp; distribution</span>
+      <span class="clogo">Creative arts studio</span>
     </div>
+    <p class="faint center" style="font-size:.79rem;margin-top:18px">Client names withheld under NDA. We will introduce you to a reference in your category during scoping.</p>
   </div>
 </section>
 
@@ -567,6 +572,42 @@ PAGES["index"] = dict(
       <div class="quote"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;They fixed the crawl and index problems our previous agency spent a year describing. Then the content actually started ranking.&rdquo;</p><div class="who">Marketing Lead &middot; Healthcare &middot; United States</div></div>
     </div>
     <div class="center" style="margin-top:32px"><a class="btn btn-ghost" href="reviews.html">Read all reviews</a></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;max-width:none">
+      <div style="max-width:640px">
+        <div class="eyebrow">Latest insights</div>
+        <h2 style="margin-bottom:.6rem">What we are learning, published as we learn it</h2>
+        <p class="lead dim mb0">Frameworks we run on live accounts, written up in full. If we publish a process, it is the one we use.</p>
+      </div>
+      <a class="btn btn-ghost" href="insights.html">All articles</a>
+    </div>
+    <!--LATEST-POSTS-->
+  </div>
+</section>
+
+<section class="sec band-alt">
+  <div class="wrap">
+    <div class="grid g2" style="gap:48px;align-items:center">
+      <div>
+        <div class="eyebrow">Watch</div>
+        <h2 style="margin-bottom:1rem">SEO and Web3 growth, on video</h2>
+        <p class="lead dim">Teardowns, walkthroughs and strategy breakdowns from our group channel. Every full audit we run also ships with a private recorded walkthrough of your own site.</p>
+        <div class="btn-row" style="margin-top:1.8rem">
+          <a class="btn btn-primary" href="https://www.youtube.com/channel/UCLEeUbTJUO4d7nALNrh1USQ" target="_blank" rel="noopener">Subscribe on YouTube</a>
+          <a class="btn btn-ghost" href="videos.html">More videos</a>
+        </div>
+      </div>
+      <div class="yt-embed">
+        <iframe src="https://www.youtube.com/embed/videoseries?list=UULFLEeUbTJUO4d7nALNrh1USQ"
+                title="Web3Tech Network channel" loading="lazy" allowfullscreen
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -877,14 +918,42 @@ PAGES["generative-engine-optimization"] = dict(
 # ==========================================================================
 
 
+SERVICE_URLS = {
+    "aeo": "/services/answer-engine-optimization/",
+    "llm-seo": "/services/llm-seo/",
+    "citation": "/services/ai-citation-entity-building/",
+    "monitoring": "/services/ai-visibility-monitoring/",
+    "aio": "/services/google-ai-overviews-optimization/",
+    "technical": "/services/technical-seo/",
+    "semantic": "/services/semantic-on-page-seo/",
+    "content": "/services/content-strategy/",
+    "links": "/services/link-building-digital-pr/",
+    "ecommerce": "/services/ecommerce-seo/",
+    "saas": "/services/saas-b2b-seo/",
+    "local": "/services/local-seo/",
+    "international": "/services/international-seo/",
+    "programmatic": "/services/programmatic-seo/",
+    "migration": "/services/site-migrations/",
+    "whitelabel": "/services/white-label-seo/",
+    "consulting": "/services/seo-consulting/",
+    "geo": "generative-engine-optimization.html",
+}
+
+
 def svc(anchor, num, name, desc, bullets, tag="core"):
     lis = "".join(f"<li>{b}</li>" for b in bullets)
+    url = SERVICE_URLS.get(anchor, "services.html")
     return f"""
-<div class="card" id="{anchor}" style="scroll-margin-top:90px">
+<div class="card" id="{anchor}" style="scroll-margin-top:90px;display:flex;flex-direction:column">
   <span class="card-num">{num} &middot; {tag.upper()}</span>
   <h3>{name}</h3>
   <p style="margin-bottom:14px">{desc}</p>
-  <ul style="font-size:.88rem;color:var(--text-faint);padding-left:1.1em;margin:0">{lis}</ul>
+  <ul style="font-size:.88rem;color:var(--text-faint);padding-left:1.1em;margin:0 0 18px">{lis}</ul>
+  <div style="margin-top:auto;display:flex;gap:8px;flex-wrap:wrap">
+    <a class="btn btn-ghost btn-sm" href="{url}">Service details</a>
+    <a class="btn btn-ghost btn-sm" href="ai-visibility-audit.html">Free audit</a>
+    <a class="btn btn-primary btn-sm" href="CALENDLY_URL" target="_blank" rel="noopener">Book a call</a>
+  </div>
 </div>"""
 
 
@@ -1025,7 +1094,9 @@ PAGES["services"] = dict(
 INDUSTRIES = [
     dict(slug="healthcare-ivf-seo", name="Healthcare, IVF &amp; Clinics", icon="&#10010;",
          short="YMYL-grade E-E-A-T, credentialed authorship, treatment-page architecture and multi-location local visibility. AI is most conservative here, so entity trust decides everything.",
-         clients=["Origyn IVF", "Mothers Lap IVF", "Srisa Laser Cosmoderma", "Ameei Care Physiotherapy"],
+         clients=["2 &times; IVF &amp; fertility clinic groups, Delhi NCR",
+                  "Laser &amp; cosmetic dermatology clinic, India",
+                  "Physiotherapy &amp; rehabilitation practice"],
          kw="healthcare SEO India, IVF clinic SEO, fertility clinic SEO, dermatology SEO, medical SEO agency",
          pains=["Treatment pages that rank but never convert enquiries",
                 "Competing clinics outranking you on every city + treatment query",
@@ -1039,7 +1110,10 @@ INDUSTRIES = [
 
     dict(slug="ecommerce-d2c-seo", name="Ecommerce &amp; D2C", icon="&#9679;",
          short="Category architecture, faceted navigation, variant schema and shopping-surface visibility. Our deepest AI citation dataset comes from this vertical.",
-         clients=["Kass Care", "BD Herbals", "Crawford's Metal Detecting", "Monisha London"],
+         clients=["Specialist hobby retailer, UK &mdash; 1,393 keywords",
+                  "Bio-active skincare D2C brand, India",
+                  "Ayurvedic &amp; herbal wellness brand, India",
+                  "Fashion &amp; lifestyle label, London"],
          kw="ecommerce SEO India, D2C SEO agency, Shopify SEO, product page SEO, ecommerce GEO",
          pains=["Category pages outranked by marketplaces you also sell on",
                 "Thousands of variant URLs burning crawl budget",
@@ -1053,7 +1127,7 @@ INDUSTRIES = [
 
     dict(slug="saas-ai-product-seo", name="SaaS &amp; AI Products", icon="&#9636;",
          short="Pipeline over pageviews. Bottom-of-funnel first, comparison and alternatives pages, then integration-led programmatic expansion.",
-         clients=["Konch.ai"],
+         clients=["AI transcription &amp; translation platform &mdash; 55+ languages, used by global universities"],
          kw="SaaS SEO agency, B2B SaaS SEO, AI product SEO, SaaS GEO services",
          pains=["Buyers evaluate you in ChatGPT before they ever load your site",
                 "Competitors own every “best X” and “alternatives” query",
@@ -1067,7 +1141,8 @@ INDUSTRIES = [
 
     dict(slug="web3-crypto-seo", name="Web3, Crypto &amp; Blockchain", icon="&#9672;",
          short="Delivered with our subsidiary Web3Tech Network: community-first citation building, tokenomics documentation SEO and the credibility signals a sceptical category demands.",
-         clients=["Web3Tech Network (subsidiary)", "NodeWaves"],
+         clients=["Web3Tech Network &mdash; our own subsidiary",
+                  "Layer-2 staking &amp; node protocol on Polygon"],
          kw="Web3 SEO, crypto SEO agency, blockchain SEO, token marketing, NFT SEO",
          pains=["Paid channels ban crypto advertising outright",
                 "Search engines apply extra scrutiny to token projects",
@@ -1081,7 +1156,9 @@ INDUSTRIES = [
 
     dict(slug="it-services-app-development-seo", name="IT Services &amp; App Development", icon="&#9881;",
          short="Long sales cycles, high deal values and buyers who compare five vendors in one AI prompt. Service-page depth plus founder authority.",
-         clients=["DXB Apps", "Inceptial Tech", "ARS Web Tech"],
+         clients=["Mobile app development firm, Dubai UAE",
+                  "Enterprise software &amp; GCC provider, Kolkata",
+                  "Independent technology publishing platform"],
          kw="IT services SEO, app development company SEO, software company SEO, B2B tech SEO",
          pains=["Indistinguishable from a hundred other dev agencies in search",
                 "Enquiries arrive price-shopping, not pre-sold",
@@ -1095,7 +1172,7 @@ INDUSTRIES = [
 
     dict(slug="education-edtech-seo", name="Education &amp; EdTech", icon="&#9998;",
          short="Course and programme schema, admissions-intent capture, and the institutional entity authority AI models require before recommending a place to study.",
-         clients=["Medhavi Skills University"],
+         clients=["UGC-recognised skills university &mdash; 650+ industry partners"],
          kw="education SEO India, university SEO, EdTech SEO, admissions SEO, course page SEO",
          pains=["Admissions traffic concentrated into a short annual window",
                 "Aggregator sites outranking the institution's own pages",
@@ -1109,7 +1186,7 @@ INDUSTRIES = [
 
     dict(slug="financial-services-seo", name="Financial Services &amp; Insurance", icon="&#9650;",
          short="Regulatory-safe content, calculator and tool pages that earn citations, and the authorship signals YMYL categories demand before anything ranks.",
-         clients=["Sesame Bankhall Group (UK)"],
+         clients=["Mortgage &amp; insurance network group, United Kingdom"],
          kw="financial services SEO, fintech SEO agency, insurance SEO, mortgage broker SEO, YMYL SEO",
          pains=["Compliance review slowing every piece of content",
                 "YMYL scrutiny suppressing pages that would otherwise rank",
@@ -1123,7 +1200,7 @@ INDUSTRIES = [
 
     dict(slug="local-business-seo", name="Local, Retail &amp; Studios", icon="&#8962;",
          short="Service-area architecture, Google Business Profile, review velocity and the local entity signals that decide map-pack placement.",
-         clients=["Oasis Art Play Studio", "Jhulelal Trading", "Smoke Screen"],
+         clients=["Creative arts &amp; play studio", "Trading &amp; distribution business"],
          kw="local SEO India, Google Business Profile optimization, local SEO agency, map pack SEO",
          pains=["Invisible in the map pack despite being physically closest",
                 "Inconsistent name, address and phone across directories",
@@ -1137,7 +1214,7 @@ INDUSTRIES = [
 
     dict(slug="security-loss-prevention-seo", name="Security &amp; Loss Prevention", icon="&#9919;",
          short="Niche B2B with tiny search volumes and very high deal values. Category-education content plus specification-grade product pages that procurement teams and AI both trust.",
-         clients=["Smoke Screen (UK)"],
+         clients=["Security fog &amp; loss-prevention manufacturer, UK &mdash; 2 to 95 keywords in 12 months"],
          kw="security systems SEO, B2B security SEO, loss prevention marketing, security technology SEO",
          pains=["Search volumes too small for conventional keyword strategy",
                 "Specifiers and installers research very differently from end users",
@@ -1884,14 +1961,29 @@ def post_page(p):
 # reproduction of the official logo.
 # ==========================================================================
 AI_PLATFORMS = [
-    ("ChatGPT", "#10A37F", '<circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 8v16M8.5 12l15 8M8.5 20l15-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'),
-    ("Google Gemini", "#4285F4", '<path d="M16 4c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12 6.4-.6 11.4-5.6 12-12z" fill="currentColor"/>'),
-    ("Perplexity", "#20808D", '<rect x="5" y="5" width="22" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 5v22M5 16h22" stroke="currentColor" stroke-width="2.2"/>'),
-    ("Claude", "#D97757", '<path d="M9 24 16 7l7 17M12 19h8" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
-    ("DeepSeek", "#4D6BFE", '<path d="M6 20c4-10 16-10 20 0" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="16" cy="12" r="3" fill="currentColor"/>'),
-    ("Microsoft Copilot", "#0078D4", '<path d="M16 6c5 0 8 4 8 8s-3 12-8 12-8-7-8-12 3-8 8-8z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="16" cy="14" r="2.6" fill="currentColor"/>'),
-    ("Google AI Overviews", "#EA4335", '<circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 6a10 10 0 0 1 10 10h-10z" fill="currentColor"/>'),
-    ("Grok", "#FFFFFF", '<path d="M7 25 25 7M7 7l18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'),
+    ("ChatGPT", "OpenAI", "#10A37F",
+     '<path d="M29.7 13.4a8 8 0 0 0-.7-6.6 8.1 8.1 0 0 0-8.7-3.9A8 8 0 0 0 14.2.2a8.1 8.1 0 0 0-7.7 5.6A8 8 0 0 0 1.2 9.7a8.1 8.1 0 0 0 1 9.5 8 8 0 0 0 .7 6.6 8.1 8.1 0 0 0 8.7 3.9 8 8 0 0 0 6.1 2.7 8.1 8.1 0 0 0 7.7-5.6 8 8 0 0 0 5.3-3.9 8.1 8.1 0 0 0-1-9.5zM17.7 29.9a6 6 0 0 1-3.9-1.4l.2-.1 6.5-3.7a1 1 0 0 0 .5-.9v-9.2l2.7 1.6v7.5a6 6 0 0 1-6 6.2zM4.8 24.4a6 6 0 0 1-.7-4l.2.1 6.5 3.8a1 1 0 0 0 1 0l8-4.6v3.2l-6.6 3.8a6 6 0 0 1-8.2-2.2zM3.1 10.8a6 6 0 0 1 3.1-2.6v7.7a1 1 0 0 0 .5.8l7.9 4.6-2.7 1.6-6.6-3.8a6 6 0 0 1-2.2-8.2zm22.5 5.2-8-4.6L20.3 10l6.6 3.8a6 6 0 0 1-.9 10.8v-7.7a1 1 0 0 0-.5-.9zm2.7-4-.2-.1-6.5-3.8a1 1 0 0 0-1.1 0l-7.9 4.6V9.4l6.6-3.8a6 6 0 0 1 8.9 6.2zM10.2 17.6l-2.7-1.5V8.6a6 6 0 0 1 9.8-4.6l-.2.1L10.7 7.8a1 1 0 0 0-.5.9zm1.5-3.2 3.6-2 3.6 2v4.1l-3.6 2-3.6-2z" fill="currentColor"/>'),
+
+    ("Gemini", "Google", "#4285F4",
+     '<path d="M16 0c.8 8.6 6.6 14.4 15.2 15.2v1.6C22.6 17.6 16.8 23.4 16 32h-1.6C13.6 23.4 7.8 17.6-.8 16.8v-1.6C7.8 14.4 13.6 8.6 14.4 0z" transform="translate(.8)" fill="currentColor"/>'),
+
+    ("Claude", "Anthropic", "#D97757",
+     '<path d="M16 1.5 18.9 11l7.4-6.5-4.6 8.9 9.6-2.1-8.5 4.7 8.5 4.7-9.6-2.1 4.6 8.9-7.4-6.5L16 30.5 13.1 21l-7.4 6.5 4.6-8.9-9.6 2.1L9.2 16 .7 11.3l9.6 2.1-4.6-8.9L13.1 11z" fill="currentColor"/>'),
+
+    ("Perplexity", "Perplexity AI", "#20B8CD",
+     '<path d="M16 2.4 5.6 10.2v2.1H2.4v11.4h3.2v6l10.4-7.6 10.4 7.6v-6h3.2V12.3h-3.2v-2.1zM14.6 8.1v5.2H7.7zm2.8 0 6.9 5.2h-6.9zM5.2 15.7h9.4v8.3l-1.2.9v-4.7H5.2zm12.2 0h9.4v4.5h-8.2v4.7l-1.2-.9z" fill="currentColor"/>'),
+
+    ("DeepSeek", "DeepSeek", "#4D6BFE",
+     '<path d="M30.4 7.3c-.4-.2-.6.1-.8.2-.3.2-.5.4-.7.7-.2.3-.4.5-.6.8-.9 1.1-1.9 1.8-3.2 1.7-1.9-.1-3.6.5-5 1.9-.3-1.8-1.3-2.9-2.9-3.6-.8-.4-1.7-.6-2.4-1.2-.5-.4-.6-.9-.8-1.4-.1-.4-.2-.7-.5-1-.4-.4-.8-.3-1 .2-.7 1.5-.4 3.7.9 4.9.1.1.2.3.4.4.5.4.5.8.1 1.4-.6 1-1.5 1.6-2.6 2C8 15.5 6.6 16.9 5.9 19c-.9 2.7-.6 5.3 1 7.7 1.7 2.6 4.2 4 7.3 4.3 3.6.3 7-.2 9.9-2.9 1.4-1.3 2.3-2.9 2.7-4.8.2-.9.2-1.9.1-2.8 0-.6.1-.8.6-1 .8-.4 1.5-.9 2-1.7 1.1-1.6 1.5-3.4 1.4-5.3-.1-1.7-.3-3.4-.5-5.2zM16.2 26.9c-3.5.1-6.4-2.3-6.8-5.6-.4-3.3 1.7-6.3 5-6.9 3.8-.7 7.3 1.9 7.6 5.7.3 3.6-2.3 6.7-5.8 6.8z" fill="currentColor"/><circle cx="16" cy="20.4" r="2.4" fill="currentColor"/>'),
+
+    ("Copilot", "Microsoft", "#0078D4",
+     '<path d="M11.6 4h8.1c2.6 0 4.9 1.7 5.7 4.2l2.4 7.6c.9 2.8-.4 5.8-3 7.1-1 .5-2 1.4-2.5 2.4l-.6 1.1c-.9 1.7-2.6 2.7-4.5 2.7h-2.1c-1.9 0-3.7-1-4.5-2.7l-.6-1.1c-.5-1-1.5-1.9-2.5-2.4-2.6-1.3-3.9-4.3-3-7.1l2.4-7.6C7.7 5.7 9.9 4 12.6 4z" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M12.4 14.6c1.2-1.4 3.2-1.5 4.6-.4l.6.5c1.4 1.1 3.4 1 4.6-.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>'),
+
+    ("AI Overviews", "Google Search", "#EA4335",
+     '<path d="M11.8 2 14 8.2l6.2 2.2-6.2 2.2L11.8 19l-2.2-6.4L3.4 10.4l6.2-2.2z" fill="currentColor"/><path d="M23.4 15.5l1.4 3.9 3.9 1.4-3.9 1.4-1.4 3.9-1.4-3.9-3.9-1.4 3.9-1.4z" fill="currentColor" opacity=".75"/><path d="M6 22.5l.9 2.5 2.5.9-2.5.9-.9 2.5-.9-2.5-2.5-.9 2.5-.9z" fill="currentColor" opacity=".55"/>'),
+
+    ("Grok", "xAI", "#E8EAED",
+     '<path d="M8.4 24.6 20.1 8.9h4.4L12.8 24.6zM7.5 7.4h4.4l3.6 4.9-2.2 3zM17.8 21.3l2.2-3 4.5 6.3h-4.4z" fill="currentColor"/>'),
 ]
 
 SEO_TOOLS = [
@@ -1919,9 +2011,12 @@ CERTIFICATIONS = [
 
 def platform_strip():
     marks = "".join(
-        f'''<div class="pmark" title="{n}">
-          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" style="color:{c}">{p}</svg>
-          <span>{n}</span></div>''' for n, c, p in AI_PLATFORMS)
+        f'''<div class="pmark">
+          <div class="pmark-ico" style="color:{c}">
+            <svg viewBox="0 0 32 32" width="56" height="56" role="img" aria-label="{n}">{p}</svg>
+          </div>
+          <strong>{n}</strong><span>{maker}</span></div>'''
+        for n, maker, c, p in AI_PLATFORMS)
     return f'<div class="pmarks">{marks}</div>'
 
 
@@ -2000,6 +2095,334 @@ def industry_page(i):
 """
 
 
+# ==========================================================================
+# Individual service pages
+# ==========================================================================
+def S(slug, name, cluster, icon, answer, kw, does, deliver, faqs):
+    return dict(slug=slug, name=name, cluster=cluster, icon=icon, answer=answer,
+                kw=kw, does=does, deliver=deliver, faqs=faqs)
+
+
+SERVICES = [
+    S("answer-engine-optimization", "Answer Engine Optimization (AEO)", "AI Search", "&#9635;",
+      "Answer Engine Optimization is the practice of structuring content so it becomes the direct answer a search or AI system returns, rather than one of ten links below it. It works through question architecture, FAQ and QAPage schema, and a direct answer placed in the first 100 words of every page.",
+      "answer engine optimization, AEO services, featured snippet optimization, FAQ schema, zero click SEO",
+      ["Cluster every real question your buyers ask, by intent stage",
+       "Rewrite money pages to open with a direct, quotable answer",
+       "Ship FAQPage, QAPage and HowTo schema across the site",
+       "Capture featured snippets and People Also Ask placements",
+       "Defend revenue against zero-click and AI Overview absorption"],
+      ["Question map clustered by intent", "Answer blocks on all commercial pages",
+       "Validated FAQ and HowTo schema", "Snippet-capture tracking report"],
+      [("Is AEO the same as GEO?",
+        "No. AEO is page-level and structural: it makes an individual page the quotable answer to a specific question. GEO is brand-level and reputational: it makes a model recall your brand when answering at all. AEO shows results faster; GEO is more defensible. Most clients need both, which is why we scope them separately."),
+       ("Does AEO help traditional rankings too?",
+        "Yes, and this is why we usually start here. The same work that makes a page quotable by an AI system also wins featured snippets and People Also Ask boxes in classic search. It is the highest-overlap, fastest-feedback service we offer.")]),
+
+    S("llm-seo", "LLM SEO", "AI Search", "&#10022;",
+      "LLM SEO is the technical layer of AI visibility: making your templates, markup, rendering and content structure parseable, chunkable and quotable by large language models. If a model cannot cleanly extract a passage from your page and attribute it, it will not cite you regardless of how good the content is.",
+      "LLM SEO, LLM optimization, llms.txt, GPTBot, AI crawler optimization, chunk optimization",
+      ["Restructure page templates so passages chunk cleanly for retrieval",
+       "Author and maintain llms.txt at your domain root",
+       "Configure AI crawler directives across GPTBot, ClaudeBot, PerplexityBot and Google-Extended",
+       "Fix client-side rendering that leaves AI crawlers an empty shell",
+       "Rebuild product and category templates for machine extraction"],
+      ["Template and chunking audit", "llms.txt shipped and maintained",
+       "AI crawler access configuration", "Rendering strategy recommendation"],
+      [("What is llms.txt and does it matter yet?",
+        "It is a plain-text file at your domain root describing your content and structure for LLM crawlers, conceptually similar to robots.txt but written for retrieval rather than indexing. Adoption is still early so it is not a ranking factor. It costs almost nothing and removes ambiguity, which is why we ship it on every build."),
+       ("Should we block AI crawlers instead?",
+        "Only if your revenue comes from people landing on your pages and consuming content there, such as ad-supported publishing or paid archives. If your revenue comes from being discovered and recommended, blocking guarantees you are never cited. We will tell you honestly which side of that line you are on.")]),
+
+    S("ai-citation-entity-building", "AI Citation &amp; Entity Building", "AI Search", "&#9670;",
+      "AI citation and entity building is the off-site half of AI visibility. It creates a consistent, independent third-party footprint that language models read as authority consensus, which is the single strongest driver of whether a brand gets named in a generated answer.",
+      "AI citation building, entity SEO, brand entity optimization, G2 Capterra listing, digital PR for AI",
+      ["Build the Tier-1 citation stack for your specific category",
+       "Reverse-engineer every domain cited alongside competitors in AI answers",
+       "Establish the founder as a resolvable entity with bylines and podcasts",
+       "Enforce identical brand description across every third-party profile",
+       "Run digital PR aimed at citation frequency, not just domain rating"],
+      ["Category-specific citation source list", "Tier-1 profiles built and verified",
+       "Competitor citation teardown", "Founder entity plan with named placements"],
+      [("Why does off-site matter more than my own website?",
+        "Because language models weight independent confirmation above self-description. When a model sees the same brand described the same way across G2, Crunchbase, Reddit and three industry publications, it treats that repetition as consensus. Nothing you write on your own domain produces that signal."),
+       ("We are not a software company. Do G2 and Capterra apply?",
+        "No, and applying a generic list is why most GEO work fails. The platforms change entirely by category: retailers need Trustpilot and marketplace presence, clinics need credentialed directories, manufacturers need trade publications. We derive your list during the audit from what is actually cited in your category.")]),
+
+    S("ai-visibility-monitoring", "AI Visibility Monitoring", "AI Search", "&#9678;",
+      "AI visibility monitoring measures whether your brand is actually being cited by generative engines, combining automated citation tracking with controlled weekly prompt testing across ChatGPT, Perplexity and Gemini. It is the only way to know whether GEO work is producing anything.",
+      "AI visibility tracking, LLM citation tracking, ChatGPT rank tracking, share of voice AI, GEO reporting",
+      ["Track citation volume and page-level attribution monthly",
+       "Run a fixed prompt set weekly across three or more engines",
+       "Measure share of citation against named competitors",
+       "Report in written narrative form, not a dashboard dump",
+       "Flag which specific sources models pull from, and why"],
+      ["Monthly citation volume and page attribution", "Weekly controlled prompt log",
+       "Competitor share-of-citation tracking", "Written monthly narrative report"],
+      [("Are AI visibility trackers reliable?",
+        "On their own, not very. Automated tools disagree with each other and with manual checks. That is why we run two tracks: automated tracking for volume and page attribution, plus disciplined manual prompt testing on a fixed prompt set. The manual layer is what makes the number trustworthy."),
+       ("What does a report actually contain?",
+        "Citation count and trend, which of your pages were cited and how often, results of the weekly prompt tests with the exact prompts used, competitor share of citation, and a written explanation of what changed and what we are doing next month. Roughly two pages of prose, not forty tabs.")]),
+
+    S("google-ai-overviews-optimization", "Google AI Overviews Optimization", "AI Search", "&#9650;",
+      "AI Overviews optimization recovers and defends the traffic Google's generated summaries absorb. It starts with query-level diagnosis of exactly where clicks were lost, then restructures content so your brand is named inside the summary rather than buried beneath it.",
+      "Google AI Overviews, AI Overview optimization, SGE optimization, zero click recovery, CTR loss",
+      ["Audit which of your queries now trigger an AI Overview",
+       "Attribute CTR loss precisely in Search Console",
+       "Restructure content for inclusion in the generated summary",
+       "Reinforce entity and schema signals Google draws on",
+       "Rebalance the content mix toward queries that still convert clicks"],
+      ["Query-level AI Overview presence audit", "CTR-loss attribution analysis",
+       "Prioritised content restructuring plan", "Monthly presence tracking"],
+      [("Our rankings held but clicks collapsed. Is this why?",
+        "Very often, yes. An AI Overview sitting above your number-two ranking answers the query outright and names two or three brands. Impressions and position look unchanged while clicks fall, so it reads as an unexplained CTR decline. The first thing we do is confirm whether that is what happened, query by query."),
+       ("Can you guarantee inclusion in an AI Overview?",
+        "No. Nobody controls what Google generates and there is no submission process. What we control is every input that makes inclusion likely, and we report presence monthly so you can see whether it is working.")]),
+
+    S("technical-seo", "Technical SEO", "Core SEO", "&#9881;",
+      "Technical SEO is the foundation everything else depends on: crawl budget, index bloat, rendering, Core Web Vitals, site architecture and log-file analysis. A site that cannot be crawled or rendered cannot rank in classic search or be retrieved by an AI system.",
+      "technical SEO services, crawl budget, index bloat, Core Web Vitals, log file analysis, site architecture",
+      ["Audit crawl budget and perform index surgery on bloated sites",
+       "Analyse real Googlebot behaviour from server log files",
+       "Resolve rendering problems: SSR, SSG and CSR trade-offs",
+       "Remediate Core Web Vitals across LCP, INP and CLS",
+       "Restructure internal linking and site architecture"],
+      ["Full technical crawl with prioritised fixes", "Log-file analysis report",
+       "Core Web Vitals remediation plan", "Architecture and internal link map"],
+      [("How do we know if we have an index bloat problem?",
+        "Compare the number of pages you intend to have indexed against what Search Console reports. If Google has discovered many times more URLs than you have real pages, faceted navigation or URL parameters are generating them, and crawl budget is being spent on noise instead of your money pages."),
+       ("Is technical SEO worth it if our content is weak?",
+        "It is a prerequisite, not a substitute. Excellent content on a broken site does not rank. But a perfect technical foundation under thin content ranks no better. If your content is genuinely the constraint, we will tell you and sequence that first.")]),
+
+    S("semantic-on-page-seo", "Semantic &amp; On-Page SEO", "Core SEO", "&#9737;",
+      "Semantic SEO optimises for concepts and entities rather than keyword repetition. Modern search engines use natural language processing and entity recognition to understand topics, so pages that cover an entire concept ecosystem consistently outperform pages that target a single keyword.",
+      "semantic SEO, on page SEO services, entity SEO, topical authority, keyword to concept mapping",
+      ["Build semantic topic maps before any content is written",
+       "Map entity relationships and co-occurrence terms",
+       "Run the position 8-20 recovery programme on existing pages",
+       "Audit content for semantic completeness and fill the gaps",
+       "Replace keyword briefs with concept and entity briefs"],
+      ["Semantic topic map per cluster", "Entity relationship model",
+       "Position 8-20 recovery worklist", "Semantic content audit with gap list"],
+      [("What is the position 8-20 programme?",
+        "Pages ranking between positions 8 and 20 already have Google's trust and partial relevance; they are simply misaligned with the dominant intent. We extract that page's own query data, diagnose the intent gap, rewrite the title and meta for click-through, add the missing queries as real subheadings, then build contextual internal links. Movement usually shows in 7 to 21 days without new backlinks."),
+       ("Is keyword density still relevant?",
+        "No, and chasing it actively hurts. Concept coverage beats keyword frequency. Articles that thoroughly cover fifteen or more related concepts consistently outperform articles that repeat one keyword, because search engines are measuring topical understanding rather than term counts.")]),
+
+    S("content-strategy", "Content Strategy &amp; Production", "Core SEO", "&#9998;",
+      "Conversion-first content strategy built on a defined ICP. We invert the traditional funnel and start with bottom-of-funnel commercial pages where revenue is closest, then build topical depth around them so authority compounds.",
+      "SEO content strategy, content marketing agency India, B2B content, pillar cluster content, ICP content",
+      ["Define the ICP with your sales and customer success teams",
+       "Sequence the inverted funnel: commercial pages ship first",
+       "Design pillar and cluster architecture with an internal link plan",
+       "Write semantic briefs specifying entities, questions and gaps",
+       "Produce founder-bylined authority content, not anonymous filler"],
+      ["ICP definition document", "12-month content roadmap with keyword targets",
+       "Semantic brief per article", "Published, optimised articles"],
+      [("How much content do we actually need?",
+        "Fewer, deeper pieces beat volume in almost every category we work in. One comprehensive page that fully covers a concept ecosystem will outrank six thin articles targeting variations of the same term, and it gives AI systems a single authoritative source to cite rather than a diluted set."),
+       ("Can we use AI to write it?",
+        "For research, briefs, outlines and first drafts, yes, and we do. For publishing unedited, no. Content with no expertise, no original data and no named author is exactly what both Google's helpful-content systems and AI retrieval discount. The differentiator is your evidence, not the drafting speed.")]),
+
+    S("link-building-digital-pr", "Link Building &amp; Digital PR", "Core SEO", "&#9741;",
+      "Link building that doubles as AI citation building. We target placements that pass authority and get quoted by language models, through guest placement, digital PR built on original data, resource-page outreach and category-relevant citations.",
+      "link building services, digital PR agency, guest posting, backlink acquisition, citation building",
+      ["Reverse-engineer competitor backlink profiles for real opportunities",
+       "Run guest posting and guestographic campaigns with editorial standards",
+       "Build digital PR campaigns around original data you own",
+       "Execute resource-page and broken-link outreach",
+       "Maintain local citation and NAP consistency"],
+      ["Backlink gap analysis", "Monthly placement targets and outreach log",
+       "Original data asset for PR", "Live link report with authority metrics"],
+      [("Do you buy links?",
+        "No. Paid link schemes violate Google's guidelines and, more practically, purchased links from irrelevant sites do not produce AI citations because models weight contextual relevance and consensus rather than raw authority. We earn placements editorially."),
+       ("How many links per month?",
+        "We do not sell links by volume, because that incentivises the wrong behaviour. We target a small number of genuinely relevant, genuinely editorial placements per month in sources that matter for your category. Ten relevant citations beat a hundred irrelevant ones for both ranking and retrieval.")]),
+
+    S("ecommerce-seo", "Ecommerce SEO", "Core SEO", "&#9679;",
+      "Ecommerce SEO covering category architecture, faceted navigation, variant handling, product schema and shopping-surface visibility. Built for retailers whose category pages compete against the marketplaces they also sell on.",
+      "ecommerce SEO services, Shopify SEO, product page SEO, category page optimization, ecommerce GEO",
+      ["Map money-page keywords before a single page is built",
+       "Control faceted navigation and URL parameters to end index bloat",
+       "Ship Product, Offer, Review and variant schema across the catalogue",
+       "Build buying guides and comparison content that AI quotes",
+       "Configure GA4 ecommerce so organic revenue is provable"],
+      ["Money-page keyword map", "Faceted navigation control plan",
+       "Product schema rollout", "GA4 ecommerce measurement setup"],
+      [("Our traffic grew but revenue did not. Why?",
+        "Usually because new traffic is landing on category and blog pages that convert at roughly half the rate of product detail pages. That is the expected shape when category rankings improve first. The fix is deliberate: strengthen internal paths from category to product, and improve product page conversion in parallel."),
+       ("Should product variants have their own URLs?",
+        "It depends on whether people search for the variant. If they search by size or colour, dedicated indexable URLs with proper variant schema capture that demand. If they do not, separate URLs create thousands of near-duplicate pages that burn crawl budget. We decide this per catalogue, from real search data.")]),
+
+    S("saas-b2b-seo", "SaaS &amp; B2B SEO", "Core SEO", "&#9636;",
+      "SaaS and B2B SEO built for pipeline rather than pageviews. Bottom-of-funnel commercial pages first, then comparison and alternatives systems, then integration-led programmatic expansion.",
+      "SaaS SEO agency, B2B SEO services, comparison page SEO, alternatives page, integration pages",
+      ["Sequence the inverted funnel so commercial pages rank first",
+       "Build comparison, alternatives and versus page systems",
+       "Expand programmatically across integrations and use cases",
+       "Place your product on G2, Capterra and Product Hunt",
+       "Optimise documentation, which AI systems retrieve heavily"],
+      ["BoFu commercial page set", "Comparison and alternatives architecture",
+       "Programmatic expansion plan", "Review platform presence"],
+      [("Are comparison pages against competitors risky?",
+        "Handled fairly, no. Accurate, verifiable comparisons that acknowledge where a competitor is genuinely stronger build trust and get cited by AI systems precisely because they read as balanced. Overstated claims are both a legal risk and less effective."),
+       ("How long until SEO produces pipeline?",
+        "For bottom-of-funnel commercial pages in a soft SERP, first qualified leads typically appear within 60 to 90 days. Broad topical authority takes 9 to 12 months. This is why we sequence commercial pages first: it funds the patience the rest of the programme requires.")]),
+
+    S("local-seo", "Local SEO", "Core SEO", "&#8962;",
+      "Local SEO covering Google Business Profile, citation consistency, review velocity and location page architecture, for single-location practices through to multi-location and service-area businesses.",
+      "local SEO services India, Google Business Profile optimization, map pack ranking, near me SEO",
+      ["Optimise Google Business Profile with a real posting cadence",
+       "Audit and clean up NAP consistency across every directory",
+       "Build review generation systems that stay policy-compliant",
+       "Architect location and service-area landing pages that scale",
+       "Ship LocalBusiness schema with accurate service-area markup"],
+      ["GBP optimisation and posting calendar", "Citation cleanup report",
+       "Review generation system", "Location page architecture"],
+      [("Why are we not in the map pack?",
+        "Usually one of three things: inconsistent name, address and phone across directories, which fragments your entity; too few or too old reviews relative to competitors; or a service-area configuration that does not match how people actually search. The audit identifies which applies."),
+       ("Can we rank in cities where we have no office?",
+        "Not in the map pack, which requires a genuine physical presence. You can rank organically for city-plus-service queries with well-built service-area pages, and for many businesses that organic placement is worth more than the map pack anyway.")]),
+
+    S("international-seo", "International SEO", "Core SEO", "&#9757;",
+      "International SEO covering hreflang implementation, domain structure strategy, per-market keyword research and genuine localisation rather than literal translation.",
+      "international SEO, hreflang implementation, multilingual SEO, global SEO agency, ccTLD strategy",
+      ["Choose and implement the right domain structure for your markets",
+       "Implement and validate hreflang across every language pair",
+       "Run keyword research per market rather than translating keywords",
+       "Adapt content culturally, not just linguistically",
+       "Configure per-market tracking and Search Console properties"],
+      ["Domain structure recommendation", "Validated hreflang implementation",
+       "Per-market keyword research", "Localisation guidelines"],
+      [("Subfolders, subdomains or ccTLDs?",
+        "Subfolders in almost every case. They consolidate authority onto one domain, are cheapest to maintain, and hreflang handles the targeting. ccTLDs make sense when you need strong local trust signals and have the resources to build authority separately in each market."),
+       ("Can we just translate our existing content?",
+        "Translation alone reliably underperforms. Search intent, competitors and the terms people actually use differ by market, so a literal translation often targets a phrase nobody searches. We research each market natively and adapt the content to it.")]),
+
+    S("programmatic-seo", "Programmatic SEO", "Core SEO", "&#9638;",
+      "Programmatic SEO that survives helpful-content scrutiny: scaled page generation built on real proprietary data, strict quality thresholds and index control, rather than thin template spam.",
+      "programmatic SEO, scaled content, template SEO, database driven SEO, pSEO agency",
+      ["Identify data you own that can support genuinely useful pages at scale",
+       "Design templates that produce distinct value per page",
+       "Set quality thresholds and index controls before launch",
+       "Automate internal linking across the generated set",
+       "Monitor for cannibalisation and prune what underperforms"],
+      ["Data source and template design", "Quality gate specification",
+       "Internal link automation", "Cannibalisation monitoring"],
+      [("Will Google penalise programmatic pages?",
+        "Google penalises thin, unhelpful pages regardless of how they are made. Programmatic pages built on real data that answer a real query, with genuine differentiation between them, perform well. The failure mode is generating thousands of near-identical pages from a thin dataset. We set quality gates that refuse to publish those."),
+       ("How many pages is realistic?",
+        "As many as your data supports at quality, and not one more. Sometimes that is two hundred, sometimes fifty thousand. We would rather ship two hundred pages that rank than five thousand that trigger a sitewide quality problem.")]),
+
+    S("site-migrations", "Site Migrations", "Core SEO", "&#8644;",
+      "Replatforms, redesigns and domain moves executed without losing rankings: pre-migration crawl and ranking baselines, complete redirect mapping with QA, staged rollout and 30 days of daily post-launch monitoring.",
+      "SEO migration, site migration services, replatforming SEO, domain migration, redirect mapping",
+      ["Capture a full crawl and ranking baseline before anything changes",
+       "Build and QA a complete redirect map, URL by URL",
+       "Preserve schema, internal linking and metadata through the move",
+       "Run a staged rollout with defined rollback criteria",
+       "Monitor daily for 30 days post-launch and fix fast"],
+      ["Pre-migration baseline", "Complete redirect map with QA log",
+       "Staged rollout schedule", "30-day post-launch monitoring report"],
+      [("How far ahead should we involve you?",
+        "Before the new site is built, not after. The most expensive migration failures are architectural decisions made months earlier that cannot be undone cheaply. Involving us at wireframe stage costs a fraction of fixing a launched migration."),
+       ("What happens if rankings drop anyway?",
+        "Some short-term volatility is normal while search engines reprocess. We monitor daily against the baseline, so we can tell within days whether it is expected reprocessing or a genuine fault, and fix the fault. Without a baseline, that distinction is impossible to make.")]),
+
+    S("white-label-seo", "White-Label SEO", "Core SEO", "&#9783;",
+      "White-label SEO and GEO delivery under your brand and under NDA, from single audits through full retained execution, reported in your template. Your client never knows we exist.",
+      "white label SEO India, SEO reseller, outsourced SEO agency, white label GEO, agency partnership",
+      ["Deliver audits, strategy and execution entirely under your brand",
+       "Report in your template, tone and format",
+       "Scale from one-off audits to full retained delivery",
+       "Add GEO and AI visibility as a line you can sell immediately",
+       "Keep your account manager as the only client-facing contact"],
+      ["NDA and partnership agreement", "Branded audit and reporting templates",
+       "Agreed delivery SLAs", "Dedicated delivery contact"],
+      [("How do you stay invisible?",
+        "Everything is delivered in your branding, we never contact your client directly, and all documentation carries your identity. The NDA is signed before any work begins."),
+       ("Can you join client calls?",
+        "Yes, as a member of your team if you want technical depth in the room. Many partners prefer that for enterprise pitches. It is entirely your call.")]),
+
+    S("seo-consulting", "SEO Consulting", "Core SEO", "&#9998;",
+      "Direct strategist access at $30 per hour for teardowns, second opinions, in-house team training and roadmap review, including handover of our documented 39-SOP delivery library.",
+      "SEO consultant India, SEO consulting services, hourly SEO consultant, SEO training, SEO audit consultant",
+      ["Run live teardowns of your site with a recorded walkthrough",
+       "Provide a second opinion on an existing agency or roadmap",
+       "Train your in-house team on GEO and technical SEO",
+       "Hand over our 39-SOP delivery library for internal use",
+       "Review vendor proposals and scopes before you sign"],
+      ["Recorded session walkthrough", "Written summary with prioritised actions",
+       "39-SOP library access", "Follow-up questions answered by email"],
+      [("What can we realistically cover in an hour?",
+        "A focused teardown of one problem: why a specific page is not ranking, whether a proposed architecture will work, or a review of an agency proposal. Send context in advance and the hour is spent on answers rather than orientation."),
+       ("Why is it only $30 an hour?",
+        "Because AI tooling has made research, diagnosis and reporting dramatically faster than they were two years ago, and we pass that on as scope rather than margin. It is also the cheapest way for us to meet businesses that later become retainer clients.")]),
+]
+
+
+def service_page(s):
+    does = "".join(f"<li>{d}</li>" for d in s["does"])
+    deliver = "".join(
+        f'<div class="crow"><span class="lbl">{n:02d}</span><span class="val" style="text-align:left;flex:1">{d}</span></div>'
+        for n, d in enumerate(s["deliver"], 1))
+    plain = s["name"].replace("&amp;", "and")
+    return f"""
+{phero(f'<a href="index.html">Home</a> / <a href="services.html">Services</a> / {s["name"]}',
+       f'{s["cluster"]} service', s["name"], "")}
+
+<section class="sec">
+  <div class="wrap">
+    <div class="grid g2" style="gap:52px;align-items:start">
+      <div class="prose">
+        <div class="answer-block" style="margin-top:0">
+          <div class="q">What is {plain.lower().replace(" (aeo)", "")}?</div>
+          <p>{s["answer"]}</p>
+        </div>
+        <h2 style="margin-top:2rem">What this service covers</h2>
+        <ul>{does}</ul>
+        <h2>Who it is for</h2>
+        <p>Businesses that already have something worth promoting and need it found. If you are pre-launch with no product and no site, start with the <a href="contact.html">consulting hour</a> instead &mdash; a retainer would be premature and we will say so.</p>
+      </div>
+      <aside style="position:sticky;top:96px">
+        <div class="panel" style="margin-bottom:20px">
+          <div class="panel-bar"><i class="tdot"></i><i class="tdot"></i><i class="tdot"></i>
+            <span style="margin-left:8px">deliverables</span></div>
+          <div class="panel-body">{deliver}</div>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:14px">Start here</h4>
+          <a class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-bottom:10px" href="ai-visibility-audit.html">Run a free AI audit</a>
+          <a class="btn btn-ghost btn-sm" style="width:100%;justify-content:center" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-min call</a>
+          <p class="faint" style="font-size:.78rem;margin-top:12px;text-align:center">No card. Consulting from $30/hour.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec band-dark">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Surfaces</div>
+      <h2>Where this makes you visible</h2>
+    </div>
+    <!--PLATFORMS-->
+  </div>
+</section>
+
+{faq(s["faqs"] + [
+  ("How long before we see results?",
+   "Traditional ranking improvements typically appear within 60 to 90 days, faster on pages already ranking between positions 8 and 20. AI citations follow a consistent curve: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
+  ("What does it cost?",
+   "Consulting is $30 per hour. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Run the free audit first and the priority usually becomes obvious."),
+])}
+
+{cta(f"See where you stand before you buy {plain}.",
+     "Twelve AI eligibility checks against your live URL. No card, no call, about sixty seconds.")}
+"""
+
+
 NOT_FOUND_BODY = """
 <section class="phero" style="padding-bottom:40px">
   <div class="wrap">
@@ -2042,6 +2465,10 @@ def to_clean_urls(html, depth=0):
     return html
 
 
+# Filled during build() once the markdown posts are loaded; a one-element list
+# so render() reads the current value rather than a copy taken at import time.
+LATEST_POSTS_HTML = [""]
+
 DEFAULT_KEYWORDS = ("SEO services India, GEO services, generative engine optimization, "
                     "answer engine optimization, LLM SEO, AI SEO agency, ChatGPT SEO, "
                     "Perplexity SEO, AI visibility, technical SEO, SEO agency Kolkata")
@@ -2059,7 +2486,8 @@ def render(title, desc, slug, body, schema=None, keywords=None):
             .replace("CALENDLY_URL", CALENDLY)
             .replace("<!--PLATFORMS-->", platform_strip())
             .replace("<!--CERTS-->", cert_strip())
-            .replace("<!--TOOLS-->", tools_grid()))
+            .replace("<!--TOOLS-->", tools_grid())
+            .replace("<!--LATEST-POSTS-->", LATEST_POSTS_HTML[0]))
     return to_clean_urls(html)
 
 
@@ -2106,15 +2534,22 @@ def build():
     written = []
     posts = load_posts()
 
+    def card(p):
+        return (f'<a class="card card-link" href="/insights/{p["slug"]}/">'
+                f'<span class="card-num">{p["category"].upper()} &middot; {p["read"]}</span>'
+                f'<h3>{p["title"]}</h3><p>{p["desc"]}</p>'
+                f'<span class="card-more">Read &rarr;</span></a>')
+
     # Blog listing is generated from the markdown files, not hardcoded.
     if posts:
-        cards = "".join(f'''<a class="card card-link" href="/insights/{p["slug"]}/">
-        <span class="card-num">{p["category"].upper()} &middot; {p["read"]}</span>
-        <h3>{p["title"]}</h3><p>{p["desc"]}</p><span class="card-more">Read &rarr;</span></a>''' for p in posts)
+        cards = "".join(card(p) for p in posts)
         PAGES["insights"]["body"] = re.sub(
             r'(<div class="grid g3">)(.*?)(</div>\s*<div class="center mt3">)',
             lambda m: m.group(1) + cards + m.group(3),
             PAGES["insights"]["body"], flags=re.S)
+        # Three most recent, for the homepage strip.
+        LATEST_POSTS_HTML[0] = ('<div class="grid g3">'
+                                + "".join(card(p) for p in posts[:3]) + '</div>')
 
     # Directory-style output so clean URLs work identically on Cloudflare Pages
     # and on any plain static server used for local review.
@@ -2129,7 +2564,7 @@ def build():
         rel = os.path.join("insights", p["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
-    # One page per industry, each naming the real clients delivered for.
+    # One page per industry, described by sector rather than client name.
     for i in INDUSTRIES:
         plain = i["name"].replace("&amp;", "and")
         html = render(
@@ -2138,6 +2573,17 @@ def build():
             f'{i["slug"]}/', industry_page(i),
             keywords=i["kw"])
         rel = os.path.join(i["slug"], "index.html")
+        written.append((rel.replace("\\", "/"), write(rel, html)))
+
+    # One page per service.
+    for s in SERVICES:
+        plain = s["name"].replace("&amp;", "and")
+        html = render(
+            f'{plain} Services | SVED Solution',
+            re.sub(r"<[^>]+>", "", s["answer"])[:152],
+            f'services/{s["slug"]}/', service_page(s),
+            schema=service_schema(s), keywords=s["kw"])
+        rel = os.path.join("services", s["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
     # Without a 404.html, Cloudflare Pages answers unknown paths with the
@@ -2152,21 +2598,71 @@ def build():
     copy_tree("admin")
     nstatic = copy_static()
 
-    # sitemap
-    urls = ["https://svedsolution.com/" + (p["slug"] or "") for p in PAGES.values()]
-    urls += [f'https://svedsolution.com/insights/{p["slug"]}/' for p in posts]
-    sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-          + "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
-          + "</urlset>\n")
-    write("sitemap.xml", sm)
+    # ---- sitemap -------------------------------------------------------
+    # Every generated URL, with priority and change frequency reflecting how
+    # each page type actually behaves.
+    today = _dt.date.today().isoformat()
+    entries = []
 
-    return written, len(posts), nstatic
+    def add(loc, priority, freq, lastmod=today):
+        entries.append((loc, priority, freq, lastmod))
+
+    for slug, p in PAGES.items():
+        loc = "https://svedsolution.com/" + (p["slug"] or "")
+        if slug == "index":
+            add(loc, "1.0", "weekly")
+        elif slug in ("ai-visibility-audit", "services", "industries", "contact"):
+            add(loc, "0.9", "weekly")
+        elif slug in ("insights",):
+            add(loc, "0.8", "daily")
+        else:
+            add(loc, "0.7", "monthly")
+
+    add("https://svedsolution.com/generative-engine-optimization/", "0.9", "monthly")
+    for s in SERVICES:
+        add(f'https://svedsolution.com/services/{s["slug"]}/', "0.8", "monthly")
+    for i in INDUSTRIES:
+        add(f'https://svedsolution.com/{i["slug"]}/', "0.8", "monthly")
+    for p in posts:
+        add(f'https://svedsolution.com/insights/{p["slug"]}/', "0.7", "monthly",
+            p.get("date") or today)
+
+    # De-duplicate while preserving order; GEO has both a bespoke page entry
+    # and a PAGES entry.
+    seen, rows = set(), []
+    for loc, pr, freq, lm in entries:
+        if loc in seen:
+            continue
+        seen.add(loc)
+        rows.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lm}</lastmod>\n"
+                    f"    <changefreq>{freq}</changefreq>\n    <priority>{pr}</priority>\n  </url>\n")
+
+    write("sitemap.xml",
+          '<?xml version="1.0" encoding="UTF-8"?>\n'
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+          + "".join(rows) + "</urlset>\n")
+
+    return written, len(posts), nstatic, len(rows)
+
+
+def service_schema(s):
+    plain = s["name"].replace("&amp;", "and")
+    return ('{"@context":"https://schema.org","@type":"Service",'
+            f'"name":{_j(plain)},"serviceType":{_j(plain)},'
+            f'"description":{_j(re.sub(chr(60) + "[^" + chr(62) + "]+" + chr(62), "", s["answer"]))},'
+            '"provider":{"@type":"ProfessionalService","name":"SVED Solution",'
+            '"url":"https://svedsolution.com/","telephone":"+917846045690",'
+            '"email":"hello@svedsolution.com"},'
+            '"areaServed":["IN","US","GB","AE","CA","AU"],'
+            f'"url":"https://svedsolution.com/services/{s["slug"]}/",'
+            '"offers":{"@type":"Offer","priceCurrency":"USD","price":"30",'
+            '"description":"Consulting from $30 per hour; retainers scoped after audit"}}')
 
 
 if __name__ == "__main__":
-    files, nposts, nstatic = build()
+    files, nposts, nstatic, nurls = build()
     for name, size in files:
-        print("%-46s %8d bytes" % (name, size))
-    print("\n%d pages + %d blog posts + %d static files -> %s"
-          % (len(PAGES), nposts, nstatic, DIST))
+        print("%-52s %8d bytes" % (name, size))
+    print("\n%d core pages + %d services + %d industries + %d posts + %d static"
+          % (len(PAGES), len(SERVICES), len(INDUSTRIES), nposts, nstatic))
+    print("sitemap.xml: %d URLs -> %s" % (nurls, DIST))
