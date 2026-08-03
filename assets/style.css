@@ -410,7 +410,11 @@ tr:last-child td{ border-bottom:0; }
 .foot-grid li{ margin-bottom:9px; }
 .foot-grid a{ color:var(--text-dim); font-size:.88rem; }
 .foot-grid a:hover{ color:var(--green); }
-.foot-about p{ color:var(--text-faint); font-size:.88rem; max-width:34ch; }
+.foot-about p{ color:var(--text-faint); font-size:.88rem; max-width:min(34ch, 100%); }
+
+/* Grid children default to min-width:auto, so one wide child can force a
+   track past the viewport and drag the whole row with it. */
+.foot-grid > *, .foot-offices > *, .grid > *{ min-width:0; }
 .news input{
   width:100%; background:var(--navy-800); border:1px solid var(--line); color:var(--white);
   padding:12px 14px; border-radius:var(--r-sm); font-family:var(--font-body); font-size:.88rem; margin-bottom:10px;
@@ -420,7 +424,7 @@ tr:last-child td{ border-bottom:0; }
   display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
   color:var(--text-faint); font-size:.82rem;
 }
-.socials{ display:flex; gap:8px; }
+.socials{ display:flex; gap:8px; flex-wrap:wrap; }
 .socials a{
   width:34px; height:34px; border:1px solid var(--line); border-radius:var(--r-sm);
   display:grid; place-items:center; color:var(--text-dim); font-size:.72rem; font-family:var(--font-mono);
@@ -470,8 +474,10 @@ tr:last-child td{ border-bottom:0; }
 .logo-svg{ display:block; height:30px; width:auto; color:var(--white); }
 
 /* ---------- AI platform marks ---------- */
+/* Eight platforms: a fixed 4x2 grid reads as a deliberate set. auto-fit gave
+   five across at desktop, leaving a ragged row of three. */
 .pmarks{
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
   background:var(--line); border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
 }
 .pmark{
@@ -494,6 +500,7 @@ tr:last-child td{ border-bottom:0; }
   font-family:var(--font-mono); font-size:.7rem; color:var(--text-faint);
   letter-spacing:.1em; text-transform:uppercase;
 }
+@media (max-width:1020px){ .pmarks{ grid-template-columns:repeat(3,1fr); } }
 @media (max-width:680px){
   .pmarks{ grid-template-columns:repeat(2,1fr); }
   .pmark{ padding:26px 12px 22px; }
@@ -573,17 +580,24 @@ tr:last-child td{ border-bottom:0; }
   .foot-offices{ grid-template-columns:1fr 1fr; }
 }
 @media (max-width:860px){
-  .nav-toggle{ display:block; }
+  .nav-toggle{ display:grid; place-items:center; width:44px; height:44px; }
   .nav{
     display:none; position:absolute; top:70px; left:0; right:0;
     background:var(--navy-800); border-bottom:1px solid var(--line);
-    flex-direction:column; align-items:stretch; padding:12px; gap:2px; max-height:75vh; overflow-y:auto;
+    flex-direction:column; align-items:stretch; padding:10px; gap:2px;
+    max-height:calc(100vh - 70px); overflow-y:auto;
   }
   .nav.open{ display:flex; }
-  .nav a{ padding:12px 14px; }
-  .mobile-only-cta{ display:block; }
-  .drop{ position:static; transform:none; opacity:1; visibility:visible; min-width:0; grid-template-columns:1fr; box-shadow:none; background:var(--navy-900); margin:4px 0 8px; }
+  .nav a{ padding:14px 14px; min-height:48px; display:flex; align-items:center; }
+  .mobile-only-cta{ display:flex; }
+
+  /* Dropdowns stay collapsed on touch. Rendering them open turned the menu
+     into a ~40-link scroll; the parent link goes to the hub page instead. */
+  .drop{ display:none; }
+  .has-drop > a::after{ content:''; }
+
   .header-cta .btn-ghost{ display:none; }
+  .header-cta .btn{ min-height:44px; }
   .sec,.sec-lg{ padding:68px 0; }
 }
 @media (max-width:680px){
@@ -591,7 +605,35 @@ tr:last-child td{ border-bottom:0; }
   .g2,.g3,.g4{ grid-template-columns:1fr; }
   .kpis{ grid-template-columns:1fr 1fr; }
   .foot-grid{ grid-template-columns:1fr 1fr; }
-  .foot-offices{ grid-template-columns:1fr; }
+  .foot-offices{ grid-template-columns:1fr 1fr; }
   .cta-band{ padding:44px 24px; }
   .hero{ padding:72px 0 68px; }
+
+  /* Keep dense grids two-up rather than collapsing to a single tall column. */
+  .certs, .stat-band, .tools{ grid-template-columns:1fr 1fr; }
+  .cert, .stat, .tool{ padding:16px 14px; }
+  .stat b{ font-size:1.5rem; }
+  .cert strong, .tool strong{ font-size:.84rem; }
+  .cert span, .tool span{ font-size:.74rem; }
+
+  /* Comfortable touch targets in the footer link lists. */
+  .foot-grid li{ margin-bottom:2px; }
+  .foot-grid li a{ display:inline-flex; align-items:center; min-height:40px; }
+  .foot-office a{ display:inline-flex; align-items:center; min-height:40px; }
+  .socials a{ width:44px; height:44px; }
+  .foot-bottom{ gap:12px; }
+  .foot-bottom a{ display:inline-flex; align-items:center; min-height:40px; }
+
+  /* Full-width primary actions read better than shrink-to-fit on phones. */
+  .hero .btn-row .btn, .cta-band .btn{ width:100%; justify-content:center; }
+}
+
+/* At the narrowest widths only the text-heavy grids collapse. Short numeric
+   tiles stay two-up, because stacking four of them is pure scroll. */
+@media (max-width:420px){
+  .certs, .tools{ grid-template-columns:1fr; }
+  .kpis, .stat-band{ grid-template-columns:1fr 1fr; }
+  .kpi{ padding:20px 14px; }
+  .kpi-val{ font-size:1.75rem; }
+  .kpi-lab{ font-size:.78rem; }
 }

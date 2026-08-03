@@ -2456,12 +2456,36 @@ NOT_FOUND_BODY = """
 DIST = os.path.join(OUT, "dist")
 
 
+# Content hashes for cache-busting.
+#
+# _headers serves /assets/* with `immutable, max-age=31536000`. On a filename
+# that never changes, that means browsers and the CDN pin the first version
+# they ever saw and no later edit is delivered. Hashing the content into the
+# filename means an edit produces a new URL, so the long cache stays safe.
+ASSET_HASHES = {}
+
+
+def hash_assets():
+    import hashlib
+    for name in ("style.css", "app.js"):
+        path = os.path.join(OUT, "assets", name)
+        if not os.path.exists(path):
+            continue
+        with open(path, "rb") as f:
+            digest = hashlib.sha256(f.read()).hexdigest()[:10]
+        stem, ext = name.rsplit(".", 1)
+        ASSET_HASHES[name] = f"{stem}.{digest}.{ext}"
+    return ASSET_HASHES
+
+
 def to_clean_urls(html, depth=0):
     """Rewrite flat .html links to root-absolute clean URLs for Cloudflare Pages."""
     html = re.sub(r'(href|src)="index\.html(#[^"]*)?"', lambda m: f'{m.group(1)}="/{m.group(2) or ""}"', html)
     html = re.sub(r'(href|src)="([a-z0-9\-]+)\.html(#[^"]*)?"',
                   lambda m: f'{m.group(1)}="/{m.group(2)}/{m.group(3) or ""}"', html)
     html = re.sub(r'(href|src)="assets/', r'\1="/assets/', html)
+    for original, hashed in ASSET_HASHES.items():
+        html = html.replace(f"/assets/{original}", f"/assets/{hashed}")
     return html
 
 
@@ -2531,6 +2555,7 @@ def build():
         shutil.rmtree(DIST)
     os.makedirs(DIST, exist_ok=True)
 
+    hash_assets()
     written = []
     posts = load_posts()
 
@@ -2597,6 +2622,14 @@ def build():
     copy_tree("assets")
     copy_tree("admin")
     nstatic = copy_static()
+
+    # Emit the hashed copies alongside the originals so a stale HTML page
+    # cached by a browser still resolves its old stylesheet.
+    import shutil
+    for original, hashed in ASSET_HASHES.items():
+        src = os.path.join(DIST, "assets", original)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(DIST, "assets", hashed))
 
     # ---- sitemap -------------------------------------------------------
     # Every generated URL, with priority and change frequency reflecting how
