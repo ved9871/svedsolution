@@ -35,14 +35,10 @@ OFFICES = [
 SISTER = ("Web3Tech Network", "https://www.web3technetwork.com",
           "Blockchain, crypto and Web3 marketing &amp; SEO")
 
-# Legal / trust signals — GST REG-06 certificate, issued 21/09/2018.
-# City-level only: the certificate's principal place of business is a
-# residential address, so the street line is deliberately not published.
-GSTIN = "07FBEPS5516R1ZU"
-LEGAL_NAME = "Ved Prakash Singh"
+# Operating since 2018. Tax registration details are for invoicing only and are
+# deliberately kept off the public site.
 TRADE_NAME = "SVED Solution"
-GST_SINCE = "2018"
-REG_CITY = "New Delhi, India"
+FOUNDED = "2018"
 
 # Social profiles carried over from the Web3Tech Network group.
 SOCIALS = [
@@ -196,7 +192,7 @@ FOOTER = f"""
       </div>
     </div>
     <div class="foot-bottom">
-      <div>&copy; 2026 SVED Solution. All rights reserved. &middot; GSTIN <span class="mono">{GSTIN}</span></div>
+      <div>&copy; 2026 {TRADE_NAME}. All rights reserved.</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap">
         <a href="sitemap.html" style="color:var(--text-faint)">Sitemap</a>
         <a href="#" style="color:var(--text-faint)">Privacy</a>
@@ -311,9 +307,7 @@ ORG_SCHEMA = """{
     {"@type":"PostalAddress","addressLocality":"Oswego","addressRegion":"NY","postalCode":"13126","addressCountry":"US"}
   ],
   "telephone":"+917846045690",
-  "taxID":"07FBEPS5516R1ZU",
-  "vatID":"07FBEPS5516R1ZU",
-  "foundingDate":"2018-09-21",
+  "foundingDate":"2018",
   "priceRange":"$$",
   "founder":{"@type":"Person","name":"Ved Prakash","jobTitle":"Founder & Head of Strategy","sameAs":["https://www.linkedin.com/in/ved-prakash-s1990/"]},
   "hasCredential":[
