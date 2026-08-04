@@ -71,9 +71,11 @@ export async function onRequestPost({ request, env }) {
   }
 
   // ---- Notify ------------------------------------------------------------
-  // Every lead goes to the Gmail inbox, plus any extra addresses configured.
+  // Leads go straight to the Gmail inboxes rather than via
+  // hello@svedsolution.com, so notifications keep working even if Cloudflare
+  // Email Routing is unconfigured or later changed.
   const recipients = [...new Set(
-    ['svedsolution@gmail.com', env.TO_EMAIL, env.CC_EMAIL]
+    ['svedsolution@gmail.com', 'prakashved155@gmail.com', env.TO_EMAIL, env.CC_EMAIL]
       .filter(Boolean)
       .map(a => a.trim().toLowerCase())
   )];
