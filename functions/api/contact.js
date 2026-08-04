@@ -90,7 +90,11 @@ export async function onRequestPost({ request, env }) {
         method: 'POST',
         headers: { authorization: `Bearer ${env.RESEND_KEY}`, 'content-type': 'application/json' },
         body: JSON.stringify({
-          from: 'SVED Solution <noreply@svedsolution.com>',
+          // Send from a subdomain Resend owns the DNS for. The root domain's
+          // SPF record covers Cloudflare Email Routing only, so sending as
+          // @svedsolution.com would fail SPF and land in spam. Override with
+          // FROM_EMAIL once the Resend domain is verified.
+          from: env.FROM_EMAIL || 'SVED Solution <noreply@send.svedsolution.com>',
           to: recipients,
           reply_to: email,
           subject: `${type === 'newsletter' ? 'Newsletter signup' : 'New enquiry'} — ${esc(d.name || email)}`,
