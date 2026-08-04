@@ -198,6 +198,7 @@ FOOTER = f"""
     <div class="foot-bottom">
       <div>&copy; 2026 SVED Solution. All rights reserved. &middot; GSTIN <span class="mono">{GSTIN}</span></div>
       <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="sitemap.html" style="color:var(--text-faint)">Sitemap</a>
         <a href="#" style="color:var(--text-faint)">Privacy</a>
         <a href="#" style="color:var(--text-faint)">Terms</a>
         <a href="ai-visibility-audit.html" style="color:var(--text-faint)">Free AI Audit</a>
@@ -810,7 +811,9 @@ PAGES["why-llm-seo-now"] = dict(
 PAGES["generative-engine-optimization"] = dict(
     title="Generative Engine Optimization (GEO) Services | SVED Solution",
     desc="GEO services that get your brand cited by ChatGPT, Perplexity and Gemini. Entity authority, citation stacking, answer-block content and measured AI visibility.",
-    slug="services/generative-engine-optimization/",
+    # Must match where build() actually writes this page, or the canonical
+    # points at a 404 and search engines drop the URL.
+    slug="generative-engine-optimization/",
     body=f"""
 {phero('<a href="index.html">Home</a> / <a href="services.html">Services</a> / Generative Engine Optimization',
        'AI Search &middot; primary service',
@@ -2423,6 +2426,83 @@ def service_page(s):
 """
 
 
+def sitemap_page(posts):
+    """Human-readable index of every page, mirroring sitemap.xml."""
+    def links(items):
+        return "".join(f'<li><a href="{u}">{t}</a></li>' for t, u in items)
+
+    ai = [(s["name"], f'/services/{s["slug"]}/') for s in SERVICES if s["cluster"] == "AI Search"]
+    core = [(s["name"], f'/services/{s["slug"]}/') for s in SERVICES if s["cluster"] == "Core SEO"]
+    inds = [(i["name"], f'/{i["slug"]}/') for i in INDUSTRIES]
+    blog = [(p["title"], f'/insights/{p["slug"]}/') for p in posts]
+
+    return f"""
+{phero('<a href="index.html">Home</a> / Sitemap', 'Sitemap',
+       'Every page on this site',
+       'A complete index of svedsolution.com. Search engines use <a href="/sitemap.xml">sitemap.xml</a>; this page is for people.')}
+
+<section class="sec">
+  <div class="wrap">
+    <div class="grid g2" style="gap:44px;align-items:start">
+
+      <div class="card">
+        <span class="card-num">MAIN PAGES</span>
+        <ul class="sitemap-list">{links([
+          ("Home", "/"),
+          ("Free AI Visibility Audit", "/ai-visibility-audit/"),
+          ("Why LLM SEO Now", "/why-llm-seo-now/"),
+          ("All Services", "/services/"),
+          ("All Industries", "/industries/"),
+          ("Use Cases", "/use-cases/"),
+          ("Case Studies", "/case-studies/"),
+          ("Reviews", "/reviews/"),
+          ("Insights (blog)", "/insights/"),
+          ("Videos", "/videos/"),
+          ("Resources &amp; SOPs", "/resources/"),
+          ("About, Values &amp; Team", "/about/"),
+          ("Contact", "/contact/"),
+        ])}</ul>
+      </div>
+
+      <div class="card">
+        <span class="card-num">AI SEARCH SERVICES</span>
+        <ul class="sitemap-list">{links(
+          [("Generative Engine Optimization (GEO)", "/generative-engine-optimization/")] + ai)}</ul>
+      </div>
+
+      <div class="card">
+        <span class="card-num">CORE SEO SERVICES</span>
+        <ul class="sitemap-list">{links(core)}</ul>
+      </div>
+
+      <div class="card">
+        <span class="card-num">INDUSTRIES</span>
+        <ul class="sitemap-list">{links(inds)}</ul>
+      </div>
+
+      <div class="card" style="grid-column:1/-1">
+        <span class="card-num">INSIGHTS</span>
+        <ul class="sitemap-list">{links(blog)}</ul>
+      </div>
+
+      <div class="card" style="grid-column:1/-1">
+        <span class="card-num">FOR MACHINES</span>
+        <ul class="sitemap-list">{links([
+          ("sitemap.xml &mdash; XML sitemap for search engines", "/sitemap.xml"),
+          ("robots.txt &mdash; crawler directives, 15 AI crawlers allowed", "/robots.txt"),
+          ("llms.txt &mdash; brand and content description for LLMs", "/llms.txt"),
+        ])}</ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{cta("Cannot find what you need?",
+     "Run the free audit, or send us a message and we will point you at the right page.")}
+"""
+
+
 NOT_FOUND_BODY = """
 <section class="phero" style="padding-bottom:40px">
   <div class="wrap">
@@ -2600,6 +2680,13 @@ def build():
         rel = os.path.join(i["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
+    # Human-readable sitemap, built from the same data as sitemap.xml.
+    written.append(("sitemap/index.html", write(
+        os.path.join("sitemap", "index.html"),
+        render("Sitemap | Every Page on SVED Solution",
+               "Complete index of svedsolution.com: services, industries, insights and resources.",
+               "sitemap/", sitemap_page(posts)))))
+
     # One page per service.
     for s in SERVICES:
         plain = s["name"].replace("&amp;", "and")
@@ -2652,6 +2739,7 @@ def build():
             add(loc, "0.7", "monthly")
 
     add("https://svedsolution.com/generative-engine-optimization/", "0.9", "monthly")
+    add("https://svedsolution.com/sitemap/", "0.3", "weekly")
     for s in SERVICES:
         add(f'https://svedsolution.com/services/{s["slug"]}/', "0.8", "monthly")
     for i in INDUSTRIES:
@@ -2675,7 +2763,35 @@ def build():
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(rows) + "</urlset>\n")
 
+    verify_canonicals()
     return written, len(posts), nstatic, len(rows)
+
+
+def verify_canonicals():
+    """
+    Fail the build if any page's canonical points somewhere that was not
+    written. A canonical aimed at a 404 quietly removes the page from the
+    index, and nothing else in the pipeline would catch it.
+    """
+    problems = []
+    for dirpath, _dirs, files in os.walk(DIST):
+        for fn in files:
+            if not fn.endswith(".html"):
+                continue
+            path = os.path.join(dirpath, fn)
+            with io.open(path, encoding="utf-8") as f:
+                m = re.search(r'<link rel="canonical" href="https://svedsolution\.com/([^"]*)"', f.read())
+            if not m:
+                continue
+            target = m.group(1)
+            expected = DIST if not target else os.path.join(DIST, *target.strip("/").split("/"))
+            if target and not (os.path.isfile(expected + ".html")
+                               or os.path.isfile(os.path.join(expected, "index.html"))):
+                problems.append(f"  {os.path.relpath(path, DIST)} -> /{target} (no such page)")
+
+    if problems:
+        raise SystemExit("Canonical URLs point at pages that do not exist:\n" + "\n".join(problems))
+    print("canonical check: all canonicals resolve to real pages")
 
 
 def service_schema(s):

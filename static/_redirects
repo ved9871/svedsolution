@@ -1,5 +1,9 @@
 # Static rules first — Cloudflare evaluates top-down and warns if plain
 # rules sit below splats or placeholders.
+# GEO lives at the root, not under /services/, because it shipped there first
+# and is already indexed. Catch the path people will guess.
+/services/generative-engine-optimization   /generative-engine-optimization   301
+
 /audit        /ai-visibility-audit   301
 /geo          /generative-engine-optimization   301
 /why-geo      /why-llm-seo-now   301
