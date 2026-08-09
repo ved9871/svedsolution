@@ -716,6 +716,28 @@ body.modal-open{ overflow:hidden; }
 .rv{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
 .rv.in{ opacity:1; transform:none; }
 
+/* Respect the OS setting: no entrance animation, and never leave content
+   stuck at opacity 0 if the observer has not fired. */
+@media (prefers-reduced-motion:reduce){
+  .rv, .rv.in{ opacity:1; transform:none; transition:none; }
+}
+
+/* ---------- Off-screen rendering cost ----------
+   Skip layout, paint and compositing for sections below the fold until they
+   approach the viewport. On a 46-section page this removes most of the initial
+   rendering work. contain-intrinsic-size supplies a placeholder height so the
+   scrollbar stays stable and this cannot introduce layout shift. */
+.sec, .sec-sm, .sec-lg{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 640px;
+}
+/* The hero and the first band must render immediately — they are the LCP
+   candidates, so deferring them would be counterproductive. */
+.hero, .hero + .sec-sm, .phero, .phero + .sec-sm{
+  content-visibility:visible;
+  contain-intrinsic-size:auto;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width:1020px){
   .hero-grid{ grid-template-columns:1fr; gap:44px; }
@@ -747,6 +769,18 @@ body.modal-open{ overflow:hidden; }
 }
 @media (max-width:680px){
   body{ font-size:16px; }
+
+  /* The hero's masked repeating-gradient grid forces its own composited layer
+     and rasterises the full hero area. On a throttled mobile CPU that delayed
+     the largest paint well past first paint, so the decorative grid is dropped
+     and the layered radial glows collapse to one. */
+  .hero::before{ display:none; }
+  .hero{
+    background:
+      radial-gradient(620px 340px at 70% 0%, rgba(0,255,178,.10), transparent 62%),
+      var(--navy-900);
+  }
+
   .g2,.g3,.g4{ grid-template-columns:1fr; }
   .kpis{ grid-template-columns:1fr 1fr; }
   .foot-grid{ grid-template-columns:1fr 1fr; }
