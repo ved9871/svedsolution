@@ -21,6 +21,11 @@ const esc = s => String(s == null ? '' : s)
 
 const FIELDS = ['name', 'email', 'phone', 'website', 'service', 'revenue', 'message', 'score', 'page'];
 
+// Apps Script Web App that appends each lead to the leads spreadsheet.
+// Override with SHEET_WEBHOOK_URL to rotate it without a code change.
+const SHEET_WEBHOOK_DEFAULT =
+  'https://script.google.com/macros/s/AKfycbz1mhzRzL40O8IaD1kH7YaoZTCpArh3uRkbgFWC-bHFncOgFjqg-0mQ2bi4JOgfH9nD5g/exec';
+
 export async function onRequestPost({ request, env }) {
   let d;
   try { d = await request.json(); } catch { return json({ error: 'Invalid request.' }, 400); }
@@ -110,6 +115,27 @@ export async function onRequestPost({ request, env }) {
     console.log('LEAD (no RESEND_KEY):', JSON.stringify(lead));
   }
 
+  // ---- Google Sheet -----------------------------------------------------
+  // Appended via an Apps Script Web App. Failures here never fail the request:
+  // the lead is already in KV and emailed, and Apps Script redirects and rate
+  // limits often enough that it cannot be the source of truth.
+  const sheetUrl = env.SHEET_WEBHOOK_URL || SHEET_WEBHOOK_DEFAULT;
+  let sheeted = false;
+  if (sheetUrl) {
+    try {
+      const res = await fetch(sheetUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(lead),
+        redirect: 'follow'
+      });
+      sheeted = res.ok;
+      if (!res.ok) console.log('Sheet webhook returned', res.status);
+    } catch (e) {
+      console.log('Sheet webhook failed', e.message);
+    }
+  }
+
   if (!kv) console.log('LEAD NOT PERSISTED - no KV binding:', JSON.stringify(lead));
-  return json({ ok: true, stored });
+  return json({ ok: true, stored, sheeted });
 }

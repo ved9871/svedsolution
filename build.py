@@ -2120,6 +2120,28 @@ def tools_grid():
         <div><strong>{n}</strong><span>{d}</span></div></div>''' for n, d in SEO_TOOLS) + '</div>'
 
 
+# Acronyms that must keep their casing when a label is used mid-sentence.
+# A blanket .lower() rendered "IVF" as "ivf" and "IT Services" as "it services".
+ACRONYMS = {"IVF", "IT", "AI", "SEO", "GEO", "AEO", "LLM", "SaaS", "D2C",
+            "B2B", "UK", "USA", "UAE", "EdTech", "Web3"}
+_ACRO_UPPER = {a.upper(): a for a in ACRONYMS}
+
+
+def lc(label):
+    """
+    Lowercase a label for mid-sentence use, preserving acronyms and any
+    trailing punctuation. Stripping the comma for the acronym lookup and then
+    returning the match dropped it, turning "Web3, Crypto" into "Web3 crypto".
+    """
+    out = []
+    for w in label.replace("&amp;", "and").split():
+        core = w.rstrip(",.;:")
+        tail = w[len(core):]
+        out.append((_ACRO_UPPER[core.upper()] if core.upper() in _ACRO_UPPER
+                    else core.lower()) + tail)
+    return " ".join(out)
+
+
 def industry_page(i):
     pains = "".join(f"<li>{p}</li>" for p in i["pains"])
     plays = "".join(f'<div class="crow"><span class="lbl">{n:02d}</span><span class="val" style="text-align:left;flex:1">{p}</span></div>'
@@ -2142,7 +2164,7 @@ def industry_page(i):
     <div class="grid g2" style="gap:52px;align-items:start">
       <div>
         <div class="eyebrow">The problem</div>
-        <h2 style="margin-bottom:1.4rem">What we hear from {label.lower()} teams</h2>
+        <h2 style="margin-bottom:1.4rem">The problems we hear most in {lc(label)}</h2>
         <ul class="pain-list">{pains}</ul>
       </div>
       <div class="panel">
@@ -2158,7 +2180,7 @@ def industry_page(i):
   <div class="wrap">
     <div class="sec-head center">
       <div class="eyebrow">Where we make you visible</div>
-      <h2>Every surface that answers a {label.lower()} question</h2>
+      <h2>Every surface that answers a {lc(label)} question</h2>
     </div>
     {platform_strip()}
   </div>
@@ -2170,7 +2192,7 @@ def industry_page(i):
   ("How long before we see results?",
    "Traditional ranking improvements typically show inside 60 to 90 days, faster on pages already sitting in positions 8 to 20. AI citations follow the same curve every time: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
   ("Do you have experience in this specific industry?",
-   f"Yes. The clients listed above are live or completed engagements in {label.lower()}. We will walk you through the actual accounts, anonymised where the client requires it, on a scoping call."),
+   f"Yes. The engagements listed above are live or completed work in {lc(label)}. We will walk you through the actual accounts, anonymised as the client requires, on a scoping call."),
   ("What does it cost?",
    "Consulting is $30 per hour for one-off sessions. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Start with the free AI visibility audit and the priority usually becomes obvious."),
 ])}
@@ -2461,7 +2483,7 @@ def service_page(s):
     <div class="grid g2" style="gap:52px;align-items:start">
       <div class="prose">
         <div class="answer-block" style="margin-top:0">
-          <div class="q">What is {plain.lower().replace(" (aeo)", "")}?</div>
+          <div class="q">What is {lc(plain).replace(" (aeo)", "")}?</div>
           <p>{s["answer"]}</p>
         </div>
         <h2 style="margin-top:2rem">What this service covers</h2>

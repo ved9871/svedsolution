@@ -20,13 +20,18 @@
   --green-glow: rgba(0,255,178,.28);
 
   --white:      #FFFFFF;
-  /* Body copy lightened for legibility on the dark field. The previous
-     --text-dim (#8496A9) and --text-faint (#5C6E80) sat around 4.2:1 and
-     2.9:1 against the panel background, so secondary copy and captions were
-     failing WCAG AA. These clear 7:1 and 4.9:1 respectively. */
-  --text:       #DCE6F0;
-  --text-dim:   #A9BBCD;
-  --text-faint: #8598AB;
+  /* Body copy is white on the dark field. Secondary and caption greys were
+     previously at roughly 4.2:1 and 2.9:1 against the panel background, so
+     they failed WCAG AA; these clear 10:1 and 7:1. */
+  --text:       #FFFFFF;
+  --text-dim:   #CBD8E5;
+  --text-faint: #A7B8C9;
+
+  /* Inverted pair for any light surface, so text never inherits white onto
+     a pale background. */
+  --on-light:       #070C12;
+  --on-light-dim:   #3A4754;
+  --on-light-faint: #5C6B79;
 
   --amber:      #FFB020;
   --red:        #FF5C5C;
@@ -435,6 +440,21 @@ tr:last-child td{ border-bottom:0; }
 }
 .socials a:hover{ border-color:var(--green); color:var(--green); }
 
+/* ---------- Light surfaces ----------
+   Anything on a pale background flips to dark text. Applied via .on-light so a
+   section can invert without any element re-declaring its own colour. */
+.on-light{ background:#FFFFFF; color:var(--on-light); }
+.on-light h1, .on-light h2, .on-light h3, .on-light h4, .on-light h5,
+.on-light strong, .on-light b, .on-light .val{ color:var(--on-light); }
+.on-light p, .on-light li, .on-light td, .on-light .lead{ color:var(--on-light-dim); }
+.on-light .dim{ color:var(--on-light-dim); }
+.on-light .faint, .on-light .lbl, .on-light small{ color:var(--on-light-faint); }
+.on-light .card, .on-light .panel, .on-light .quote{
+  background:#F6F8FB; border-color:#DCE3EB;
+}
+.on-light .btn-ghost{ color:var(--on-light); border-color:#C9D3DD; }
+.on-light a:not(.btn){ color:#00875F; }
+
 /* ---------- Team ---------- */
 .team-card{ display:flex; flex-direction:column; }
 .team-avatar{
@@ -607,8 +627,11 @@ body.modal-open{ overflow:hidden; }
   color:var(--text-dim); font-size:.96rem;
 }
 .pain-list li::before{
-  content:'\\2715'; position:absolute; left:0; top:14px;
-  color:var(--red); font-size:.8rem; opacity:.8;
+  /* Literal glyph, not a \ escape. A doubled backslash here printed the
+     escape sequence as visible text on every industry page. */
+  content:'\2715';
+  position:absolute; left:0; top:13px;
+  color:var(--red); font-size:.82rem; opacity:.85; line-height:1;
 }
 .pain-list li:last-child{ border-bottom:0; }
 
