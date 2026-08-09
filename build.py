@@ -52,6 +52,68 @@ SOCIALS = [
 ]
 FOUNDER_LINKEDIN = "https://www.linkedin.com/in/ved-prakash-s1990/"
 
+# Team. Titles for Amit and Rahul are the ones they hold at RanqOne, the sister
+# operation; confirm the SVED-specific titles before this goes into any pitch.
+TEAM = [
+    dict(name="Ved Prakash", initials="VP", role="Founder &amp; Head of Strategy",
+         bio="Leads GEO and AI visibility strategy across every account. Runs the audits, "
+             "sets the roadmaps and owns the monthly narrative reporting. Twelve years across "
+             "SEO, paid search and analytics for brands in India, the UAE, the UK and the US.",
+         focus=["Generative Engine Optimization", "Entity &amp; citation strategy", "Monthly narrative reporting"],
+         links=[("LinkedIn", "https://www.linkedin.com/in/ved-prakash-s1990/")]),
+
+    dict(name="Amit Kumar", initials="AK", role="Technical Head",
+         bio="Owns everything under the content: crawl budget, index surgery, rendering "
+             "strategy, Core Web Vitals and migrations. Builds the internal tooling the "
+             "audits run on, including the AI visibility crawler behind our free audit.",
+         focus=["Technical SEO &amp; site architecture", "Rendering &amp; Core Web Vitals", "Audit tooling &amp; automation"],
+         links=[]),
+
+    dict(name="Rahul Dhiman", initials="RD", role="Head of Growth",
+         bio="Runs content, digital PR and the Tier-1 citation programme that gets clients "
+             "named in AI answers. Leads white-label delivery for agency partners and manages "
+             "the outreach relationships behind every placement.",
+         focus=["Content &amp; digital PR", "Tier-1 citation placement", "White-label partnerships"],
+         links=[]),
+]
+
+
+def team_cards():
+    out = []
+    for m in TEAM:
+        focus = "".join(
+            f'<div class="crow"><span class="lbl" style="text-align:left;flex:1">{f}</span></div>'
+            for f in m["focus"])
+        links = "".join(
+            f'<a class="tlink" href="{u}" target="_blank" rel="noopener">{n} &rarr;</a>'
+            for n, u in m["links"]) or \
+            '<span class="faint" style="font-size:.78rem">Profile coming soon</span>'
+        out.append(f'''<div class="card team-card">
+          <div class="team-avatar">{m["initials"]}</div>
+          <h3>{m["name"]}</h3>
+          <p class="mono green" style="font-size:.78rem;margin-bottom:12px;letter-spacing:.06em;text-transform:uppercase">{m["role"]}</p>
+          <p style="margin-bottom:16px">{m["bio"]}</p>
+          <div style="margin-bottom:16px">{focus}</div>
+          <div class="team-links">{links}</div>
+        </div>''')
+    return "".join(out)
+
+
+TEAM_CARDS = team_cards()
+
+
+def team_schema():
+    people = ",".join(
+        '{"@type":"Person","name":' + _j(m["name"]) +
+        ',"jobTitle":' + _j(m["role"].replace("&amp;", "and")) +
+        ',"worksFor":{"@type":"Organization","name":"SVED Solution","url":"https://svedsolution.com/"}' +
+        (',"sameAs":[' + ",".join(_j(u) for _n, u in m["links"]) + ']' if m["links"] else '') +
+        '}'
+        for m in TEAM)
+    return ('{"@context":"https://schema.org","@type":"AboutPage",'
+            '"mainEntity":' + ORG_SCHEMA + ','
+            '"about":[' + people + ']}')
+
 # --------------------------------------------------------------------------
 # Navigation
 # --------------------------------------------------------------------------
@@ -271,6 +333,36 @@ SHELL = """<!DOCTYPE html>
 {body}
 </main>
 {footer}
+
+<!-- WhatsApp: fixed bottom-right, opens a chat with the sales line -->
+<a class="wa-fab" href="https://api.whatsapp.com/send?phone=WHATSAPP_NUMBER&amp;text=Hi%20SVED%20Solution%2C%20I%27d%20like%20to%20discuss%20SEO%20and%20AI%20visibility%20for%20my%20website."
+   target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+    <path fill="currentColor" d="M16 3C8.8 3 3 8.8 3 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.9 1 4 1.6 6.2 1.6 7.2 0 13-5.8 13-13S23.2 3 16 3zm0 23.4c-2 0-3.9-.5-5.5-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4A10.4 10.4 0 0 1 5.6 16c0-5.7 4.7-10.4 10.4-10.4S26.4 10.3 26.4 16 21.7 26.4 16 26.4zm5.9-7.8c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.1l-.9 1.1c-.2.2-.4.2-.7.1-1.7-.7-3.1-2-4-3.6-.2-.3 0-.5.1-.7l.7-.9c.2-.2.1-.5 0-.7l-1-2.3c-.2-.4-.4-.4-.7-.4h-.7c-.3 0-.7.1-1 .4-1.1 1-1.4 2.6-.9 4.1.9 2.9 3.9 6.1 7.3 7 1.3.3 2.6.3 3.6-.4.5-.3.8-.9.9-1.5.1-.4.1-.9-.1-1.1z"/>
+  </svg>
+  <span>WhatsApp</span>
+</a>
+
+<!-- Consultation popup -->
+<div class="modal" id="consultModal" role="dialog" aria-modal="true" aria-labelledby="consultTitle" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <button class="modal-x" data-close aria-label="Close">&times;</button>
+    <div class="eyebrow">Free consultation</div>
+    <h3 id="consultTitle" style="margin-bottom:.5rem">Find out if AI can see your brand</h3>
+    <p class="dim" style="font-size:.94rem;margin-bottom:1.4rem">Tell us where to look and we will send a short AI visibility read on your site &mdash; which of the twelve eligibility signals you pass, and the two that matter most for you. No cost, no obligation.</p>
+    <form class="sved-form" id="consultForm" data-type="consultation">
+      <input name="name" type="text" placeholder="Your name" required aria-label="Your name" style="margin-bottom:12px">
+      <input name="website" type="text" placeholder="yourdomain.com" required aria-label="Website" style="margin-bottom:12px">
+      <input name="email" type="email" placeholder="Work email" required aria-label="Work email" style="margin-bottom:16px">
+      <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <button class="btn btn-primary btn-lg" type="submit" style="width:100%;justify-content:center">Request my free consultation</button>
+      <p class="form-status" role="status"></p>
+      <p class="faint" style="font-size:.78rem;margin-top:10px;text-align:center">We reply within one business day. Or <a href="CALENDLY_URL" target="_blank" rel="noopener">book a 15-min call</a>.</p>
+    </form>
+  </div>
+</div>
+
 <script src="assets/app.js"></script>
 </body>
 </html>
@@ -1724,12 +1816,8 @@ PAGES["about"] = dict(
   <div class="wrap">
     <div class="sec-head"><div class="eyebrow">Our team</div><h2>Small team. Named owners.</h2>
       <p class="lead dim">You work with the strategist who ran your audit, not an account manager relaying messages.</p></div>
-    <div class="grid g3">
-      <div class="card"><div class="card-icon" style="width:60px;height:60px;font-size:1.3rem;border-radius:50%">VP</div><h3>Ved Prakash</h3><p class="mono green" style="font-size:.78rem;margin-bottom:12px">FOUNDER &amp; HEAD OF STRATEGY</p><p>Leads GEO and AI visibility strategy across all accounts. Runs the audits, sets the roadmaps and owns the monthly narrative reporting.</p></div>
-      <div class="card"><div class="card-icon" style="width:60px;height:60px;font-size:1.3rem;border-radius:50%">&#9881;</div><h3>Technical SEO Lead</h3><p class="mono green" style="font-size:.78rem;margin-bottom:12px">ROLE OPEN &middot; PLACEHOLDER</p><p>Crawl budget, index surgery, rendering strategy, log-file analysis and migrations. Replace this card with your hire or contractor.</p></div>
-      <div class="card"><div class="card-icon" style="width:60px;height:60px;font-size:1.3rem;border-radius:50%">&#9998;</div><h3>Content &amp; Citations Lead</h3><p class="mono green" style="font-size:.78rem;margin-bottom:12px">ROLE OPEN &middot; PLACEHOLDER</p><p>Semantic briefs, answer-block writing, Tier-1 citation placement and digital PR. Replace this card with your hire or contractor.</p></div>
-    </div>
-    <p class="faint center" style="font-size:.83rem;margin-top:24px">Person schema is wired to each team member in the production build &mdash; founder entity association is a direct AI visibility signal.</p>
+    <div class="grid g3">{TEAM_CARDS}</div>
+    <p class="faint center" style="font-size:.83rem;margin-top:24px">Person schema is wired to every team member, because founder and specialist entity association is a direct AI visibility signal.</p>
   </div>
 </section>
 
@@ -2582,6 +2670,8 @@ def render(title, desc, slug, body, schema=None, keywords=None):
     html = (html
             .replace("GA_MEASUREMENT_ID", GA_ID)
             .replace("CALENDLY_URL", CALENDLY)
+            .replace("WHATSAPP_NUMBER", WHATSAPP_RAW)
+            .replace("<!--TEAM-->", TEAM_CARDS)
             .replace("<!--PLATFORMS-->", platform_strip())
             .replace("<!--CERTS-->", cert_strip())
             .replace("<!--TOOLS-->", tools_grid())
@@ -2653,7 +2743,8 @@ def build():
     # Directory-style output so clean URLs work identically on Cloudflare Pages
     # and on any plain static server used for local review.
     for slug, p in PAGES.items():
-        html = render(p["title"], p["desc"], p["slug"], p["body"])
+        html = render(p["title"], p["desc"], p["slug"], p["body"],
+                      schema=team_schema() if slug == "about" else None)
         name = "index.html" if slug == "index" else os.path.join(slug, "index.html")
         written.append((name.replace("\\", "/"), write(name, html)))
 

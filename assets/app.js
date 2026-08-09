@@ -51,6 +51,74 @@
     counters.forEach(function (el) { cio.observe(el); });
   }
 
+  /* ---- Consultation modal ---- */
+  var modal = document.getElementById('consultModal');
+  if (modal) {
+    var SEEN = 'sved_consult_seen';
+    var lastFocus = null;
+
+    function openModal(source) {
+      if (!modal.hidden) return;
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      document.body.classList.add('modal-open');
+      var first = modal.querySelector('input');
+      if (first) first.focus();
+      try { sessionStorage.setItem(SEEN, '1'); } catch (e) {}
+      if (window.gtag) gtag('event', 'consult_modal_open', { source: source || 'auto' });
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove('modal-open');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    modal.addEventListener('click', function (e) {
+      if (e.target.hasAttribute('data-close')) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+      // Keep tabbing inside the dialog while it is open.
+      if (e.key === 'Tab' && !modal.hidden) {
+        var f = modal.querySelectorAll('input:not([aria-hidden]), button, a[href]');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // Any element can open it explicitly.
+    document.querySelectorAll('[data-consult]').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); openModal('button'); });
+    });
+
+    var seen = false;
+    try { seen = !!sessionStorage.getItem(SEEN); } catch (e) {}
+
+    if (!seen) {
+      // Once per session, and only after the visitor has shown some interest.
+      var fired = false;
+      var trigger = function (src) {
+        if (fired) return;
+        fired = true;
+        openModal(src);
+      };
+      setTimeout(function () { trigger('timer'); }, 35000);
+      window.addEventListener('scroll', function onScroll() {
+        var pct = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+        if (pct > 0.55) { window.removeEventListener('scroll', onScroll); trigger('scroll'); }
+      }, { passive: true });
+      // Exit intent, desktop only.
+      if (window.matchMedia('(min-width:861px)').matches) {
+        document.addEventListener('mouseout', function (e) {
+          if (!e.relatedTarget && e.clientY < 12) trigger('exit-intent');
+        });
+      }
+    }
+  }
+
   /* ---- Forms: contact + newsletter -> /api/contact ---- */
   document.querySelectorAll('.sved-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
@@ -80,6 +148,8 @@
             : 'Thanks. We reply within one business day.';
           status.className = 'form-status ok';
           if (window.gtag) gtag('event', 'generate_lead', { form_type: data.type });
+          // Give the confirmation a beat to be read before the dialog closes.
+          if (form.id === 'consultForm' && modal) setTimeout(closeModal, 2600);
         })
         .catch(function (err) {
           status.textContent = err.message || 'Could not send. Please email hello@svedsolution.com.';
