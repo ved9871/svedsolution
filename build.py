@@ -273,15 +273,6 @@ TAGLINE = "Top 1&#37; SEO Service Provider in India"
 SHELL = """<!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-
-  gtag('config', 'GA_MEASUREMENT_ID');
-</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
@@ -310,11 +301,37 @@ SHELL = """<!DOCTYPE html>
 <link rel="shortcut icon" href="/assets/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <script type="application/ld+json">{schema}</script>
+<!-- Google tag (gtag.js) — the dataLayer stub is inline so events queue
+     immediately, but the 69KB library is fetched after first paint. Loading it
+     in the head cost roughly 750ms of render-blocking time on mobile. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+  (function () {{
+    var loaded = false;
+    function loadGtag() {{
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+      document.head.appendChild(s);
+    }}
+    // Whichever comes first: the browser going idle, a real interaction, or a
+    // 3s backstop so a passive visit is still measured.
+    if ('requestIdleCallback' in window) requestIdleCallback(loadGtag, {{ timeout: 3000 }});
+    else window.addEventListener('load', function () {{ setTimeout(loadGtag, 1200); }});
+    ['pointerdown', 'keydown', 'scroll'].forEach(function (e) {{
+      window.addEventListener(e, loadGtag, {{ once: true, passive: true }});
+    }});
+  }})();
+</script>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
@@ -688,11 +705,17 @@ PAGES["index"] = dict(
           <a class="btn btn-ghost" href="videos.html">More videos</a>
         </div>
       </div>
-      <div class="yt-embed">
-        <iframe src="https://www.youtube.com/embed/videoseries?list=UULFLEeUbTJUO4d7nALNrh1USQ"
-                title="Web3Tech Network channel" loading="lazy" allowfullscreen
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <!-- Facade: a real iframe pulls roughly 1MB of player JavaScript on load
+           even with loading=lazy. The embed is injected on click instead. -->
+      <div class="yt-embed yt-facade" data-yt="videoseries?list=UULFLEeUbTJUO4d7nALNrh1USQ"
+           role="button" tabindex="0" aria-label="Play video from the Web3Tech Network channel">
+        <div class="yt-face">
+          <div class="yt-play" aria-hidden="true">&#9654;</div>
+          <div class="yt-label">
+            <strong>SEO &amp; Web3 growth, on video</strong>
+            <span>Web3Tech Network &middot; YouTube</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -51,6 +51,29 @@
     counters.forEach(function (el) { cio.observe(el); });
   }
 
+  /* ---- YouTube facade: inject the iframe only on demand ---- */
+  document.querySelectorAll('.yt-facade').forEach(function (el) {
+    function load() {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube.com/embed/' + el.dataset.yt +
+        (el.dataset.yt.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+      f.title = 'Web3Tech Network channel';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      f.allowFullscreen = true;
+      el.innerHTML = '';
+      el.classList.remove('yt-facade');
+      el.removeAttribute('role');
+      el.removeAttribute('tabindex');
+      el.appendChild(f);
+      if (window.gtag) gtag('event', 'video_start', { provider: 'youtube' });
+    }
+    el.addEventListener('click', load);
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(); }
+    });
+  });
+
   /* ---- Consultation modal ---- */
   var modal = document.getElementById('consultModal');
   if (modal) {

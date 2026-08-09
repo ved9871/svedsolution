@@ -5,6 +5,12 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
+# Fonts are subsetted builds keyed to a weight, so the bytes never change under
+# a given name. Safe to pin, and they are on the critical path.
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
 # Content-hashed bundles (style.<hash>.css, app.<hash>.js) — safe to pin
 # forever, because any edit changes the filename.
 /assets/*.*.css

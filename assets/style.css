@@ -1,4 +1,34 @@
 /* ==========================================================================
+   Self-hosted webfonts. Previously loaded from fonts.googleapis.com, which
+   added a third-party DNS lookup, TLS handshake and render-blocking
+   stylesheet before the font files were even discovered — a large part of a
+   4.0s mobile First Contentful Paint. Same-origin now, served from the edge.
+
+   font-display:swap paints text immediately in the fallback and swaps when the
+   webfont arrives, so a slow font can never block first paint.
+   ========================================================================== */
+@font-face{
+  font-family:'Poppins'; font-style:normal; font-weight:500; font-display:swap;
+  src:url('/assets/fonts/poppins-500.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Poppins'; font-style:normal; font-weight:600; font-display:swap;
+  src:url('/assets/fonts/poppins-600.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Poppins'; font-style:normal; font-weight:700; font-display:swap;
+  src:url('/assets/fonts/poppins-700.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Inter'; font-style:normal; font-weight:400 600; font-display:swap;
+  src:url('/assets/fonts/inter-var.woff2') format('woff2-variations');
+}
+@font-face{
+  font-family:'JetBrains Mono'; font-style:normal; font-weight:400 500; font-display:swap;
+  src:url('/assets/fonts/jetbrains-var.woff2') format('woff2-variations');
+}
+
+/* ==========================================================================
    SVED Solution — Design System
    Deep Navy #1E2A38 · Electric Green #00FFB2 · White
    Poppins (headings) · Inter (body) · JetBrains Mono (data)
@@ -525,6 +555,31 @@ body.modal-open{ overflow:hidden; }
   overflow:hidden; background:var(--navy-800); box-shadow:var(--shadow);
 }
 .yt-embed iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+.yt-facade{
+  cursor:pointer;
+  background:
+    radial-gradient(560px 300px at 50% 40%, rgba(0,255,178,.10), transparent 65%),
+    linear-gradient(150deg, var(--navy-700), var(--navy-900));
+}
+.yt-facade:hover .yt-play{ transform:scale(1.08); background:var(--green); color:var(--ink); }
+.yt-facade:focus-visible{ outline:2px solid var(--green); outline-offset:3px; }
+.yt-face{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+  text-align:center; padding:24px;
+}
+.yt-play{
+  width:66px; height:66px; border-radius:50%;
+  display:grid; place-items:center; font-size:1.4rem; padding-left:4px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+  color:var(--white); transition:transform .2s ease, background .2s ease, color .2s ease;
+}
+.yt-label strong{ display:block; font-family:var(--font-head); font-size:1rem; color:var(--white); }
+.yt-label span{
+  display:block; margin-top:5px; font-family:var(--font-mono);
+  font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint);
+}
 
 /* ---------- Forms ---------- */
 .sved-form input, .sved-form select, .sved-form textarea{
