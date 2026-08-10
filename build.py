@@ -257,8 +257,8 @@ FOOTER = f"""
       <div>&copy; 2026 {TRADE_NAME}. All rights reserved.</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap">
         <a href="sitemap.html" style="color:var(--text-faint)">Sitemap</a>
-        <a href="#" style="color:var(--text-faint)">Privacy</a>
-        <a href="#" style="color:var(--text-faint)">Terms</a>
+        <a href="privacy.html" style="color:var(--text-faint)">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--text-faint)">Terms of Service</a>
         <a href="ai-visibility-audit.html" style="color:var(--text-faint)">Free AI Audit</a>
       </div>
     </div>
@@ -267,7 +267,8 @@ FOOTER = f"""
 """
 
 GA_ID = "G-JJXBTFSP4Z"
-CALENDLY = "https://calendly.com/prakashved155/15min"
+BOOKING_URL = "https://cal.com/sved-solution/15min"
+CALENDLY = BOOKING_URL  # placeholder token name kept; every page substitutes BOOKING_URL
 TAGLINE = "Top 1&#37; SEO Service Provider in India"
 
 SHELL = """<!DOCTYPE html>
@@ -755,10 +756,13 @@ PAGES["ai-visibility-audit"] = dict(
 
     <div style="max-width:720px;margin-top:36px">
       <form id="audit-form" class="audit-form">
-        <input type="url" id="audit-url" placeholder="https://yourdomain.com" required aria-label="Website URL">
+        <!-- type=text, not url: type=url makes the browser reject "example.com"
+             before it ever reaches the API. The API resolves the variations. -->
+        <input type="text" id="audit-url" inputmode="url" autocapitalize="off" spellcheck="false"
+               placeholder="example.com" required aria-label="Website address">
         <button class="btn btn-primary btn-lg" id="audit-run" type="submit">Run free audit</button>
       </form>
-      <p class="faint" style="font-size:.82rem;margin-top:12px">We crawl public pages only. Nothing is stored unless you ask for the full report.</p>
+      <p class="faint" style="font-size:.82rem;margin-top:12px">Enter it any way you like &mdash; <span class="mono">example.com</span>, <span class="mono">www.example.com</span> or the full https address. We work out which version resolves. We crawl public pages only, and store nothing unless you ask for the full report.</p>
       <div id="audit-stage" class="mono" style="display:none;font-size:.82rem;line-height:2;margin-top:24px;color:var(--text-dim)"></div>
       <div id="audit-results" style="display:none"></div>
     </div>
@@ -1903,7 +1907,7 @@ PAGES["contact"] = dict(
           <h3>Book directly</h3>
           <p style="margin-bottom:18px">Skip the form. Grab a 30-minute slot with the strategist who will run your audit.</p>
           <a class="btn btn-primary btn-lg" style="width:100%;justify-content:center" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-minute call</a>
-          <p class="faint" style="font-size:.8rem;margin-top:12px;text-align:center">Opens Calendly. Pick any slot that suits you.</p>
+          <p class="faint" style="font-size:.8rem;margin-top:12px;text-align:center">Opens our booking page. Pick any slot that suits you.</p>
         </div>
         <div class="card" style="margin-bottom:20px">
           <h3>Other ways in</h3>
@@ -2553,6 +2557,139 @@ def service_page(s):
 """
 
 
+LEGAL_UPDATED = "9 August 2026"
+
+
+def legal_page(title, intro, sections):
+    body = "".join(
+        f'<h2 id="{sid}">{n}. {head}</h2>\n{copy}'
+        for sid, n, head, copy in sections)
+    toc = "".join(f'<li><a href="#{sid}">{n}. {head}</a></li>' for sid, n, head, _c in sections)
+    return f"""
+{phero(f'<a href="index.html">Home</a> / {title}', 'Legal', title, intro)}
+<section class="sec">
+  <div class="wrap wrap-narrow">
+    <p class="mono faint" style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase">Last updated {LEGAL_UPDATED}</p>
+    <div class="card" style="margin:26px 0 40px">
+      <h4 style="margin-bottom:12px">On this page</h4>
+      <ol class="sitemap-list" style="counter-reset:none;list-style:none;padding:0;margin:0">{toc}</ol>
+    </div>
+    <div class="prose legal">{body}</div>
+  </div>
+</section>
+{cta("Questions about any of this?",
+     "Email us and a person will answer. We would rather clarify a clause than have you guess.",
+     primary=("Email hello@svedsolution.com", "mailto:hello@svedsolution.com"),
+     secondary=("Book a 15-min call", CALENDLY))}
+"""
+
+
+TERMS_SECTIONS = [
+ ("services", 1, "Services",
+  "<p>We provide search and AI visibility services: Generative Engine Optimization, Answer Engine Optimization, LLM SEO, technical SEO, semantic content strategy, digital PR and measurement. The precise scope of any engagement is set out in the proposal or statement of work we agree with you, and that document takes precedence over this page wherever the two differ.</p>"
+  "<p>Anything not expressly listed in your scope is outside it. If you want something added, ask &mdash; we will either include it or quote it, and we will tell you which.</p>"),
+
+ ("term", 2, "Term, fees and billing",
+  "<p>Retainers run month to month unless your agreement states a fixed term. Fees are invoiced in advance of each period and are due on receipt unless we have agreed different terms in writing.</p>"
+  "<p>Consulting is billed at 30 USD per hour, in arrears, against logged time. Audits and other fixed-scope work are invoiced as set out in the proposal.</p>"
+  "<p>If an invoice is more than 14 days overdue we may pause delivery until it is settled. We will always tell you before we pause anything.</p>"),
+
+ ("changes", 3, "Changes, pauses and cancellation",
+  "<p>Either of us may cancel a retainer with 30 days' written notice. Notice takes effect at the end of the current billing period, and we keep working normally through it.</p>"
+  "<p>You may pause an engagement rather than cancel it. Paused engagements are not billed. If a pause runs beyond six months, resuming may be at our current rates rather than the ones you originally agreed.</p>"),
+
+ ("refunds", 4, "Refunds",
+  "<p>Fees for a billing period that has already started are non-refundable, because work is delivered continuously across the period rather than at the end of it.</p>"
+  "<p>If we have not started work on a period you have paid for, tell us and we will refund it. We would rather return money than keep a client who does not want to be one.</p>"),
+
+ ("ownership", 5, "Deliverables and ownership",
+  "<p>Once an invoice is paid, you own the content, code, schema, documentation and reports we produce specifically for you, and you may use them however you wish.</p>"
+  "<p>We retain ownership of our own methods, frameworks, checklists, internal tooling and standard operating procedures. Your engagement grants you the benefit of these, not title to them.</p>"
+  "<p>Third-party editorial placements and citations are exactly that: editorial. The publisher controls them. We cannot guarantee any placement remains live indefinitely, and we do not control third-party platforms.</p>"),
+
+ ("results", 6, "Results and what we do not guarantee",
+  "<p>We do not guarantee rankings, traffic volumes, citation counts, revenue, or inclusion in any AI-generated answer. Nobody can, and anyone who does is either guessing or misleading you.</p>"
+  "<p>We do not control Google, Bing, OpenAI, Anthropic, Google DeepMind, Perplexity, Microsoft or any other platform, and none of them offer a submission or guarantee mechanism. Algorithms change without notice.</p>"
+  "<p>What we do commit to is method and reporting: the work described in your scope, executed to the standard in our documented procedures, measured honestly, and reported monthly whether the numbers are flattering or not.</p>"
+  "<p>Any figures we share from past client work describe those engagements. They are not a forecast for yours.</p>"),
+
+ ("client", 7, "What we need from you",
+  "<p>Engagements depend on access and responsiveness. We will typically need access to your website or CMS, Google Search Console, Google Analytics, Google Business Profile where relevant, and any SEO tooling you already pay for.</p>"
+  "<p>We also need decisions. Where a recommendation waits on your approval, the timeline moves with it. We will flag anything blocked rather than let it sit quietly.</p>"
+  "<p>You confirm that content and assets you supply are yours to use, and that you have the right to grant us the access you give us.</p>"),
+
+ ("acceptance", 8, "Reporting and acceptance",
+  "<p>We report monthly on retained engagements. If something in a deliverable is wrong or outside scope, tell us within 14 days of delivery and we will correct it. After 14 days we treat it as accepted, which simply keeps revision cycles finite.</p>"),
+
+ ("disputes", 9, "Billing disputes",
+  "<p>If you disagree with an invoice, email us within 14 days and we will investigate before anything escalates. Please raise it with us before initiating a chargeback &mdash; almost every billing dispute we have seen was a misunderstanding that took one conversation to resolve.</p>"),
+
+ ("confidentiality", 10, "Confidentiality",
+  "<p>We treat your commercial data, analytics, strategy and internal information as confidential and do not share it outside our delivery team.</p>"
+  "<p>We may describe engagement outcomes anonymously &mdash; for example &ldquo;a UK ecommerce retailer&rdquo; &mdash; in case studies and marketing. We will not name you, show your logo, or publish identifiable data without your written permission. Tell us at any time that you would prefer we did not reference the work at all, and we will stop.</p>"
+  "<p>White-label engagements are covered by a separate NDA, and under those we never contact your client or identify ourselves to them.</p>"),
+
+ ("liability", 11, "Limitation of liability",
+  "<p>To the extent permitted by law, our total liability arising from an engagement is limited to the fees you paid us in the three months before the claim.</p>"
+  "<p>Neither party is liable for indirect or consequential loss, including lost profits, lost revenue, lost data or loss of anticipated savings.</p>"
+  "<p>Nothing here limits liability for fraud, or for anything that cannot lawfully be limited.</p>"),
+
+ ("termination", 12, "Termination for cause",
+  "<p>Either party may terminate immediately if the other materially breaches these terms and does not remedy it within 15 days of written notice. We may also terminate immediately for non-payment beyond 30 days, or if we are asked to do something we consider deceptive, unlawful, or in breach of a platform's guidelines.</p>"
+  "<p>On termination we hand over deliverables paid for to date, and revoke our own access to your systems.</p>"),
+
+ ("general", 13, "General",
+  "<p>These terms are governed by the laws of India, and the courts of India have jurisdiction, unless your agreement states otherwise.</p>"
+  "<p>We may update this page. Changes apply going forward, never retroactively, and material changes to an active engagement will be raised with you directly rather than quietly published.</p>"
+  "<p>If any provision is unenforceable, the rest still stands.</p>"),
+
+ ("contact", 14, "Contact",
+  "<p>Questions about these terms, an invoice, or anything else: <a href=\"mailto:hello@svedsolution.com\">hello@svedsolution.com</a> or <a href=\"https://api.whatsapp.com/send?phone=917846045690\">+91 78460 45690</a>.</p>"),
+]
+
+PRIVACY_SECTIONS = [
+ ("collect", 1, "What we collect",
+  "<p><strong>When you submit a form.</strong> Your name, email address, website, phone number if you give it, and whatever you write in the message field. Nothing more.</p>"
+  "<p><strong>When you run the free audit.</strong> The website address you enter. We fetch that site's public pages to score them. The URL is cached for 24 hours so repeat checks are fast. We do not keep the audit result against your identity unless you ask us for the full report.</p>"
+  "<p><strong>When you browse.</strong> Google Analytics 4 records anonymised, aggregated usage &mdash; pages viewed, approximate region, device type, referrer. We do not use it to identify individuals.</p>"),
+
+ ("why", 2, "Why we collect it",
+  "<p>To reply to your enquiry, deliver services you have asked for, send the newsletter if you subscribed, and understand which pages are useful. That is the whole list.</p>"
+  "<p>We do not sell your data, rent it, or share it with advertisers. We never will.</p>"),
+
+ ("processors", 3, "Who processes it",
+  "<p>We use a small number of third parties, each for a single purpose:</p>"
+  "<ul>"
+  "<li><strong>Cloudflare</strong> &mdash; hosting, security and email routing</li>"
+  "<li><strong>Google Analytics 4</strong> &mdash; anonymised traffic measurement</li>"
+  "<li><strong>Resend</strong> &mdash; transactional email delivery</li>"
+  "<li><strong>Google Workspace and Google Sheets</strong> &mdash; where enquiries are received and recorded</li>"
+  "<li><strong>Cal.com</strong> &mdash; call booking, if you book one</li>"
+  "</ul>"
+  "<p>Each holds only what it needs to do its job.</p>"),
+
+ ("cookies", 4, "Cookies",
+  "<p>We set no advertising or tracking cookies of our own. Google Analytics sets its own analytics cookies. The consultation popup uses your browser's session storage to remember it has already been shown, so it does not reappear on every page &mdash; that never leaves your device.</p>"),
+
+ ("retention", 5, "How long we keep it",
+  "<p>Enquiries are kept while the conversation is live and for up to 24 months after, so we have context if you come back. Newsletter subscriptions are kept until you unsubscribe. Audit URL caches expire after 24 hours. Analytics follows Google's retention setting.</p>"),
+
+ ("rights", 6, "Your rights",
+  "<p>Email <a href=\"mailto:hello@svedsolution.com\">hello@svedsolution.com</a> and we will, without argument: tell you what we hold about you, correct it, delete it, or send you a copy. Every newsletter has a one-click unsubscribe link.</p>"
+  "<p>If you are in the EEA or UK, you have these rights under GDPR and we honour them regardless of where you are.</p>"),
+
+ ("security", 7, "Security",
+  "<p>The site is served over HTTPS with HSTS. Enquiry data sits in access-controlled storage, and the admin area requires authentication and is excluded from search indexing. We hold no card details at any point &mdash; payments are handled by the payment provider directly.</p>"),
+
+ ("children", 8, "Children",
+  "<p>Our services are for businesses. We do not knowingly collect data from anyone under 18.</p>"),
+
+ ("changes", 9, "Changes and contact",
+  "<p>If this policy changes materially we will update the date at the top and, where it affects an active client, tell you directly.</p>"
+  "<p>Questions or requests: <a href=\"mailto:hello@svedsolution.com\">hello@svedsolution.com</a>.</p>"),
+]
+
+
 def sitemap_page(posts):
     """Human-readable index of every page, mirroring sitemap.xml."""
     def links(items):
@@ -2610,6 +2747,14 @@ def sitemap_page(posts):
       <div class="card" style="grid-column:1/-1">
         <span class="card-num">INSIGHTS</span>
         <ul class="sitemap-list">{links(blog)}</ul>
+      </div>
+
+      <div class="card">
+        <span class="card-num">LEGAL</span>
+        <ul class="sitemap-list">{links([
+          ("Terms of Service", "/terms/"),
+          ("Privacy Policy", "/privacy/"),
+        ])}</ul>
       </div>
 
       <div class="card" style="grid-column:1/-1">
@@ -2810,6 +2955,22 @@ def build():
         rel = os.path.join(i["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
+    for slug, title, desc, intro, sections in [
+        ("terms", "Terms of Service",
+         "Terms of service for SVED Solution: scope, fees, cancellation, ownership, what we guarantee and what we do not.",
+         "The commercial terms behind every engagement. Written to be read, not to be skipped &mdash; if a clause is unclear, ask and we will explain it.",
+         TERMS_SECTIONS),
+        ("privacy", "Privacy Policy",
+         "What data SVED Solution collects, why, who processes it, how long we keep it and how to have it deleted.",
+         "What we collect, why, and how to get rid of it. We do not sell your data and we never will.",
+         PRIVACY_SECTIONS),
+    ]:
+        html = render(f"{title} | SVED Solution", desc, f"{slug}/",
+                      legal_page(title, intro, sections),
+                      keywords=f"SVED Solution {title.lower()}")
+        rel = os.path.join(slug, "index.html")
+        written.append((rel.replace("\\", "/"), write(rel, html)))
+
     # Human-readable sitemap, built from the same data as sitemap.xml.
     written.append(("sitemap/index.html", write(
         os.path.join("sitemap", "index.html"),
@@ -2870,6 +3031,8 @@ def build():
 
     add("https://svedsolution.com/generative-engine-optimization/", "0.9", "monthly")
     add("https://svedsolution.com/sitemap/", "0.3", "weekly")
+    add("https://svedsolution.com/terms/", "0.3", "yearly")
+    add("https://svedsolution.com/privacy/", "0.3", "yearly")
     for s in SERVICES:
         add(f'https://svedsolution.com/services/{s["slug"]}/', "0.8", "monthly")
     for i in INDUSTRIES:

@@ -298,7 +298,8 @@
 
       var note = isDemo
         ? 'Sample output — the live Worker was not reachable from this preview. On svedsolution.com this crawls the real URL and returns measured values.'
-        : 'Measured live against ' + data.host + (data.cached ? ' (cached within the last 24h)' : '') +
+        : 'Measured live against ' + (data.auditedUrl || data.host) +
+          (data.cached ? ' (cached within the last 24h)' : '') +
           '. LLM citation testing across ChatGPT, Perplexity and Gemini is included in the full report.';
 
       results.style.display = 'block';

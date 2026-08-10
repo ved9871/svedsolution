@@ -47,8 +47,10 @@ export async function onRequestPost({ request, env }) {
   let body;
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON body.' }, 400); }
 
-  const target = normaliseUrl(body && body.url);
-  if (!target) return json({ error: 'Provide a valid public http(s) URL.' }, 400);
+  const candidates = candidateUrls(body && body.url);
+  if (!candidates.length) {
+    return json({ error: 'That does not look like a website address. Try something like example.com' }, 400);
+  }
 
   const ip = request.headers.get('cf-connecting-ip') || 'anon';
 
@@ -68,7 +70,9 @@ export async function onRequestPost({ request, env }) {
   }
 
   // ---- Cache ------------------------------------------------------------
-  const cacheKey = `audit:${target.origin}`;
+  // Keyed on the visitor's normalised input so example.com and
+  // www.example.com share a cached result once they resolve to the same place.
+  const cacheKey = `audit:${new URL(candidates[0]).hostname.replace(/^www\./, '')}`;
   if (env.AUDIT_KV) {
     const hit = await env.AUDIT_KV.get(cacheKey);
     if (hit) return json({ ...JSON.parse(hit), cached: true });
@@ -77,11 +81,21 @@ export async function onRequestPost({ request, env }) {
     if (hit) return json({ ...hit, cached: true });
   }
 
+  // ---- Resolve ----------------------------------------------------------
+  const resolved = await firstReachable(candidates);
+  if (!resolved) {
+    return json({
+      error: `We could not reach that site. We tried ${candidates.length} variations ` +
+             `including https, http and the www version. Check the address is public and online.`,
+      tried: candidates
+    }, 502);
+  }
+
   let result;
   try {
-    result = await runAudit(target, env);
+    result = await runAudit(new URL(resolved.url), env, resolved);
   } catch (err) {
-    return json({ error: `Could not fetch that site: ${err.message}` }, 502);
+    return json({ error: `Could not complete the audit: ${err.message}` }, 502);
   }
 
   if (env.AUDIT_KV) {
@@ -126,6 +140,65 @@ async function tooManyRecent(ip) {
 }
 
 // ==========================================================================
+
+/**
+ * Build the ordered list of URLs worth trying for whatever the visitor typed.
+ *
+ * People enter "example.com", "www.example.com", "http://example.com" or a deep
+ * path, and any single interpretation fails for someone: the apex may not
+ * resolve while www does, the site may be http-only, or the pasted path may
+ * 404. We try the most likely candidates and audit the first that responds.
+ */
+function candidateUrls(raw) {
+  if (!raw || typeof raw !== 'string') return [];
+  let s = raw.trim().replace(/\s+/g, '');
+  if (!s) return [];
+
+  // Reject non-http(s) schemes outright (file:, data:, javascript: ...) so they
+  // can never be smuggled through by prefixing https://.
+  if (/^[a-z][a-z0-9+.\-]*:/i.test(s) && !/^https?:\/\//i.test(s)) return [];
+
+  const explicitScheme = /^https?:\/\//i.test(s) ? s.slice(0, s.indexOf(':')).toLowerCase() : null;
+  if (!explicitScheme) s = 'https://' + s;
+
+  let u;
+  try { u = new URL(s); } catch { return []; }
+
+  const host = u.hostname.toLowerCase();
+
+  // A hostname must have at least one dot and a plausible TLD, otherwise a
+  // typo like "example" turns into a confusing fetch failure instead of a
+  // clear validation message.
+  if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,24}$/.test(host)) {
+    return [];
+  }
+  if (isPrivateHost(host)) return [];
+
+  const bare = host.replace(/^www\./, '');
+  const hosts = host.startsWith('www.') ? [host, bare] : [host, 'www.' + host];
+  const schemes = explicitScheme === 'http' ? ['http', 'https'] : ['https', 'http'];
+  const path = (u.pathname && u.pathname !== '/') ? u.pathname + u.search : '';
+
+  const out = [];
+  const push = v => { if (!out.includes(v)) out.push(v); };
+
+  // A supplied path is tried first, then the origin, so a stale deep link still
+  // yields a useful audit of the site rather than a hard failure.
+  for (const scheme of schemes) {
+    for (const h of hosts) {
+      if (path) push(`${scheme}://${h}${path}`);
+      push(`${scheme}://${h}/`);
+    }
+  }
+  return out;
+}
+
+function isPrivateHost(h) {
+  return h === 'localhost' || h.endsWith('.local') || h.endsWith('.internal') ||
+    /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(h) ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(h) ||
+    /^\[?::1\]?$/.test(h);
+}
 
 function normaliseUrl(raw) {
   if (!raw || typeof raw !== 'string') return null;
@@ -181,9 +254,27 @@ function isRealTextFile(res) {
   return true;
 }
 
-async function runAudit(u, env) {
-  const [page, robots, llms] = await Promise.all([
-    grab(u.href),
+/**
+ * Try each candidate in order and return the first that serves HTML.
+ * Sequential rather than parallel so a site is not hit four times at once.
+ */
+async function firstReachable(candidates) {
+  let lastStatus = 0;
+  for (const url of candidates) {
+    const res = await grab(url, 12000);
+    if (res.ok && res.text) {
+      return { url, page: res, attempts: candidates.indexOf(url) + 1 };
+    }
+    if (res.status) lastStatus = res.status;
+  }
+  return null;
+}
+
+async function runAudit(u, env, resolved) {
+  // The page body is already in hand from the reachability probe, so this is
+  // one fetch rather than two.
+  const page = resolved && resolved.page ? resolved.page : await grab(u.href);
+  const [robots, llms] = await Promise.all([
     grab(new URL('/robots.txt', u.origin).href, 6000),
     grab(new URL('/llms.txt', u.origin).href, 6000)
   ]);
@@ -323,6 +414,9 @@ async function runAudit(u, env) {
   return {
     url: u.href,
     host: u.hostname,
+    // Surfaced so the visitor can see which variation was actually audited
+    // when what they typed was not what resolved.
+    auditedUrl: u.href,
     score,
     verdict: score >= 75 ? 'Strong AI visibility foundation'
       : score >= 50 ? 'Partially eligible for AI citation'
