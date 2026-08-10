@@ -361,26 +361,6 @@ SHELL = """<!DOCTYPE html>
   <span>WhatsApp</span>
 </a>
 
-<!-- Consultation popup -->
-<div class="modal" id="consultModal" role="dialog" aria-modal="true" aria-labelledby="consultTitle" hidden>
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <button class="modal-x" data-close aria-label="Close">&times;</button>
-    <div class="eyebrow">Free consultation</div>
-    <h3 id="consultTitle" style="margin-bottom:.5rem">Find out if AI can see your brand</h3>
-    <p class="dim" style="font-size:.94rem;margin-bottom:1.4rem">Tell us where to look and we will send a short AI visibility read on your site &mdash; which of the twelve eligibility signals you pass, and the two that matter most for you. No cost, no obligation.</p>
-    <form class="sved-form" id="consultForm" data-type="consultation">
-      <input name="name" type="text" placeholder="Your name" required aria-label="Your name" style="margin-bottom:12px">
-      <input name="website" type="text" placeholder="yourdomain.com" required aria-label="Website" style="margin-bottom:12px">
-      <input name="email" type="email" placeholder="Work email" required aria-label="Work email" style="margin-bottom:16px">
-      <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-      <button class="btn btn-primary btn-lg" type="submit" style="width:100%;justify-content:center">Request my free consultation</button>
-      <p class="form-status" role="status"></p>
-      <p class="faint" style="font-size:.78rem;margin-top:10px;text-align:center">We reply within one business day. Or <a href="CALENDLY_URL" target="_blank" rel="noopener">book a 15-min call</a>.</p>
-    </form>
-  </div>
-</div>
-
 <script src="assets/app.js"></script>
 </body>
 </html>
