@@ -267,6 +267,22 @@ FOOTER = f"""
 """
 
 GA_ID = "G-JJXBTFSP4Z"
+GTM_ID = "GTM-M94D8W4K"
+
+# Injected via placeholder rather than inline in SHELL: the snippet is full of
+# braces and SHELL goes through str.format(), where every { would need doubling.
+GTM_HEAD = """<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM_CONTAINER_ID');</script>
+<!-- End Google Tag Manager -->"""
+
+GTM_BODY = """<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM_CONTAINER_ID"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->"""
 BOOKING_URL = "https://cal.com/sved-solution/15min"
 CALENDLY = BOOKING_URL  # placeholder token name kept; every page substitutes BOOKING_URL
 TAGLINE = "Top 1&#37; SEO Service Provider in India"
@@ -276,6 +292,7 @@ SHELL = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--GTM-HEAD-->
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://svedsolution.com/{slug}">
@@ -335,6 +352,7 @@ SHELL = """<!DOCTYPE html>
 </script>
 </head>
 <body>
+<!--GTM-BODY-->
 <a href="#main" class="skip-link">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
@@ -2838,6 +2856,8 @@ def render(title, desc, slug, body, schema=None, keywords=None):
     # snippet never have to be escaped twice, and so page bodies can reference
     # component builders that are defined further down the file.
     html = (html
+            .replace("<!--GTM-HEAD-->", GTM_HEAD.replace("GTM_CONTAINER_ID", GTM_ID))
+            .replace("<!--GTM-BODY-->", GTM_BODY.replace("GTM_CONTAINER_ID", GTM_ID))
             .replace("GA_MEASUREMENT_ID", GA_ID)
             .replace("CALENDLY_URL", CALENDLY)
             .replace("WHATSAPP_NUMBER", WHATSAPP_RAW)
