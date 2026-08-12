@@ -274,33 +274,24 @@ GTM_ID = "GTM-M94D8W4K"
 # Injected via placeholder rather than inline in SHELL: the snippet is full of
 # braces and SHELL goes through str.format(), where every { would need doubling.
 #
-# This is Google's snippet split in two. dataLayer and the gtm.start timestamp
-# are set immediately, so GTM's own timing stays accurate and any event pushed
-# during page load queues normally. Only the container download is deferred to
-# idle or first interaction — loading it in the head took mobile LCP from 2.4s
-# to 5.8s and unused JavaScript from 68KB to 250KB.
+# GOOGLE'S SNIPPET, VERBATIM. Do not modify it.
 #
-# Caveat: tags that must run before first paint (consent banners, A/B tests)
-# would need excluding from this deferral.
+# A previous version deferred the container download to requestIdleCallback to
+# save mobile LCP. That broke GTM's own "Test your website" verifier, which
+# loads the page and looks for the gtm.js request during load — deferred, there
+# is nothing for it to find, and it reports "Google tag wasn't detected".
+# Tag Assistant and Google Ads/GA4 verification behave the same way.
+#
+# The performance cost is real (mobile LCP roughly 3.1s -> 5.8s) but detection
+# and correct tag firing matter more. Reduce the cost inside the container
+# instead: fewer tags, native GA4 rather than custom HTML tags, and triggers
+# scoped to the pages that need them.
 GTM_HEAD = """<!-- Google Tag Manager -->
-<script>
-(function(w,d,s,l,i){
-  w[l]=w[l]||[];
-  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-  var loaded=false;
-  function load(){
-    if(loaded)return; loaded=true;
-    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-    f.parentNode.insertBefore(j,f);
-  }
-  if('requestIdleCallback' in w) w.requestIdleCallback(load,{timeout:3500});
-  else w.addEventListener('load',function(){setTimeout(load,1200)});
-  ['pointerdown','keydown','scroll','touchstart'].forEach(function(e){
-    w.addEventListener(e,load,{once:true,passive:true});
-  });
-})(window,document,'script','dataLayer','GTM_CONTAINER_ID');
-</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM_CONTAINER_ID');</script>
 <!-- End Google Tag Manager -->"""
 
 GTM_BODY = """<!-- Google Tag Manager (noscript) -->
@@ -343,6 +334,8 @@ SHELL = """<!DOCTYPE html>
 <link rel="shortcut icon" href="/assets/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
@@ -2276,7 +2269,29 @@ SERVICES = [
       [("Why does off-site matter more than my own website?",
         "Because language models weight independent confirmation above self-description. When a model sees the same brand described the same way across G2, Crunchbase, Reddit and three industry publications, it treats that repetition as consensus. Nothing you write on your own domain produces that signal."),
        ("We are not a software company. Do G2 and Capterra apply?",
-        "No, and applying a generic list is why most GEO work fails. The platforms change entirely by category: retailers need Trustpilot and marketplace presence, clinics need credentialed directories, manufacturers need trade publications. We derive your list during the audit from what is actually cited in your category.")]),
+        "No, and applying a generic list is why most GEO work fails. The platforms change entirely by category: retailers need Trustpilot and marketplace presence, clinics need credentialed directories, manufacturers need trade publications. We derive your list during the audit from what is actually cited in your category."),
+       ("Is a citation the same as a backlink?",
+        "No, and conflating them is a common mistake. A backlink passes ranking authority to a page. A citation passes recognition to a brand. Ten relevant, consistent mentions in sources a model already reads for your category do more for AI visibility than a hundred high-authority links from irrelevant sites, because retrieval weights contextual relevance and repeated description over raw link power."),
+       ("How soon does entity building show results?",
+        "Entity signals typically index at 30 to 45 days, first citations tend to appear around day 60, and consistent naming stabilises across 9 to 12 months. It is the slowest-compounding part of AI visibility and the most defensible once it holds, which is why we start it early rather than last.")],
+      body="""
+<h2>Why AI engines trust brands, not URLs</h2>
+<p>When a generative engine answers a question, it does not weigh your homepage against a competitor's homepage. It recalls which brands it associates with the topic, then looks for sources that corroborate naming them. That recall is built off your own domain &mdash; in the third-party places the model already trusts. A brand described the same way across a review platform, a business database, a community thread and a handful of industry publications reads to the model as consensus. A brand that only describes itself, on its own site, has no consensus to read.</p>
+<p>This is why on-page work alone plateaus. You can hold position one in Google and still be absent from the AI answer above it, because ranking measures your page and citation measures your reputation.</p>
+<h2>What entity building actually involves</h2>
+<ol>
+  <li><strong>Resolve the entity.</strong> One canonical brand name, one description, one category &mdash; rendered identically across your site, your profiles and structured data (Organization and sameAs). Most sites we audit describe themselves three different ways and fragment their own entity before anyone else does.</li>
+  <li><strong>Build the category-specific citation stack.</strong> The right platforms differ for every category: SaaS needs review databases, clinics need credentialed directories, retailers need marketplace and trust platforms, manufacturers need trade press. We derive the list from what is actually cited in your category, not a generic template.</li>
+  <li><strong>Reverse-engineer competitor citations.</strong> We take the brands already named in AI answers for your queries, export every domain cited alongside them, and target the same sources with better material.</li>
+  <li><strong>Establish the people.</strong> Founders and experts as resolvable entities &mdash; consistent bios, bylines and credentials &mdash; because models weight identifiable authorship.</li>
+  <li><strong>Run citation-first digital PR.</strong> Placements chosen for descriptive consistency and topical relevance, not raw domain rating.</li>
+</ol>
+<h2>Citations versus backlinks: not the same job</h2>
+<p>A backlink passes ranking authority; a citation passes recognition. Ten relevant, consistent mentions in sources a model already reads for your category do more for AI visibility than a hundred high-authority links from irrelevant sites, because retrieval weights contextual relevance and repeated description over raw link power. This work pairs directly with <a href="/generative-engine-optimization/">Generative Engine Optimization</a> and is measured through <a href="/services/ai-visibility-monitoring/">AI visibility monitoring</a>.</p>
+<h2>Timeline and measurement</h2>
+<p>Entity signals index at roughly 30 to 45 days, first citations tend to appear around day 60, and consistent naming stabilises across 9 to 12 months. We report the citation footprint monthly: which sources describe you, how consistently, and how your share of citation compares with named competitors.</p>
+<p class="faint">No one controls what a model generates, and there is no submission process. What we control is the consistency and reach of your off-site footprint, measured and reported so the trend is visible.</p>
+"""),
 
     S("ai-visibility-monitoring", "AI Visibility Monitoring", "AI Search", "&#9678;",
       "AI visibility monitoring measures whether your brand is actually being cited by generative engines, combining automated citation tracking with controlled weekly prompt testing across ChatGPT, Perplexity and Gemini. It is the only way to know whether GEO work is producing anything.",
