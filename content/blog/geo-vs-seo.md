@@ -32,7 +32,7 @@ In a ranked list, a new page can displace an old one on the strength of that pag
 
 ## Where AEO fits
 
-AEO (Answer Engine Optimization) is the narrowest of the three and the most concrete. It is about owning the **direct answer to a specific question** — the featured snippet, the People Also Ask box, the summarised paragraph at the top of an AI Overview.
+[AEO (Answer Engine Optimization)](/services/answer-engine-optimization/) is the narrowest of the three and the most concrete. It is about owning the **direct answer to a specific question** — the featured snippet, the People Also Ask box, the summarised paragraph at the top of an AI Overview.
 
 - **AEO is page-level and structural.** Question architecture, FAQ schema, a direct answer in the first 100 words.
 - **GEO is brand-level and reputational.** Entity resolution, third-party citations, consistency across sources.
@@ -58,7 +58,7 @@ The remaining 30% is where GEO is its own discipline:
 
 1. **Off-site consensus outweighs on-page polish.** A model that sees your brand described identically across G2, Crunchbase, Reddit and three industry blogs trusts that pattern more than anything on your own domain. Classic SEO barely touches this outside of link building, and link building optimises for the wrong variable — domain rating rather than descriptive consistency.
 
-2. **There is no position to measure.** No "#1". You measure citation frequency, share of voice against competitors, and which specific sources get pulled. That requires controlled prompt testing at a fixed cadence, not a rank tracker.
+2. **There is no position to measure.** No "#1". You measure citation frequency, share of voice against competitors, and which specific sources get pulled. That requires [controlled prompt testing and AI visibility monitoring](/services/ai-visibility-monitoring/) at a fixed cadence, not a rank tracker.
 
 3. **Entity consistency is a hard requirement.** If your brand is rendered three different ways across your site and your social profiles, you have fragmented your own entity. This costs nothing to fix and almost every site we audit fails it.
 
@@ -68,12 +68,29 @@ The remaining 30% is where GEO is its own discipline:
 
 Wrong question. The right sequencing:
 
-1. **Fix technical foundations first.** They are a prerequisite for both. Non-negotiable.
+1. **Fix [technical foundations](/services/technical-seo/) first.** They are a prerequisite for both. Non-negotiable.
 2. **Run AEO on your money pages.** Cheapest, fastest feedback, improves classic rankings too.
-3. **Run GEO continuously in the background.** Slowest to show results, most defensible once established, and the window is currently open in most categories.
+3. **Run [GEO](/generative-engine-optimization/) continuously in the background.** Slowest to show results, most defensible once established, and the window is currently open in most categories.
 
 If your budget only covers one, and your technical health is sound, start GEO now. Traditional rankings can be improved at any time. Entity authority takes 90 days minimum to establish and roughly a year to become defensible — and it gets more expensive every quarter you wait, because you eventually stop establishing a position and start trying to displace one.
 
 ## The honest caveat
 
 Nobody controls these models and there is no submission process. What you control is every input that makes citation likely: entity resolution, citation consensus, retrieval structure and freshness. Anyone guaranteeing you a ChatGPT citation is guessing, and anyone promising it inside two weeks has not measured it.
+
+## Frequently asked questions
+
+**Is GEO the same as SEO?**
+No. SEO optimises for a position in a ranked list of links, driven mainly by on-page relevance and backlinks. GEO optimises to be the brand a language model names inside a generated answer, driven mainly by entity authority and off-site citation consensus. They share a technical foundation but diverge sharply after it, which is why a site that fails at crawlability fails at both.
+
+**Does GEO replace SEO?**
+No — they run together. Traditional ranked search still drives a large share of revenue, and generative answers increasingly influence the decision before the click. Optimising for one and ignoring the other leaves visibility on the table. The right move is sequencing: technical foundation first, AEO on money pages, GEO continuously in the background.
+
+**Is GEO the same as AEO?**
+No. AEO (Answer Engine Optimization) is page-level and structural — it makes a specific page the quotable answer to a specific question through question architecture and FAQ schema. GEO is brand-level and reputational — it makes a model recall your brand at all. AEO shows results faster; GEO is more defensible once established. Most brands need both.
+
+**How long does GEO take to work?**
+On a typical curve: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, and stable category visibility at 9 to 12 months. It is slower than classic ranking work and more defensible once it holds, which is why the cost of waiting compounds.
+
+**Can I do GEO myself?**
+Parts of it, yes. Schema, answer-block structure and freshness are internal work once someone defines the standard. The harder pieces — building the off-site citation footprint, reverse-engineering competitor citations, and controlled prompt testing at a weekly cadence — need external relationships and disciplined measurement.

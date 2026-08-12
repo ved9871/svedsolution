@@ -266,17 +266,41 @@ FOOTER = f"""
 </footer>
 """
 
-GA_ID = "G-JJXBTFSP4Z"
+# GA4 is configured inside GTM, not hardcoded in the page. Kept here only for
+# reference — nothing substitutes it any more.
+GA4_MEASUREMENT_ID = "G-JJXBTFSP4Z"
 GTM_ID = "GTM-M94D8W4K"
 
 # Injected via placeholder rather than inline in SHELL: the snippet is full of
 # braces and SHELL goes through str.format(), where every { would need doubling.
+#
+# This is Google's snippet split in two. dataLayer and the gtm.start timestamp
+# are set immediately, so GTM's own timing stays accurate and any event pushed
+# during page load queues normally. Only the container download is deferred to
+# idle or first interaction — loading it in the head took mobile LCP from 2.4s
+# to 5.8s and unused JavaScript from 68KB to 250KB.
+#
+# Caveat: tags that must run before first paint (consent banners, A/B tests)
+# would need excluding from this deferral.
 GTM_HEAD = """<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM_CONTAINER_ID');</script>
+<script>
+(function(w,d,s,l,i){
+  w[l]=w[l]||[];
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var loaded=false;
+  function load(){
+    if(loaded)return; loaded=true;
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  }
+  if('requestIdleCallback' in w) w.requestIdleCallback(load,{timeout:3500});
+  else w.addEventListener('load',function(){setTimeout(load,1200)});
+  ['pointerdown','keydown','scroll','touchstart'].forEach(function(e){
+    w.addEventListener(e,load,{once:true,passive:true});
+  });
+})(window,document,'script','dataLayer','GTM_CONTAINER_ID');
+</script>
 <!-- End Google Tag Manager -->"""
 
 GTM_BODY = """<!-- Google Tag Manager (noscript) -->
@@ -323,33 +347,6 @@ SHELL = """<!DOCTYPE html>
 <link rel="preload" href="/assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <script type="application/ld+json">{schema}</script>
-<!-- Google tag (gtag.js) — the dataLayer stub is inline so events queue
-     immediately, but the 69KB library is fetched after first paint. Loading it
-     in the head cost roughly 750ms of render-blocking time on mobile. -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-  (function () {{
-    var loaded = false;
-    function loadGtag() {{
-      if (loaded) return;
-      loaded = true;
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
-      document.head.appendChild(s);
-    }}
-    // Whichever comes first: the browser going idle, a real interaction, or a
-    // 3s backstop so a passive visit is still measured.
-    if ('requestIdleCallback' in window) requestIdleCallback(loadGtag, {{ timeout: 3000 }});
-    else window.addEventListener('load', function () {{ setTimeout(loadGtag, 1200); }});
-    ['pointerdown', 'keydown', 'scroll'].forEach(function (e) {{
-      window.addEventListener(e, loadGtag, {{ once: true, passive: true }});
-    }});
-  }})();
-</script>
 </head>
 <body>
 <!--GTM-BODY-->
@@ -2230,9 +2227,9 @@ def industry_page(i):
 # ==========================================================================
 # Individual service pages
 # ==========================================================================
-def S(slug, name, cluster, icon, answer, kw, does, deliver, faqs):
+def S(slug, name, cluster, icon, answer, kw, does, deliver, faqs, body=""):
     return dict(slug=slug, name=name, cluster=cluster, icon=icon, answer=answer,
-                kw=kw, does=does, deliver=deliver, faqs=faqs)
+                kw=kw, does=does, deliver=deliver, faqs=faqs, body=body)
 
 
 SERVICES = [
@@ -2297,7 +2294,7 @@ SERVICES = [
         "Citation count and trend, which of your pages were cited and how often, results of the weekly prompt tests with the exact prompts used, competitor share of citation, and a written explanation of what changed and what we are doing next month. Roughly two pages of prose, not forty tabs.")]),
 
     S("google-ai-overviews-optimization", "Google AI Overviews Optimization", "AI Search", "&#9650;",
-      "AI Overviews optimization recovers and defends the traffic Google's generated summaries absorb. It starts with query-level diagnosis of exactly where clicks were lost, then restructures content so your brand is named inside the summary rather than buried beneath it.",
+      "AI Overviews optimization recovers and defends the traffic Google's generated summaries absorb. An AI Overview answers the query above your listing and names two or three brands, so your clicks can fall while impressions and average position hold &mdash; the measurable fingerprint of absorption rather than a ranking loss. Demand is large and still growing: the term &lsquo;google ai overviews&rsquo; alone draws roughly 22,200 US searches a month. We diagnose exactly which of your queries are affected, then restructure content so your brand is named inside the summary rather than buried beneath it.",
       "Google AI Overviews, AI Overview optimization, SGE optimization, zero click recovery, CTR loss",
       ["Audit which of your queries now trigger an AI Overview",
        "Attribute CTR loss precisely in Search Console",
@@ -2308,8 +2305,33 @@ SERVICES = [
        "Prioritised content restructuring plan", "Monthly presence tracking"],
       [("Our rankings held but clicks collapsed. Is this why?",
         "Very often, yes. An AI Overview sitting above your number-two ranking answers the query outright and names two or three brands. Impressions and position look unchanged while clicks fall, so it reads as an unexplained CTR decline. The first thing we do is confirm whether that is what happened, query by query."),
+       ("How is this different from ordinary SEO?",
+        "Ordinary SEO competes for a position in the list of links. AI Overview optimization competes for inclusion in the generated summary that now sits above that list. The technical foundation is shared, but the winning move differs: a direct, quotable answer in the opening, valid FAQ schema, and a brand entity Google is confident enough to name. A page can rank in position two and still be absent from the Overview above it."),
+       ("Which pages should we start with?",
+        "The ones losing clicks fastest. We start from Search Console, rank your pages by the gap between held impressions and falling clicks, and fix the biggest measurable leaks first. On a newer site with little click history, we start instead with the commercial queries where an Overview is most likely to name a provider."),
+       ("There is no ranking position, so how do you measure it?",
+        "We report presence, not position. Each month you see which of your queries trigger an AI Overview, whether your brand is named in each, how that shifted from the prior month, and the click-through recovery on the pages we restructured. Entity indexing typically registers at 30 to 45 days and inclusion patterns settle across 4 to 6 months."),
        ("Can you guarantee inclusion in an AI Overview?",
-        "No. Nobody controls what Google generates and there is no submission process. What we control is every input that makes inclusion likely, and we report presence monthly so you can see whether it is working.")]),
+        "No. Nobody controls what Google generates and there is no submission process. What we control is every input that makes inclusion likely, and we report presence monthly so you can see whether it is working.")],
+      body="""
+<h2>Why AI Overviews changed the click math</h2>
+<p>An AI Overview is the summary Google generates above the traditional results for a growing share of queries. When one appears, it answers the question outright and names two or three brands inside the summary. Your page can hold the exact position it held last quarter while its clicks fall, because the searcher gets the answer without scrolling to the links. In Search Console this reads as a clean drop in click-through rate against flat impressions and unchanged average position &mdash; the signature of AI Overview absorption rather than a ranking loss.</p>
+<p>The demand is not niche. &lsquo;Google AI Overviews&rsquo; alone draws roughly 22,200 US searches a month, and the surface keeps expanding into more informational and commercial queries. For most sites the question is no longer whether AI Overviews affect their traffic, but which specific queries have already been absorbed and whether the brand is named or buried.</p>
+<h2>How we optimise for Google AI Overviews</h2>
+<p>The work runs in five steps, in this order:</p>
+<ol>
+  <li><strong>Map presence, query by query.</strong> We identify which of your ranking queries now trigger an AI Overview, and whether your brand is named inside it, buried beneath it, or absent.</li>
+  <li><strong>Attribute the loss.</strong> Using Search Console, we isolate the pages where clicks fell while impressions and position held &mdash; the measurable fingerprint of absorption &mdash; so effort goes where revenue actually leaked.</li>
+  <li><strong>Restructure for inclusion.</strong> We rewrite the affected pages answer-first: a direct 40-to-60-word answer in the opening, question-shaped subheadings, and dense, extractable blocks Google can lift into the summary.</li>
+  <li><strong>Reinforce entity and schema signals.</strong> FAQPage, Article and Organization structured data, a consistent brand description, and the off-site citation consensus that makes Google confident enough to name you rather than a competitor.</li>
+  <li><strong>Rebalance toward click-worthy demand.</strong> Some queries keep the click and some do not. We shift the content mix toward the transactional and commercial queries where a click still happens, and defend the informational ones with brand-name inclusion.</li>
+</ol>
+<h2>What gets named versus what gets buried</h2>
+<p>Two pages can rank in the same position and get opposite outcomes. The page that opens with a direct, quotable answer, carries valid FAQ schema and is corroborated by consistent third-party mentions is the one Google pulls into the summary. The page that opens with a story intro, hides its answer three scrolls down and has a fragmented brand entity is the one that sits unread below the fold. This service is the discipline of being consistently the former &mdash; and it pairs directly with <a href="/services/answer-engine-optimization/">Answer Engine Optimization</a>, <a href="/services/ai-citation-entity-building/">AI citation and entity building</a> and a sound <a href="/services/technical-seo/">technical foundation</a>.</p>
+<h2>What we measure</h2>
+<p>There is no position to report, so we report presence. Every month you see which of your queries trigger an AI Overview, whether your brand is named in each, how that changed from the prior month, and the click-through recovery on the pages we restructured. Entity indexing typically registers at 30 to 45 days and inclusion patterns stabilise across 4 to 6 months, tracked through <a href="/services/ai-visibility-monitoring/">AI visibility monitoring</a>. We report the numbers whether or not they flatter the work.</p>
+<p class="faint">We cannot guarantee inclusion in an AI Overview &mdash; nobody controls what Google generates and there is no submission process. What we control is every input that makes inclusion likely, measured and reported so you can see whether it is working.</p>
+"""),
 
     S("technical-seo", "Technical SEO", "Core SEO", "&#9881;",
       "Technical SEO is the foundation everything else depends on: crawl budget, index bloat, rendering, Core Web Vitals, site architecture and log-file analysis. A site that cannot be crawled or rendered cannot rank in classic search or be retrieved by an AI system.",
@@ -2532,7 +2554,7 @@ def service_page(s):
     </div>
   </div>
 </section>
-
+{('<section class="sec"><div class="wrap wrap-narrow prose">' + s["body"] + '</div></section>') if s.get("body") else ''}
 <section class="sec band-dark">
   <div class="wrap">
     <div class="sec-head center">
@@ -2858,7 +2880,6 @@ def render(title, desc, slug, body, schema=None, keywords=None):
     html = (html
             .replace("<!--GTM-HEAD-->", GTM_HEAD.replace("GTM_CONTAINER_ID", GTM_ID))
             .replace("<!--GTM-BODY-->", GTM_BODY.replace("GTM_CONTAINER_ID", GTM_ID))
-            .replace("GA_MEASUREMENT_ID", GA_ID)
             .replace("CALENDLY_URL", CALENDLY)
             .replace("WHATSAPP_NUMBER", WHATSAPP_RAW)
             .replace("<!--TEAM-->", TEAM_CARDS)

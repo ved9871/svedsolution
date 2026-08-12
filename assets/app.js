@@ -2,6 +2,24 @@
 (function () {
   'use strict';
 
+  /**
+   * Push a custom event onto dataLayer for GTM to pick up.
+   *
+   * GA4 is configured inside GTM rather than hardcoded, so window.gtag does not
+   * exist. Pushing to dataLayer works whether or not the container has finished
+   * loading — the array is created by the GTM stub before this script runs, and
+   * queued events are processed once the container arrives.
+   *
+   * Create matching Custom Event triggers in GTM for: generate_lead,
+   * video_start.
+   */
+  function track(event, params) {
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: event }, params || {}));
+    } catch (e) { /* analytics must never break the page */ }
+  }
+
   /* ---- Mobile nav ---- */
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.querySelector('.nav');
@@ -66,7 +84,7 @@
       el.removeAttribute('role');
       el.removeAttribute('tabindex');
       el.appendChild(f);
-      if (window.gtag) gtag('event', 'video_start', { provider: 'youtube' });
+      track('video_start', { provider: 'youtube' });
     }
     el.addEventListener('click', load);
     el.addEventListener('keydown', function (e) {
@@ -102,7 +120,7 @@
             ? 'Subscribed. The AI Search Playbook is on its way.'
             : 'Thanks. We reply within one business day.';
           status.className = 'form-status ok';
-          if (window.gtag) gtag('event', 'generate_lead', { form_type: data.type });
+          track('generate_lead', { form_type: data.type });
         })
         .catch(function (err) {
           status.textContent = err.message || 'Could not send. Please email hello@svedsolution.com.';
