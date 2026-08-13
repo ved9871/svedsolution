@@ -1,6 +1,7 @@
 ---
 title: "How to Rank in ChatGPT: A Step-by-Step Method for 2026"
 slug: "how-to-rank-in-chatgpt"
+image: "blog-how-to-rank-in-chatgpt.png"
 description: "You cannot rank in ChatGPT the way you rank in Google — there is no position. Here is the method that makes a language model retrieve, trust and name your brand inside its answers."
 answer: "You cannot 'rank' in ChatGPT the way you rank in Google, because a generated answer has no numbered positions — only which brands the model names and which sources it cites. You influence that through four levers: make your pages machine-retrievable (crawlable, rendered server-side, cleanly chunked), answer questions directly in the first 100 words, build a consistent off-site citation footprint so the model trusts your brand as an entity, and keep content fresh. Entity signals typically index in 30 to 45 days and first citations appear around day 60."
 category: "AI Search"

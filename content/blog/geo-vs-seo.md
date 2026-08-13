@@ -1,6 +1,7 @@
 ---
 title: "GEO vs SEO: A Clean Mental Model (And Why You Don't Pick One)"
 slug: "geo-vs-seo"
+image: "blog-geo-vs-seo.png"
 description: "GEO optimises to be named inside a generated answer. SEO optimises for a position in a ranked list. Here is where they overlap, where they diverge, and how to run both."
 answer: "GEO (Generative Engine Optimization) and SEO are not competing disciplines — they optimise for two different retrieval systems that now sit on the same page. SEO competes for a position in a ranked list of links and is driven mainly by on-page relevance and backlinks. GEO competes to be the brand a language model names inside a generated answer, and is driven mainly by entity authority and off-site citation consensus. They share a technical foundation, so a site that fails at crawlability fails at both."
 category: "Strategy"
@@ -76,7 +77,7 @@ If your budget only covers one, and your technical health is sound, start GEO no
 
 ## The honest caveat
 
-Nobody controls these models and there is no submission process. What you control is every input that makes citation likely: entity resolution, citation consensus, retrieval structure and freshness. Anyone guaranteeing you a ChatGPT citation is guessing, and anyone promising it inside two weeks has not measured it.
+Nobody controls these models and there is no submission process. What you control is every input that makes citation likely: entity resolution, citation consensus, retrieval structure and freshness. Anyone guaranteeing you a ChatGPT citation is guessing, and anyone promising it inside two weeks has not measured it. If you want the practical method, see [how to rank in ChatGPT](/insights/how-to-rank-in-chatgpt/).
 
 ## Frequently asked questions
 

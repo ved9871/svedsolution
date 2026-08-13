@@ -320,11 +320,11 @@ SHELL = """<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_IN">
 <meta property="og:url" content="https://svedsolution.com/{slug}">
-<meta property="og:image" content="https://svedsolution.com/assets/og-image.svg">
+<meta property="og:image" content="{og_image}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
-<meta name="twitter:image" content="https://svedsolution.com/assets/og-image.svg">
+<meta name="twitter:image" content="{og_image}">
 <meta name="geo.region" content="IN-WB">
 <meta name="geo.placename" content="Kolkata">
 <meta name="theme-color" content="#0B1219">
@@ -2006,6 +2006,7 @@ def load_posts():
             "date": meta.get("date", ""),
             "author": meta.get("author", "Ved Prakash"),
             "answer": meta.get("answer", ""),
+            "image": meta.get("image", ""),
             "html": md_to_html(body),
         })
     posts.sort(key=lambda p: p["date"], reverse=True)
@@ -2885,9 +2886,10 @@ DEFAULT_KEYWORDS = ("SEO services India, GEO services, generative engine optimiz
                     "Perplexity SEO, AI visibility, technical SEO, SEO agency Kolkata")
 
 
-def render(title, desc, slug, body, schema=None, keywords=None):
+def render(title, desc, slug, body, schema=None, keywords=None, og_image=None):
     html = SHELL.format(title=title, desc=desc, slug=slug, keywords=keywords or DEFAULT_KEYWORDS,
                         schema=schema or ORG_SCHEMA, nav=NAV, logo=LOGO_SVG,
+                        og_image=og_image or "https://svedsolution.com/assets/og-image.svg",
                         body=body, footer=FOOTER)
     # Literal placeholders replaced after .format() so braces in the gtag
     # snippet never have to be escaped twice, and so page bodies can reference
@@ -2975,8 +2977,9 @@ def build():
         written.append((name.replace("\\", "/"), write(name, html)))
 
     for p in posts:
+        og = ("https://svedsolution.com/assets/" + p["image"]) if p.get("image") else None
         html = render(f'{p["title"]} | SVED Solution', p["desc"],
-                      f'insights/{p["slug"]}/', post_page(p), post_schema(p))
+                      f'insights/{p["slug"]}/', post_page(p), post_schema(p), og_image=og)
         rel = os.path.join("insights", p["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
