@@ -2020,7 +2020,8 @@ def post_schema(p):
             f'"author":{{"@type":"Person","name":{_j(p["author"])}}},'
             '"publisher":{"@type":"Organization","name":"SVED Solution",'
             '"url":"https://svedsolution.com/"},'
-            f'"mainEntityOfPage":"https://svedsolution.com/insights/{p["slug"]}/"}}')
+            + (f'"image":"https://svedsolution.com/assets/{p["image"]}",' if p.get("image") else "")
+            + f'"mainEntityOfPage":"https://svedsolution.com/insights/{p["slug"]}/"}}')
 
 
 def _j(s):
@@ -2158,6 +2159,20 @@ def lc(label):
     return " ".join(out)
 
 
+def industry_faqs(i):
+    label = i["name"].replace("&amp;", "and")
+    return [
+      (f"How is {label} SEO different from generic SEO?",
+       f"The technical foundations are identical. What changes is the citation stack, the schema types and the intent mix. {label} buyers use different research surfaces, and AI models weight different third-party sources when answering questions in this category. We reverse-engineer which sources actually get cited for your specific vertical during the audit, rather than applying a generic checklist."),
+      ("How long before we see results?",
+       "Traditional ranking improvements typically show inside 60 to 90 days, faster on pages already sitting in positions 8 to 20. AI citations follow the same curve every time: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
+      ("Do you have experience in this specific industry?",
+       f"Yes. The engagements listed above are live or completed work in {lc(label)}. We will walk you through the actual accounts, anonymised as the client requires, on a scoping call."),
+      ("What does it cost?",
+       "Consulting is $30 per hour for one-off sessions. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Start with the free AI visibility audit and the priority usually becomes obvious."),
+    ]
+
+
 def industry_page(i):
     pains = "".join(f"<li>{p}</li>" for p in i["pains"])
     plays = "".join(f'<div class="crow"><span class="lbl">{n:02d}</span><span class="val" style="text-align:left;flex:1">{p}</span></div>'
@@ -2202,16 +2217,7 @@ def industry_page(i):
   </div>
 </section>
 
-{faq([
-  (f"How is {label} SEO different from generic SEO?",
-   f"The technical foundations are identical. What changes is the citation stack, the schema types and the intent mix. {label} buyers use different research surfaces, and AI models weight different third-party sources when answering questions in this category. We reverse-engineer which sources actually get cited for your specific vertical during the audit, rather than applying a generic checklist."),
-  ("How long before we see results?",
-   "Traditional ranking improvements typically show inside 60 to 90 days, faster on pages already sitting in positions 8 to 20. AI citations follow the same curve every time: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
-  ("Do you have experience in this specific industry?",
-   f"Yes. The engagements listed above are live or completed work in {lc(label)}. We will walk you through the actual accounts, anonymised as the client requires, on a scoping call."),
-  ("What does it cost?",
-   "Consulting is $30 per hour for one-off sessions. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Start with the free AI visibility audit and the priority usually becomes obvious."),
-])}
+{faq(industry_faqs(i))}
 
 {cta(f"See how visible you are in {label} AI answers.",
      "Twelve eligibility checks against your live URL. No card, no call, about sixty seconds.")}
@@ -2531,6 +2537,14 @@ SERVICES = [
 ]
 
 
+SERVICE_EXTRA_FAQS = [
+  ("How long before we see results?",
+   "Traditional ranking improvements typically appear within 60 to 90 days, faster on pages already ranking between positions 8 and 20. AI citations follow a consistent curve: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
+  ("What does it cost?",
+   "Consulting is $30 per hour. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Run the free audit first and the priority usually becomes obvious."),
+]
+
+
 def service_page(s):
     does = "".join(f"<li>{d}</li>" for d in s["does"])
     deliver = "".join(
@@ -2581,12 +2595,7 @@ def service_page(s):
   </div>
 </section>
 
-{faq(s["faqs"] + [
-  ("How long before we see results?",
-   "Traditional ranking improvements typically appear within 60 to 90 days, faster on pages already ranking between positions 8 and 20. AI citations follow a consistent curve: entity indexing at 30 to 45 days, first citations around day 60, consistent mentions by day 90, stable visibility at 4 to 6 months."),
-  ("What does it cost?",
-   "Consulting is $30 per hour. Retainers are scoped after the audit, because quoting before diagnosis is guesswork. Run the free audit first and the priority usually becomes obvious."),
-])}
+{faq(s["faqs"] + SERVICE_EXTRA_FAQS)}
 
 {cta(f"See where you stand before you buy {plain}.",
      "Twelve AI eligibility checks against your live URL. No card, no call, about sixty seconds.")}
@@ -2979,7 +2988,7 @@ def build():
     for p in posts:
         og = ("https://svedsolution.com/assets/" + p["image"]) if p.get("image") else None
         html = render(f'{p["title"]} | SVED Solution', p["desc"],
-                      f'insights/{p["slug"]}/', post_page(p), post_schema(p), og_image=og)
+                      f'insights/{p["slug"]}/', post_page(p), post_ld(p), og_image=og)
         rel = os.path.join("insights", p["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
@@ -2990,7 +2999,7 @@ def build():
             f'{plain} SEO Services India | SVED Solution',
             re.sub(r"<[^>]+>", "", i["short"])[:152],
             f'{i["slug"]}/', industry_page(i),
-            keywords=i["kw"])
+            schema=industry_ld(i), keywords=i["kw"])
         rel = os.path.join(i["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
@@ -3024,7 +3033,7 @@ def build():
             f'{plain} Services | SVED Solution',
             re.sub(r"<[^>]+>", "", s["answer"])[:152],
             f'services/{s["slug"]}/', service_page(s),
-            schema=service_schema(s), keywords=s["kw"])
+            schema=service_ld(s), keywords=s["kw"])
         rel = os.path.join("services", s["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
@@ -3138,6 +3147,79 @@ def service_schema(s):
             f'"url":"https://svedsolution.com/services/{s["slug"]}/",'
             '"offers":{"@type":"Offer","priceCurrency":"USD","price":"30",'
             '"description":"Consulting from $30 per hour; retainers scoped after audit"}}')
+
+
+# ---- structured data: breadcrumbs, FAQ, and per-type JSON-LD bundles -----
+def _u(path):
+    return "https://svedsolution.com/" + path.lstrip("/")
+
+
+def _plain(t):
+    t = re.sub(chr(60) + "[^" + chr(62) + "]+" + chr(62), "", str(t))
+    for a, b in (("&mdash;", "—"), ("&amp;", "&"), ("&lsquo;", "'"),
+                 ("&rsquo;", "'"), ("&ldquo;", '"'), ("&rdquo;", '"'), ("&#37;", "%")):
+        t = t.replace(a, b)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def breadcrumb_schema(trail):
+    items = ",".join(
+        '{"@type":"ListItem","position":%d,"name":%s,"item":%s}'
+        % (n, _j(_plain(nm)), _j(_u(u))) for n, (nm, u) in enumerate(trail, 1))
+    return ('{"@context":"https://schema.org","@type":"BreadcrumbList",'
+            '"itemListElement":[%s]}' % items)
+
+
+def faq_schema(faqs):
+    if not faqs:
+        return ""
+    ent = ",".join(
+        '{"@type":"Question","name":%s,"acceptedAnswer":{"@type":"Answer","text":%s}}'
+        % (_j(_plain(q)), _j(_plain(a))) for q, a in faqs)
+    return '{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[%s]}' % ent
+
+
+def bundle(*objs):
+    return "[" + ",".join(o for o in objs if o) + "]"
+
+
+def service_ld(s):
+    name = s["name"].replace("&amp;", "and")
+    trail = [("Home", ""), ("Services", "services/"), (name, "services/%s/" % s["slug"])]
+    return bundle(service_schema(s), breadcrumb_schema(trail),
+                  faq_schema(s["faqs"] + SERVICE_EXTRA_FAQS))
+
+
+def industry_service_schema(i):
+    name = i["name"].replace("&amp;", "and")
+    return ('{"@context":"https://schema.org","@type":"Service",'
+            f'"name":{_j(name + " SEO & AI Visibility")},"serviceType":{_j(name + " SEO")},'
+            f'"description":{_j(_plain(i["short"]))},'
+            '"provider":{"@type":"ProfessionalService","name":"SVED Solution",'
+            '"url":"https://svedsolution.com/","telephone":"+917846045690","email":"hello@svedsolution.com"},'
+            '"areaServed":["IN","US","GB","AE"],'
+            f'"url":{_j(_u(i["slug"] + "/"))}}}')
+
+
+def industry_ld(i):
+    name = i["name"].replace("&amp;", "and")
+    trail = [("Home", ""), ("Industries", "industries/"), (name, "%s/" % i["slug"])]
+    return bundle(industry_service_schema(i), breadcrumb_schema(trail),
+                  faq_schema(industry_faqs(i)))
+
+
+def post_faq_pairs(html):
+    seg = html.split("Frequently asked questions", 1)
+    if len(seg) < 2:
+        return []
+    return re.findall(r"<p><strong>(.*?)</strong>\s*(.*?)</p>", seg[1], re.S)
+
+
+def post_ld(p):
+    trail = [("Home", ""), ("Insights", "insights/"),
+             (_plain(p["title"]), "insights/%s/" % p["slug"])]
+    return bundle(post_schema(p), breadcrumb_schema(trail),
+                  faq_schema(post_faq_pairs(p["html"])))
 
 
 if __name__ == "__main__":
