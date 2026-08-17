@@ -2986,8 +2986,9 @@ def build():
     # Directory-style output so clean URLs work identically on Cloudflare Pages
     # and on any plain static server used for local review.
     for slug, p in PAGES.items():
-        html = render(p["title"], p["desc"], p["slug"], p["body"],
-                      schema=team_schema() if slug == "about" else None)
+        sch = page_ld(p["slug"], p["title"],
+                      base=team_schema() if slug == "about" else None)
+        html = render(p["title"], p["desc"], p["slug"], p["body"], schema=sch)
         name = "index.html" if slug == "index" else os.path.join(slug, "index.html")
         written.append((name.replace("\\", "/"), write(name, html)))
 
@@ -3021,6 +3022,7 @@ def build():
     ]:
         html = render(f"{title} | SVED Solution", desc, f"{slug}/",
                       legal_page(title, intro, sections),
+                      schema=page_ld(f"{slug}/", title),
                       keywords=f"SVED Solution {title.lower()}")
         rel = os.path.join(slug, "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
@@ -3030,7 +3032,8 @@ def build():
         os.path.join("sitemap", "index.html"),
         render("Sitemap | Every Page on SVED Solution",
                "Complete index of svedsolution.com: services, industries, insights and resources.",
-               "sitemap/", sitemap_page(posts)))))
+               "sitemap/", sitemap_page(posts),
+               schema=page_ld("sitemap/", "Sitemap")))))
 
     # One page per service.
     for s in SERVICES:
@@ -3226,6 +3229,46 @@ def post_ld(p):
              (_plain(p["title"]), "insights/%s/" % p["slug"])]
     return bundle(post_schema(p), breadcrumb_schema(trail),
                   faq_schema(post_faq_pairs(p["html"])))
+
+
+WEBSITE_SCHEMA = ('{"@context":"https://schema.org","@type":"WebSite",'
+                  '"name":"SVED Solution","url":"https://svedsolution.com/",'
+                  '"publisher":{"@type":"Organization","name":"SVED Solution","url":"https://svedsolution.com/"}}')
+
+_SEG_NAMES = {"services": "Services", "industries": "Industries", "insights": "Insights",
+              "about": "About", "contact": "Contact", "reviews": "Reviews", "videos": "Videos",
+              "resources": "Resources", "use-cases": "Use Cases", "case-studies": "Case Studies",
+              "terms": "Terms of Service", "privacy": "Privacy Policy", "sitemap": "Sitemap"}
+
+
+def _seg_name(seg):
+    return _SEG_NAMES.get(seg, seg.replace("-", " ").title())
+
+
+def page_breadcrumb(slug, name):
+    parts = [p for p in slug.strip("/").split("/") if p]
+    if not parts:
+        return ""
+    trail = [("Home", "")]
+    acc = ""
+    for i, seg in enumerate(parts):
+        acc += seg + "/"
+        trail.append((name if i == len(parts) - 1 else _seg_name(seg), acc))
+    return breadcrumb_schema(trail)
+
+
+def webpage_schema(name, slug):
+    return ('{"@context":"https://schema.org","@type":"WebPage",'
+            f'"name":{_j(_plain(name))},"url":{_j(_u(slug))},'
+            '"isPartOf":{"@type":"WebSite","name":"SVED Solution","url":"https://svedsolution.com/"},'
+            '"publisher":{"@type":"Organization","name":"SVED Solution","url":"https://svedsolution.com/"}}')
+
+
+def page_ld(slug, title, base=None):
+    name = re.sub(r"\s*\|.*$", "", title).strip()
+    if not slug.strip("/"):
+        return bundle(ORG_SCHEMA, WEBSITE_SCHEMA)
+    return bundle(base or webpage_schema(name, slug), page_breadcrumb(slug, name))
 
 
 if __name__ == "__main__":
