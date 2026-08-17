@@ -2032,6 +2032,11 @@ def post_page(p):
     ans = ""
     if p["answer"]:
         ans = f'<div class="answer-block" style="margin-top:0"><div class="q">The short answer</div><p>{p["answer"]}</p></div>'
+    hero = ""
+    if p.get("image"):
+        hero = (f'<figure style="margin:0 0 2rem"><img src="/assets/{p["image"]}" '
+                f'alt="{p["title"]}" width="1200" height="630" '
+                'style="width:100%;height:auto;border-radius:12px;display:block" loading="eager"></figure>')
     return f"""
 <section class="phero">
   <div class="wrap wrap-narrow">
@@ -2044,6 +2049,7 @@ def post_page(p):
 </section>
 <section class="sec">
   <div class="wrap wrap-narrow prose">
+    {hero}
     {ans}
     {p["html"]}
   </div>
