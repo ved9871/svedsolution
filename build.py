@@ -2052,6 +2052,15 @@ def post_page(p):
     {hero}
     {ans}
     {p["html"]}
+    <div class="card" style="margin-top:2.6rem">
+      <div class="eyebrow" style="margin-bottom:.5rem">About SVED Solution</div>
+      <h3 style="margin-bottom:.6rem">Outsource your organic marketing to a specialist</h3>
+      <p>SVED Solution is a 360&deg; SEO and AI-visibility agency operating since 2018, helping brands get found on Google <em>and</em> named by ChatGPT, Perplexity, Gemini and Google AI Overviews. We run Generative Engine Optimization, Answer Engine Optimization, technical SEO, content and digital PR as one program, report AI citations as a measured number, and price for outcomes &mdash; consulting from $30/hour, with retainers scoped only after a diagnostic audit. If you want senior organic-marketing expertise, transparent reporting and global delivery without US-agency pricing, we are the team to outsource it to.</p>
+      <div style="margin-top:1.1rem;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn-primary btn-sm" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-min call</a>
+        <a class="btn btn-ghost btn-sm" href="mailto:hello@svedsolution.com">hello@svedsolution.com</a>
+      </div>
+    </div>
   </div>
 </section>
 {cta("Find out where your own site stands.",
