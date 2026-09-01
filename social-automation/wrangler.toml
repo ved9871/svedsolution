@@ -1,0 +1,22 @@
+name = "sved-social-poster"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+# Runs once daily at 09:30 UTC (15:00 IST). Adjust as needed.
+[triggers]
+crons = ["30 9 * * *"]
+
+# Non-secret config
+[vars]
+START_DATE = "2026-08-20T00:00:00Z"
+
+# Secrets are NOT stored here. Set them with:
+#   wrangler secret put META_PAGE_ID
+#   wrangler secret put META_IG_USER_ID
+#   wrangler secret put META_PAGE_TOKEN
+#   wrangler secret put LINKEDIN_ORG_ID
+#   wrangler secret put LINKEDIN_TOKEN
+#   wrangler secret put RUN_KEY        # any random string, for manual test trigger
+#   wrangler secret put CF_DEPLOY_HOOK # Cloudflare Pages Deploy Hook URL (rebuilds
+#                                      # the site daily so scheduled/future-dated
+#                                      # blog posts publish on their date)

@@ -2009,6 +2009,11 @@ def load_posts():
             "image": meta.get("image", ""),
             "html": md_to_html(body),
         })
+    # Publish-date gate: posts dated in the future stay hidden (not written,
+    # not in the sitemap or listings) until their date arrives. A rebuild on
+    # or after that date publishes them automatically.
+    today = _dt.date.today().isoformat()
+    posts = [p for p in posts if not p["date"] or p["date"] <= today]
     posts.sort(key=lambda p: p["date"], reverse=True)
     return posts
 
@@ -3065,6 +3070,7 @@ def build():
 
     copy_tree("assets")
     copy_tree("admin")
+    copy_tree("brand/social", "social")
     nstatic = copy_static()
 
     # Emit the hashed copies alongside the originals so a stale HTML page
