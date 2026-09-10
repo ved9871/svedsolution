@@ -52,29 +52,14 @@ SOCIALS = [
 ]
 FOUNDER_LINKEDIN = "https://www.linkedin.com/in/ved-prakash-s1990/"
 
-# Team. Titles for Amit and Rahul are the ones they hold at RanqOne, the sister
-# operation; confirm the SVED-specific titles before this goes into any pitch.
+# Team.
 TEAM = [
     dict(name="Ved Prakash", initials="VP", role="Founder &amp; Head of Strategy",
          bio="Leads GEO and AI visibility strategy across every account. Runs the audits, "
              "sets the roadmaps and owns the monthly narrative reporting. Twelve years across "
              "SEO, paid search and analytics for brands in India, the UAE, the UK and the US.",
          focus=["Generative Engine Optimization", "Entity &amp; citation strategy", "Monthly narrative reporting"],
-         links=[("LinkedIn", "https://www.linkedin.com/in/ved-prakash-s1990/")]),
-
-    dict(name="Amit Kumar", initials="AK", role="Technical Head",
-         bio="Owns everything under the content: crawl budget, index surgery, rendering "
-             "strategy, Core Web Vitals and migrations. Builds the internal tooling the "
-             "audits run on, including the AI visibility crawler behind our free audit.",
-         focus=["Technical SEO &amp; site architecture", "Rendering &amp; Core Web Vitals", "Audit tooling &amp; automation"],
-         links=[]),
-
-    dict(name="Rahul Dhiman", initials="RD", role="Head of Growth",
-         bio="Runs content, digital PR and the Tier-1 citation programme that gets clients "
-             "named in AI answers. Leads white-label delivery for agency partners and manages "
-             "the outreach relationships behind every placement.",
-         focus=["Content &amp; digital PR", "Tier-1 citation placement", "White-label partnerships"],
-         links=[]),
+         links=[("LinkedIn", FOUNDER_LINKEDIN)]),
 ]
 
 
@@ -1704,9 +1689,10 @@ PAGES["videos"] = dict(
       </div>''' for t, cat, dur in VIDEOS)}
     </div>
     <div class="center mt3">
-      <a class="btn btn-ghost" href="#">Subscribe on YouTube</a>
+      <a class="btn btn-ghost" href="https://www.youtube.com/@svedsolution" target="_blank" rel="noopener">Subscribe on YouTube</a>
     </div>
-    <p class="faint center" style="font-size:.82rem;margin-top:16px">Preview placeholders. Production build embeds YouTube with VideoObject schema for video-rich results.</p>
+    <p class="faint center" style="font-size:.82rem;margin-top:16px">Hosted by <a href="{FOUNDER_LINKEDIN}" target="_blank" rel="noopener" style="color:var(--green)">Ved Prakash</a> &mdash; Founder &amp; Head of Strategy, SVED Solution.</p>
+    <p class="faint center" style="font-size:.82rem;margin-top:8px">Preview placeholders. Production build embeds YouTube with VideoObject schema for video-rich results.</p>
   </div>
 </section>
 
@@ -2022,7 +2008,7 @@ def post_schema(p):
     return ('{"@context":"https://schema.org","@type":"BlogPosting",'
             f'"headline":{_j(p["title"])},"description":{_j(p["desc"])},'
             f'"datePublished":{_j(p["date"])},"dateModified":{_j(p["date"])},'
-            f'"author":{{"@type":"Person","name":{_j(p["author"])}}},'
+            f'"author":{{"@type":"Person","name":{_j(p["author"])},"url":"{FOUNDER_LINKEDIN}","sameAs":["{FOUNDER_LINKEDIN}"]}},'
             '"publisher":{"@type":"Organization","name":"SVED Solution",'
             '"url":"https://svedsolution.com/"},'
             + (f'"image":"https://svedsolution.com/assets/{p["image"]}",' if p.get("image") else "")
@@ -2049,7 +2035,7 @@ def post_page(p):
     <div class="eyebrow">{p["category"]} &middot; {p["read"]} read</div>
     <h1 style="font-size:clamp(2rem,4vw,3rem)">{p["title"]}</h1>
     <p class="lead dim" style="margin-top:1.2rem">{p["desc"]}</p>
-    <p class="mono faint" style="font-size:.78rem;margin-top:1.4rem">By {p["author"]} &middot; Updated {p["date"]}</p>
+    <p class="mono faint" style="font-size:.78rem;margin-top:1.4rem">By <a href="{FOUNDER_LINKEDIN}" target="_blank" rel="noopener author" style="color:inherit;text-decoration:underline">{p["author"]}</a> &middot; Updated {p["date"]}</p>
   </div>
 </section>
 <section class="sec">
