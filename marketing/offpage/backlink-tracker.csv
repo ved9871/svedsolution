@@ -1,0 +1,51 @@
+Priority,Site,URL,Category,DA_approx,DR_approx,Region,DoFollow,Cost,Status,ProfileURL,Notes
+P1,LinkedIn Company,https://www.linkedin.com/company/svedsolution,Profile/B2B,98,98,Global,nofollow,Free,To do,,Very high AI-citation value
+P1,Ved Prakash LinkedIn,https://www.linkedin.com/in/ved-prakash-s1990/,Profile,98,98,Global,nofollow,Free,Live,,Founder entity
+P1,Google Business Profile,https://www.google.com/business/,Local,100,,Global,-,Free,To do,,Primary NAP; verify listing
+P1,Bing Places,https://www.bingplaces.com/,Local,94,,Global,-,Free,To do,,
+P1,Crunchbase,https://www.crunchbase.com/,Startup/B2B,91,90,Global,nofollow,Free,To do,,Very high AI-citation value
+P1,Clutch,https://clutch.co/,Agency reviews,90,89,Global,nofollow,Free,To do,,Collect client reviews
+P1,G2,https://www.g2.com/,Software/agency,92,91,Global,nofollow,Free,To do,,Very high AI-citation value
+P1,Trustpilot,https://www.trustpilot.com/,Reviews,93,92,Global,nofollow,Free,To do,,Drive genuine reviews
+P1,GoodFirms,https://www.goodfirms.co/,Agency reviews,67,79,Global,dofollow,Free,To do,,Dofollow
+P1,DesignRush,https://www.designrush.com/,Agency directory,73,79,Global,dofollow,Free/Paid,To do,,Free listing available
+P1,Sortlist,https://www.sortlist.com/,Agency directory,76,78,Global/EU,nofollow,Free,To do,,
+P1,The Manifest,https://themanifest.com/,B2B directory,62,76,Global,dofollow,Free,To do,,
+P1,UpCity,https://upcity.com/,B2B directory,70,77,US,dofollow,Free/Paid,To do,,
+P1,TechBehemoths,https://techbehemoths.com/,IT/agency,55,72,Global,dofollow,Free,To do,,
+P1,Bark,https://www.bark.com/,Leads/services,78,82,UK/US,nofollow,Free/Paid,To do,,Lead-gen too
+P1,Product Hunt,https://www.producthunt.com/,Launch/startup,91,90,Global,dofollow,Free,To do,,Launch the free audit tool
+P1,Wellfound,https://wellfound.com/,Startup,92,90,Global,nofollow,Free,To do,,
+P1,Justdial,https://www.justdial.com/,Local India,76,78,India,nofollow,Free,To do,,High value IN
+P1,IndiaMART,https://www.indiamart.com/,B2B India,80,82,India,nofollow,Free,To do,,High value IN
+P1,Yell,https://www.yell.com/,Local UK,84,85,UK,nofollow,Free/Paid,To do,,High value UK
+P2,Apple Business Connect,https://businessconnect.apple.com/,Local/Maps,,,Global,-,Free,To do,,Apple Maps
+P2,Foursquare,https://foursquare.com/,Local,92,91,Global,nofollow,Free,To do,,
+P2,Hotfrog,https://www.hotfrog.com/,Directory,72,74,Global,nofollow,Free,To do,,
+P2,Brownbook,https://www.brownbook.net/,Directory,55,62,Global,dofollow,Free,To do,,Dofollow
+P2,Kompass,https://www.kompass.com/,B2B,78,80,Global,nofollow,Free,To do,,
+P2,Europages,https://www.europages.co.uk/,B2B,80,82,EU/UK,nofollow,Free,To do,,
+P2,Capterra,https://www.capterra.com/,Software,91,90,Global,nofollow,Free,To do,,If listing a tool/audit
+P2,GetApp,https://www.getapp.com/,Software,86,88,Global,nofollow,Free,To do,,
+P2,TrustRadius,https://www.trustradius.com/,B2B software,78,83,Global,nofollow,Free,To do,,
+P2,F6S,https://www.f6s.com/,Startup,80,82,Global,dofollow,Free,To do,,Dofollow
+P2,Quora,https://www.quora.com/,Community,92,91,Global,nofollow,Free,To do,,Profile + answer AI-search Qs
+P2,Medium,https://medium.com/,Publishing,95,94,Global,nofollow,Free,To do,,Republish blogs w/ canonical
+P2,Reddit,https://www.reddit.com/,Community,92,91,Global,nofollow,Free,To do,,Profile; value-first posting
+P2,GitHub,https://github.com/,Dev,96,92,Global,nofollow,Free,To do,,Org profile
+P2,Slideshare,https://www.slideshare.net/,Content,95,93,Global,nofollow,Free,To do,,Repurpose decks
+P2,Behance,https://www.behance.net/,Portfolio,92,92,Global,nofollow,Free,To do,,Case-study visuals
+P2,About.me,https://about.me/,Profile,92,91,Global,dofollow,Free,To do,,Dofollow; founder page
+P2,Sulekha,https://www.sulekha.com/,Local India,74,74,India,nofollow,Free,To do,,
+P2,TradeIndia,https://www.tradeindia.com/,B2B India,74,76,India,nofollow,Free,To do,,
+P2,StartupIndia,https://www.startupindia.gov.in/,Govt/startup,70,72,India,nofollow,Free,To do,,Govt directory
+P2,FreeIndex,https://www.freeindex.co.uk/,Local UK,62,66,UK,dofollow,Free,To do,,Dofollow
+P2,Cylex UK,https://www.cylex-uk.co.uk/,Local UK,58,60,UK,dofollow,Free,To do,,Dofollow
+P3,SoftwareWorld,https://www.softwareworld.co/,Agency/software,45,58,Global,dofollow,Free,To do,,Batch
+P3,TopDevelopers.co,https://www.topdevelopers.co/,Software/dev,45,60,Global,dofollow,Free,To do,,Batch
+P3,AppFutura,https://www.appfutura.com/,App dev,48,60,Global,dofollow,Free,To do,,Batch
+P3,Agency Spotter,https://www.agencyspotter.com/,Agency,55,66,US,nofollow,Free,To do,,Batch
+P3,Digital Agency Network,https://digitalagencynetwork.com/,Agency,63,70,Global,nofollow,Free/Paid,To do,,Batch
+P3,Dev.to,https://dev.to/,Dev community,90,84,Global,nofollow,Free,To do,,Republish technical posts
+P3,Hashnode,https://hashnode.com/,Dev community,78,80,Global,nofollow,Free,To do,,Republish technical posts
+P3,Indie Hackers,https://www.indiehackers.com/,Startup community,78,80,Global,nofollow,Free,To do,,
