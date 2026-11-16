@@ -3114,6 +3114,15 @@ def build():
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(rows) + "</urlset>\n")
 
+    # Redesign preview: pages in site-v2/ replace the generated homepage and
+    # case-studies page. Every other page is still generated above, unchanged.
+    v2 = os.path.join(OUT, "site-v2")
+    for rel in ("index.html", "case-studies/index.html"):
+        src = os.path.join(v2, *rel.split("/"))
+        if os.path.isfile(src):
+            with io.open(src, encoding="utf-8") as f:
+                write(rel, f.read())
+
     verify_canonicals()
     return written, len(posts), nstatic, len(rows)
 
