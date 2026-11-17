@@ -37,7 +37,7 @@ Ask a generative engine (an AI tool such as ChatGPT) for the best CRM, analytics
 
 ## The SaaS SEO method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-saas-ai-seo-inline.png" alt="The SaaS SEO playbook: sequence the inverted funnel, build the comparison system, optimize docs for retrieval, win review platforms, ship SaaS schema" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The SaaS & AI product SEO playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-saas-ai-seo-inline.png" alt="The SaaS SEO method: start with the pages closest to a sale, build the comparison pages, make docs easy for AI to read, win on review sites, add SaaS schema markup" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The SaaS & AI product SEO method.</figcaption></figure>
 
 1. **Start at the bottom of the funnel.** Publish the pages closest to a sale first, where revenue is nearest.
 2. **Build the comparison pages.** Versus, alternatives and best-of pages, written fairly so they get quoted.

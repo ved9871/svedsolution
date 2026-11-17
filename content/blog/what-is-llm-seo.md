@@ -42,7 +42,7 @@ Fix these and AI tools can find and read you. Leave them and no amount of GEO or
 
 ## How to start with LLM SEO
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-what-is-llm-seo-inline.png" alt="What LLM SEO covers: server-side rendering, AI-crawler access, llms.txt, clean chunking, schema markup" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">What LLM SEO covers.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-what-is-llm-seo-inline.png" alt="What LLM SEO covers: server-side rendering, AI crawler access, llms.txt at the root, clear passages, schema markup" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">What LLM SEO covers.</figcaption></figure>
 
 1. **Check what a bot can see.** Fetch your key pages the way a bot does and confirm the real content is in the raw HTML.
 2. **Fix rendering.** Move the content that matters to pages built on the server or to static pages.

@@ -36,7 +36,7 @@ AEO gives the fastest feedback of the three. The same work that makes a page eas
 
 ## How Answer Engine Optimization works
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-what-is-aeo-inline.png" alt="The AEO checklist: answer first, question-shaped headings, FAQ and QAPage schema, and snippet and AI-answer capture" width="1200" height="760" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Answer Engine Optimization, in four moves.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-what-is-aeo-inline.png" alt="The AEO checklist: answer first in 40 to 60 words, build the page around questions, add FAQ and QAPage schema, win the answer spot and keep it" width="1200" height="760" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Answer Engine Optimization, in four moves.</figcaption></figure>
 
 1. **Answer first.** Open the page with a direct answer of 40 to 60 words to the exact question the page targets, before any story or background. This is the passage a snippet or AI answer takes.
 2. **Build the page around questions.** Use real questions as H2 headings. Keep paragraphs short, with one idea each. Add tables or numbered steps that a machine can pull out cleanly.

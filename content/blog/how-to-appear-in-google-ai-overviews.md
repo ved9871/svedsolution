@@ -34,7 +34,7 @@ AI Overviews draw heavily on pages that already rank well. So classic SEO gets y
 
 ## How to appear in Google AI Overviews: the method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-google-ai-overviews-inline.png" alt="Five steps to appear in Google AI Overviews: rank the page, answer in the first 100 words, question-shaped structure, FAQ and Article schema, build the brand entity" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Five steps to AI Overview visibility.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-google-ai-overviews-inline.png" alt="Five steps to appear in Google AI Overviews: rank the page first, answer first, in 40 to 60 words, make it easy to lift, add the schema, make your brand clear and backed up" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Five steps to AI Overview visibility.</figcaption></figure>
 
 1. **Rank the page first.** AI Overviews mostly draw on page-one results. So the basics come first: relevance, [technical SEO](/services/technical-seo/) and authority.
 2. **Answer first.** Open with a direct answer of 40 to 60 words to the exact search, before any background. This is the passage Google lifts. This practice is called [Answer Engine Optimization](/services/answer-engine-optimization/).

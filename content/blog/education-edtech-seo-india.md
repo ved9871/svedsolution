@@ -37,7 +37,7 @@ Ask an AI tool to recommend a data-science course, an MBA or a coding bootcamp. 
 
 ## The EdTech SEO method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-edtech-seo-india-inline.png" alt="The EdTech SEO playbook: answer learner questions, ship education schema, build topical authority, win local and campus search, earn trusted citations" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The education & EdTech SEO playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-edtech-seo-india-inline.png" alt="The EdTech SEO method: answer the questions learners ask, add education schema, become the authority in each subject, win local and campus searches, get mentioned on trusted sources" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The education & EdTech SEO method.</figcaption></figure>
 
 1. **Answer the questions learners really ask.** Course comparisons, fees, eligibility, placement rates, career outcomes. Answer them directly in the first 100 words of each page.
 2. **Add education schema.** `Course`, `EducationalOccupationalProgram` and `FAQPage` markup (code that labels what is on a page), so Google and AI understand your programs.
