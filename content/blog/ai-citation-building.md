@@ -41,7 +41,7 @@ Ten relevant, consistent mentions in sources an AI tool already reads do more fo
 
 ## How to build AI citations
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-citation-building-inline.png" alt="AI citation building in five steps: resolve the entity, build the citation stack, reverse-engineer competitors, establish the people, measure citation share" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">AI citation building, in five steps.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-citation-building-inline.png" alt="AI citation building in five steps: settle your identity, list the sites AI trusts in your industry, study where competitors are mentioned, make your people known, measure your share of mentions" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">AI citation building, in five steps.</figcaption></figure>
 
 1. **Settle your identity.** One official brand name, description and category, shown in exactly the same way on your site, your profiles and your `Organization` schema (code that tells machines who you are).
 2. **List the outside sites AI trusts in your industry.** The right sources differ by industry: review databases, credentialed directories, marketplaces, trade press. We work out yours from what AI tools really name in your niche. A generic list will not do.

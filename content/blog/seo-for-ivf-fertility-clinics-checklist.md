@@ -20,7 +20,7 @@ Fertility is a Your-Money-or-Your-Life (YMYL) topic: a health or money subject w
 
 ## The IVF & fertility clinic SEO checklist
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-fertility-clinic-checklist-inline.png" alt="Fertility clinic SEO checklist: name clinicians and credentials, medically-reviewed content, local SEO per location, medical schema, trusted health citations" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The fertility clinic SEO checklist.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-fertility-clinic-checklist-inline.png" alt="The fertility clinic SEO checklist: name your clinicians and their credentials, have content medically reviewed, local SEO for each location, medical schema (MedicalClinic), mentions on trusted health sites" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The fertility clinic SEO checklist.</figcaption></figure>
 
 | # | Checklist item | Why it matters |
 |---|---|---|

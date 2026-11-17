@@ -37,7 +37,7 @@ Ask an AI tool for the best running shoe, skincare routine or coffee maker. It n
 
 ## The D2C & ecommerce AI SEO method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-d2c-ecommerce-ai-seo-inline.png" alt="The D2C AI SEO playbook: fix the catalogue, ship commerce schema, answer buying questions, build review citations, measure AI share" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The D2C & ecommerce AI SEO playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-d2c-ecommerce-ai-seo-inline.png" alt="The D2C & ecommerce AI SEO method: fix the catalogue's technical problems, add commerce schema, answer buying questions, build mentions on review sites, measure your AI share" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The D2C & ecommerce AI SEO method.</figcaption></figure>
 
 1. **Fix the catalogue's technical problems.** Control filter pages and product variants. Remove low-value pages from Google's index. Make product content load fast and arrive ready in the page's HTML (server-rendered).
 2. **Add commerce schema.** `Product`, `Offer`, `Review` and `FAQPage` markup, so Google and AI tools understand your price, availability and rating.

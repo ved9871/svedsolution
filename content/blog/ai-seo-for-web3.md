@@ -30,7 +30,7 @@ Fixing these takes [LLM SEO](/services/llm-seo/) (making your site readable to A
 
 ## The AI SEO for Web3 method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-seo-web3-inline.png" alt="AI SEO for Web3: make docs retrievable, resolve the entity, answer-first protocol content, ship schema, build trusted citations" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The AI SEO for Web3 playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-seo-web3-inline.png" alt="The AI SEO for Web3 method: make docs readable to AI, settle your identity, answer-first protocol content, add schema, get trusted mentions" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The AI SEO for Web3 method.</figcaption></figure>
 
 | Step | What to do | Why it matters |
 |---|---|---|

@@ -28,7 +28,7 @@ AI SEO adds three things on top of classic SEO: structured data (code that label
 
 ## AI SEO cost by tier (USD, GBP, EUR, INR)
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-seo-pricing-inline.png" alt="AI SEO cost by tier in 2026: Starter $500-2,000, Growth $2,000-5,000, Professional $5,000-12,000, Enterprise $12,000-25,000+ per month" width="1200" height="760" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Typical 2026 AI SEO monthly retainers (USD).</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-ai-seo-pricing-inline.png" alt="AI SEO cost by tier in 2026: Starter $500-2,000, Growth $2,000-5,000, Professional $5,000-12,000, Enterprise $12,000-25,000+ per month" width="1200" height="760" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Typical 2026 AI SEO monthly fees (USD).</figcaption></figure>
 
 Monthly fees, converted at approximate mid-2026 rates (£0.79, €0.92, ₹88 per $1). Exchange rates move, so treat these as a guide:
 

@@ -39,7 +39,7 @@ Ask an AI tool to recommend a wallet, chain, DeFi platform or launchpad. It name
 
 ## The Web3 SEO method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-web3-crypto-seo-inline.png" alt="The Web3 SEO playbook: build entity trust, answer-first protocol docs, trusted-source citations, clean technical and schema, localise for communities" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The Web3 & crypto SEO playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-web3-crypto-seo-inline.png" alt="The Web3 SEO method: build trust in who you are, explain the protocol, answer first, get mentioned on trusted sources, clean technical SEO and schema, adapt for communities worldwide" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The Web3 & crypto SEO method.</figcaption></figure>
 
 1. **Build trust in who you are.** Use the same project name and description on your site, block explorers, listings, GitHub, docs and the crypto press. AI and Google read that agreement as a sign you are legitimate.
 2. **Explain the protocol, answer first.** Open pages with a direct answer to real questions: how staking works, fees, the security model, tokenomics. Then both users and AI tools can take a clean answer.

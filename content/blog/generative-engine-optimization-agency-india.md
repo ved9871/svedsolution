@@ -35,7 +35,7 @@ If you searched for a **generative engine optimization agency in India**, you wa
 
 ## How we run GEO
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-geo-agency-india-inline.png" alt="How we run GEO: diagnose before prescribing, resolve your entity, build citation consensus, retrieval-ready content, report the number" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">How we run GEO.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-geo-agency-india-inline.png" alt="How we run GEO: review before recommending, make your identity clear, build agreement across trusted sites, publish content AI can find and quote, report the number" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">How we run GEO.</figcaption></figure>
 
 1. **Review before recommending.** No monthly fee is quoted before a review. We map which questions your buyers ask AI and which brands it names.
 2. **Make your identity clear.** One consistent brand identity across your site, profiles and schema markup (code that labels your details for machines).

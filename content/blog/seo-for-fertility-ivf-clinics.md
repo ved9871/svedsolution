@@ -35,7 +35,7 @@ As a combined **IVF SEO agency** and **AI visibility agency for fertility**, we 
 
 ## The shift: patients ask AI before they reach Google
 
-<figure style="margin:2rem 0"><img src="/assets/blog-seo-for-fertility-ivf-clinics-inline.png" alt="Patients now ask ChatGPT which fertility clinic to trust before they ever reach Google" width="1200" height="675" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The fertility research journey has moved upstream into AI answers.</figcaption></figure>
+<figure style="margin:2rem 0"><img src="/assets/blog-seo-for-fertility-ivf-clinics-inline.png" alt="Patients now ask ChatGPT which fertility clinic to trust before they ever reach Google" width="1200" height="675" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">Patients now ask AI tools before they reach Google.</figcaption></figure>
 
 Ask ChatGPT or Perplexity to recommend a fertility clinic. It names a handful of clinics and a handful of sources. There is no position one, only the clinics that get named. Because fertility is a health topic, AI tools lean even harder on clinics with clear credentials, the same description everywhere and backing from other sites. That is what a **fertility AI SEO agency** builds. It is also why being missing from AI answers is now the most expensive gap in fertility marketing. (For how it works, see [how to rank in ChatGPT](/insights/how-to-rank-in-chatgpt/) and [GEO vs SEO](/insights/geo-vs-seo/).)
 

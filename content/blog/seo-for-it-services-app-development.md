@@ -37,7 +37,7 @@ Ask an AI tool for the best app development or IT services firm for a particular
 
 ## The IT & app development SEO method
 
-<figure style="margin:1.5rem 0"><img src="/assets/blog-it-app-dev-seo-inline.png" alt="IT and app development SEO playbook: service and technology pages, ship proof, win directories and reviews, answer buyer questions, fix technical foundation" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The IT & app development SEO playbook.</figcaption></figure>
+<figure style="margin:1.5rem 0"><img src="/assets/blog-it-app-dev-seo-inline.png" alt="The IT & app development SEO method: build service and technology pages, show proof with case studies, win directories and reviews, answer buyer questions, fix the technical base" width="1200" height="820" style="width:100%;height:auto;border-radius:12px;display:block" loading="lazy"><figcaption style="font-size:.85rem;color:var(--text-faint);margin-top:.7rem;text-align:center">The IT & app development SEO method.</figcaption></figure>
 
 1. **Build service and technology pages.** One page for each service and each technology (React, Flutter, .NET, cloud), aimed at the searches real buyers make.
 2. **Show proof.** Case studies with real results, plus Review/Organization schema (code that labels your reviews and company details for machines).
