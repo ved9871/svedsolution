@@ -1,6 +1,7 @@
 ---
 title: "Local SEO Company in Kolkata: Win the Map Pack & AI"
 slug: "local-seo-company-kolkata"
+image: "blog-local-seo-company-kolkata.png"
 description: "A local SEO company in Kolkata that wins the Google map pack and gets you named by ChatGPT and AI Overviews for 'near me' searches. Based in Sector V."
 keywords: "local SEO company Kolkata, local SEO Kolkata, Google Business Profile Kolkata, map pack ranking, near me SEO"
 answer: "A local SEO company in Kolkata helps a business win the Google map pack and 'near me' searches, and get recommended by AI when locals ask for the best option nearby. The work covers your Google Business Profile, matching name, address and phone (NAP) listings, steady reviews, area pages across Kolkata, and LocalBusiness schema. SVED Solution does this from its Sector V, Salt Lake centre."

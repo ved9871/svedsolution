@@ -1,6 +1,7 @@
 ---
 title: "Ecommerce SEO Agency in London: Get Products Found & Cited"
 slug: "ecommerce-seo-agency-london"
+image: "blog-ecommerce-seo-agency-london.png"
 description: "An ecommerce SEO agency in London that ranks your products on Google and gets your brand recommended by ChatGPT and AI Overviews. Free check of your shop."
 keywords: "ecommerce SEO agency London, ecommerce SEO London, Shopify SEO London, product schema, AI shopping search"
 answer: "An ecommerce SEO agency in London helps online shops rank category and product pages on Google and get their brand recommended by AI when shoppers ask what to buy. The work covers technical SEO for the catalogue, Product, Review and FAQ schema, buying guides that answer directly, and mentions on the review sites AI trusts. London shoppers now ask ChatGPT and AI Overviews, so shops need both."
