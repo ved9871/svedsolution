@@ -2059,6 +2059,11 @@ def load_posts():
             "category": meta.get("category", "Insights"),
             "read": meta.get("readtime", "8 min"),
             "date": meta.get("date", ""),
+            # Last meaningful edit. Shown on the page and sent as dateModified;
+            # ordering and the publish gate still use `date`.
+            "updated": meta.get("updated", "") or meta.get("date", ""),
+            "keywords": meta.get("keywords", ""),
+            "words": len(re.findall(r"\S+", body)),
             "author": meta.get("author", "Ved Prakash"),
             "answer": meta.get("answer", ""),
             "image": meta.get("image", ""),
@@ -2076,16 +2081,42 @@ def load_posts():
 def post_schema(p):
     return ('{"@context":"https://schema.org","@type":"BlogPosting",'
             f'"headline":{_j(p["title"])},"description":{_j(p["desc"])},'
-            f'"datePublished":{_j(p["date"])},"dateModified":{_j(p["date"])},'
+            f'"datePublished":{_j(p["date"])},"dateModified":{_j(p["updated"])},'
+            f'"inLanguage":"en","articleSection":{_j(p["category"])},"wordCount":{p["words"]},'
+            f'"keywords":{_j(post_keywords(p))},'
             f'"author":{{"@type":"Person","name":{_j(p["author"])},"url":"{FOUNDER_LINKEDIN}","sameAs":["{FOUNDER_LINKEDIN}"]}},'
             '"publisher":{"@type":"Organization","name":"SVED Solution",'
             '"url":"https://svedsolution.com/"},'
-            + (f'"image":"https://svedsolution.com/assets/{p["image"]}",' if p.get("image") else "")
+            + f'"image":"{post_image(p)}",'
             + f'"mainEntityOfPage":"https://svedsolution.com/insights/{p["slug"]}/"}}')
 
 
 def _j(s):
     return '"' + str(s).replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def post_image(p):
+    """Share image for a post: its own if it has one, the site default otherwise."""
+    return "https://svedsolution.com/assets/" + (p.get("image") or "og-image.svg")
+
+
+def post_keywords(p):
+    """Meta keywords for a post. `keywords` in the front matter wins; otherwise the
+    search phrase in the slug plus the category."""
+    if p.get("keywords"):
+        return p["keywords"]
+    phrase = p["slug"].replace("-", " ")
+    parts = [phrase, p["category"], "SVED Solution"]
+    return ", ".join(dict.fromkeys(x for x in parts if x))
+
+
+def post_meta_tags(p):
+    """Open Graph article tags. The shared page shell marks every page as a website."""
+    return ('<meta property="og:type" content="article">\n'
+            f'<meta property="article:published_time" content="{p["date"]}">\n'
+            f'<meta property="article:modified_time" content="{p["updated"]}">\n'
+            f'<meta property="article:author" content="{FOUNDER_LINKEDIN}">\n'
+            f'<meta property="article:section" content="{p["category"]}">')
 
 
 def post_page(p):
@@ -2104,7 +2135,7 @@ def post_page(p):
     <div class="eyebrow">{p["category"]} &middot; {p["read"]} read</div>
     <h1 style="font-size:clamp(2rem,4vw,3rem)">{p["title"]}</h1>
     <p class="lead dim" style="margin-top:1.2rem">{p["desc"]}</p>
-    <p class="mono faint" style="font-size:.78rem;margin-top:1.4rem">By <a href="{FOUNDER_LINKEDIN}" target="_blank" rel="noopener author" style="color:inherit;text-decoration:underline">{p["author"]}</a> &middot; Updated {p["date"]}</p>
+    <p class="mono faint" style="font-size:.78rem;margin-top:1.4rem">By <a href="{FOUNDER_LINKEDIN}" target="_blank" rel="noopener author" style="color:inherit;text-decoration:underline">{p["author"]}</a> &middot; {("Published " + p["date"] + " &middot; Updated " + p["updated"]) if p["updated"] != p["date"] else ("Published " + p["date"])}</p>
   </div>
 </section>
 <section class="sec">
@@ -2114,8 +2145,8 @@ def post_page(p):
     {p["html"]}
     <div class="card" style="margin-top:2.6rem">
       <div class="eyebrow" style="margin-bottom:.5rem">About SVED Solution</div>
-      <h3 style="margin-bottom:.6rem">Outsource your organic marketing to a specialist</h3>
-      <p>SVED Solution is a 360&deg; SEO and AI-visibility agency operating since 2018, helping brands get found on Google <em>and</em> named by ChatGPT, Perplexity, Gemini and Google AI Overviews. We run Generative Engine Optimization, Answer Engine Optimization, technical SEO, content and digital PR as one program, report AI citations as a measured number, and price for outcomes &mdash; consulting from $30/hour, with retainers scoped only after a diagnostic audit. If you want senior organic-marketing expertise, transparent reporting and global delivery without US-agency pricing, we are the team to outsource it to.</p>
+      <h3 style="margin-bottom:.6rem">Get found on Google and named by AI tools</h3>
+      <p>SVED Solution has worked in search since 2018. We help brands get found on Google <em>and</em> named by ChatGPT, Perplexity, Gemini and Google AI Overviews. SEO, AI search, content and PR are run as one plan, and we report AI mentions as a number each month. Consulting starts at $30 per hour. Monthly work is priced only after we have reviewed your site.</p>
       <div style="margin-top:1.1rem;display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn btn-primary btn-sm" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-min call</a>
         <a class="btn btn-ghost btn-sm" href="mailto:hello@svedsolution.com">hello@svedsolution.com</a>
@@ -3190,9 +3221,15 @@ def build():
         written.append((name.replace("\\", "/"), write(name, html)))
 
     for p in posts:
-        og = ("https://svedsolution.com/assets/" + p["image"]) if p.get("image") else None
-        html = render(f'{p["title"]} | SVED Solution', p["desc"],
-                      f'insights/{p["slug"]}/', post_page(p), post_ld(p), og_image=og)
+        # Google shows about 60 characters of a title. Add the brand only when it fits,
+        # so the search phrase is never the part that gets cut off.
+        full = f'{p["title"]} | SVED Solution'
+        html = render(full if len(_plain(full)) <= 60 else p["title"], p["desc"],
+                      f'insights/{p["slug"]}/', post_page(p), post_ld(p),
+                      keywords=post_keywords(p), og_image=post_image(p))
+        og_type = '<meta property="og:type" content="website">'
+        assert html.count(og_type) == 1
+        html = html.replace(og_type, post_meta_tags(p))
         rel = os.path.join("insights", p["slug"], "index.html")
         written.append((rel.replace("\\", "/"), write(rel, html)))
 
@@ -3294,7 +3331,7 @@ def build():
         add(f'https://svedsolution.com/{i["slug"]}/', "0.8", "monthly")
     for p in posts:
         add(f'https://svedsolution.com/insights/{p["slug"]}/', "0.7", "monthly",
-            p.get("date") or today)
+            p.get("updated") or p.get("date") or today)
 
     # De-duplicate while preserving order; GEO has both a bespoke page entry
     # and a PAGES entry.

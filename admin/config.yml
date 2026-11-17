@@ -39,7 +39,10 @@ collections:
         label: Category
         widget: select
         options: [GEO, AEO, "LLM SEO", Technical, Semantic, "On-Page", Strategy, Measurement, "Case Study"]
-      - { name: date, label: "Date (also used as last-updated)", widget: date, format: "YYYY-MM-DD" }
+      - { name: date, label: "Date first published", widget: date, format: "YYYY-MM-DD" }
+      - { name: updated, label: "Date last updated (leave blank if never changed)", widget: date, format: "YYYY-MM-DD", required: false, default: "" }
+      - { name: keywords, label: "Meta keywords (4-6 search phrases, comma separated)", widget: string, required: false }
+      - { name: image, label: "Share image file name in /assets/ (1200x630)", widget: string, required: false }
       - { name: author, label: Author, widget: string, default: "Ved Prakash" }
       - { name: readtime, label: "Read time", widget: string, default: "8 min" }
       - name: body
