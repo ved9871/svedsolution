@@ -718,6 +718,15 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
 #work .work__lead a { color: inherit; text-underline-offset: 4px; }
 /* The stock 3D shapes are violet; rotate their hue into the brand green. */
 #hero .hero__img, #footer .footer__img, .sved-hue { filter: hue-rotate(250deg) saturate(1.15); }
+#team { position: relative; padding: var(--space-2) var(--space-1); background: var(--color-4); color: var(--color-1); scroll-margin-top: 60px; }
+#team .team__lead { max-width: 34rem; margin-top: 22px; color: var(--color-6); }
+#team .team__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px 28px; margin: clamp(36px, 6vh, 64px) 0 0; padding: 0; list-style: none; }
+@media (min-width: 760px) { #team .team__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+#team .member { display: grid; align-content: start; gap: 12px; }
+#team .member img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-1); background: var(--color-7); }
+#team .member .m-badge { justify-self: start; margin-top: 8px; }
+#team .member .m-link { justify-self: start; }
+#contact .contact__linkedin { justify-self: start; }
 </style>
 </head>
 <body class="m-text">
@@ -939,7 +948,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
 <section id="studio" data-8b-section="studio" aria-labelledby="studio-title">
   <div class="studio__head">
     <h2 class="m-text-3" id="studio-title">Inside SVED<span class="m-dot" aria-hidden="true"></span></h2>
-    <p class="m-text-5 studio__lead" data-8b-motion="ink" data-8b-split="words">Founder-led since 2018. Ved Prakash runs strategy on every account: the audits, the roadmaps and the monthly report. More than ten years across SEO, paid search and analytics for brands in India, the UAE, the UK and the US, and an MSc from IIITM-Kerala.</p>
+    <p class="m-text-5 studio__lead" data-8b-motion="ink" data-8b-split="words">Three people lead every engagement. Ved Prakash runs search, AI visibility and paid media, with more than ten years across SEO, paid search and analytics for brands in India, the UAE, the UK and the US. Amit Kumar heads engineering. Rahul Dhiman leads commerce and automation. Trading since 2018.</p>
   </div>
   <div class="studio__collage">
     <figure class="shot shot--wide"><img src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?ixid=M3w0Mzc5fDB8MXxzZWFyY2h8NHx8d29ya3Nob3AlMjBzdGlja3klMjBub3RlcyUyMHdhbGx8ZW58MXwwfHx8MTc5MTIwOTc1MHww&amp;ixlib=rb-4.1.0&amp;auto=format&amp;fit=crop&amp;w=450&amp;h=300&amp;q=60" width="1400" height="933" alt="A wall of printed sticky notes from a research workshop" loading="lazy"></figure>
@@ -958,6 +967,35 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
       <a class="m-link" href="https://www.linkedin.com/in/ved-prakash-s1990/"><span class="m-link__label">Ved Prakash on LinkedIn</span><svg class="m-link__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
     </div>
   </div>
+</section>
+
+<!-- team: the three leads, each with a portrait, role and focus (static, no scroll scene) -->
+<section id="team" aria-labelledby="team-title">
+  <div class="team__head">
+    <h2 class="m-text-3" id="team-title">The team<span class="m-dot" aria-hidden="true"></span></h2>
+    <p class="m-text-5 team__lead">Three leads, one for each side of the work: growth, engineering, and commerce and automation.</p>
+  </div>
+  <ul class="team__grid">
+    <li class="member">
+      <img src="/assets/team/ved-prakash.webp" width="720" height="900" alt="Ved Prakash" loading="lazy">
+      <span class="m-badge">Founder and Head of Strategy</span>
+      <h3 class="m-text-4">Ved Prakash</h3>
+      <p class="m-text">Search, AI visibility and paid media. Runs the audits, sets the roadmaps and writes the monthly report.</p>
+      <a class="m-link" href="https://www.linkedin.com/in/ved-prakash-s1990/"><span class="m-link__label">LinkedIn</span><svg class="m-link__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </li>
+    <li class="member">
+      <img src="/assets/team/amit-kumar.webp" width="720" height="900" alt="Amit Kumar" loading="lazy">
+      <span class="m-badge">Technical Head</span>
+      <h3 class="m-text-4">Amit Kumar</h3>
+      <p class="m-text">Engineering: stores, sites and apps, and the tracking and automation underneath them.</p>
+    </li>
+    <li class="member">
+      <img src="/assets/team/rahul-dhiman.webp" width="720" height="900" alt="Rahul Dhiman" loading="lazy">
+      <span class="m-badge">Founder, commerce and automation</span>
+      <h3 class="m-text-4">Rahul Dhiman</h3>
+      <p class="m-text">The commerce and automation practice: store builds, lifecycle email and workflow automation.</p>
+    </li>
+  </ul>
 </section>
 
 <!-- journal: news and articles: four stories beside a sticky photo frame (animation: scene:journal) -->
@@ -1000,6 +1038,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
     <div class="contact__info">
       <p class="m-text-5 contact__lead">Tell us where your funnel leaks. Send a note, or <a href="https://cal.com/sved-solution/15min" style="color:inherit">book a 15-minute call</a> and we'll look at your search and AI visibility before we speak.</p>
       <a class="contact__mail" href="mailto:hello@svedsolution.com"><span>hello@svedsolution.com</span></a>
+      <a class="m-link contact__linkedin" href="https://www.linkedin.com/in/ved-prakash-s1990/"><span class="m-link__label">Ved Prakash on LinkedIn</span><svg class="m-link__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
       <dl class="contact__places">
         <div><dt class="m-text-7">Dubai</dt><dd class="m-text">502, 5th Floor, API World Tower<br>22 Sheikh Zayed Road, Dubai</dd><dd class="m-text"><a href="tel:+917846045690">+91 78460 45690</a></dd></div>
         <div><dt class="m-text-7">Kolkata</dt><dd class="m-text">Unit 909, Godrej Genesis Building<br>Sector V, Bidhannagar, Kolkata 700091</dd><dd class="m-text"><a href="tel:+917846045690">+91 78460 45690</a></dd></div>
@@ -1037,6 +1076,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
       <a class="m-link-2" href="#capabilities">Services</a>
       <a class="m-link-2" href="#method">Approach</a>
       <a class="m-link-2" href="#studio">About</a>
+      <a class="m-link-2" href="#team">Team</a>
       <a class="m-link-2" href="#journal">Insights</a>
     </nav>
     <div class="footer__col">
