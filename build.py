@@ -56,10 +56,18 @@ FOUNDER_LINKEDIN = "https://www.linkedin.com/in/ved-prakash-s1990/"
 TEAM = [
     dict(name="Ved Prakash", initials="VP", role="Founder &amp; Head of Strategy",
          bio="Leads GEO and AI visibility strategy across every account. Runs the audits, "
-             "sets the roadmaps and owns the monthly narrative reporting. Twelve years across "
+             "sets the roadmaps and owns the monthly narrative reporting. More than ten years across "
              "SEO, paid search and analytics for brands in India, the UAE, the UK and the US.",
          focus=["Generative Engine Optimization", "Entity &amp; citation strategy", "Monthly narrative reporting"],
-         links=[("LinkedIn", FOUNDER_LINKEDIN)]),
+         links=[("LinkedIn", FOUNDER_LINKEDIN)], photo="ved-prakash.webp"),
+    dict(name="Amit Kumar", initials="AK", role="Technical Head",
+         bio="Engineering: stores, sites and apps, and the tracking and automation underneath them.",
+         focus=["Storefronts and sites", "Tracking and data", "Workflow automation"],
+         links=[], photo="amit-kumar.webp"),
+    dict(name="Rahul Dhiman", initials="RD", role="Founder, commerce and automation",
+         bio="The commerce and automation practice: store builds, lifecycle email and workflow automation.",
+         focus=["Store builds", "Lifecycle email", "Workflow automation"],
+         links=[], photo="rahul-dhiman.webp"),
 ]
 
 
@@ -73,8 +81,13 @@ def team_cards():
             f'<a class="tlink" href="{u}" target="_blank" rel="noopener">{n} &rarr;</a>'
             for n, u in m["links"]) or \
             '<span class="faint" style="font-size:.78rem">Profile coming soon</span>'
+        if m.get("photo"):
+            avatar = (f'<img class="team-photo" src="/assets/team/{m["photo"]}" width="720" height="900" '
+                      f'alt="{m["name"]}" loading="lazy">')
+        else:
+            avatar = f'<div class="team-avatar">{m["initials"]}</div>'
         out.append(f'''<div class="card team-card">
-          <div class="team-avatar">{m["initials"]}</div>
+          {avatar}
           <h3>{m["name"]}</h3>
           <p class="mono green" style="font-size:.78rem;margin-bottom:12px;letter-spacing:.06em;text-transform:uppercase">{m["role"]}</p>
           <p style="margin-bottom:16px">{m["bio"]}</p>
@@ -125,6 +138,7 @@ NAV = """
       <a href="/services/site-migrations/">Site Migrations</a>
       <a href="/services/white-label-seo/">White-Label SEO</a>
       <a href="/services/seo-consulting/">SEO Consulting</a>
+      <a href="use-cases.html">Use Cases</a>
       <a href="services.html">All 18 services &rarr;</a>
     </div>
   </div>
@@ -144,15 +158,14 @@ NAV = """
       <a href="industries.html">All industries &rarr;</a>
     </div>
   </div>
-  <a href="use-cases.html" data-nav="use-cases">Use Cases</a>
-  <a href="why-llm-seo-now.html" data-nav="why">Why LLM SEO Now</a>
+  <a href="case-studies.html" data-nav="case-studies">Case Studies</a>
   <div class="has-drop">
     <a href="insights.html" data-nav="insights">Insights &#9662;</a>
     <div class="drop" style="min-width:340px">
       <a href="insights.html">Blog</a>
       <a href="videos.html">Videos</a>
       <a href="resources.html">Resources &amp; SOPs</a>
-      <a href="case-studies.html">Case Studies</a>
+      <a href="why-llm-seo-now.html">Why LLM SEO Now</a>
     </div>
   </div>
   <div class="has-drop">
@@ -171,6 +184,7 @@ NAV = """
 FOOTER = f"""
 <footer class="site-footer">
   <div class="wrap">
+    <p class="foot-bye" aria-hidden="true">Bye<span class="logo-dot"></span></p>
     <div class="foot-offices">
       {"".join(f'''<div class="foot-office">
         <h5>{country} <span class="faint" style="text-transform:none;letter-spacing:0">&middot; {role}</span></h5>
@@ -186,8 +200,8 @@ FOOTER = f"""
     </div>
     <div class="foot-grid">
       <div class="foot-about">
-        <a href="index.html" class="logo" style="margin-bottom:16px"><span class="logo-mark">SV</span>SVED<span>.</span></a>
-        <p>The AI visibility agency. We get brands cited by ChatGPT, Perplexity, Gemini and Google AI Overviews &mdash; and we show you the citation count.</p>
+        <a href="index.html" class="logo" style="margin-bottom:16px">SVED<span class="logo-dot" aria-hidden="true"></span></a>
+        <p>Search, AI visibility and performance marketing. We get brands found on Google, named by AI and bought through paid media.</p>
         <p style="margin-top:14px;font-size:.83rem"><span class="faint">Sister brand:</span><br>
           <a href="{SISTER[1]}" rel="noopener">{SISTER[0]}</a> <span class="faint">&mdash; {SISTER[2]}</span></p>
         <div class="socials" style="margin-top:18px">
@@ -321,8 +335,8 @@ SHELL = """<!DOCTYPE html>
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/gabarito-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/onest-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <script type="application/ld+json">{schema}</script>
 </head>
@@ -331,7 +345,7 @@ SHELL = """<!DOCTYPE html>
 <a href="#main" class="skip-link">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
-    <a href="index.html" class="logo" aria-label="SVED Solution home">{logo}</a>
+    <a href="index.html" class="logo" aria-label="SVED Solution home">SVED<span class="logo-dot" aria-hidden="true"></span></a>
     {nav}
     <div class="header-cta">
       <a href="ai-visibility-audit.html" class="btn btn-ghost btn-sm">Free AI Audit</a>
@@ -351,7 +365,7 @@ SHELL = """<!DOCTYPE html>
   <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
     <path fill="currentColor" d="M16 3C8.8 3 3 8.8 3 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.9 1 4 1.6 6.2 1.6 7.2 0 13-5.8 13-13S23.2 3 16 3zm0 23.4c-2 0-3.9-.5-5.5-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4A10.4 10.4 0 0 1 5.6 16c0-5.7 4.7-10.4 10.4-10.4S26.4 10.3 26.4 16 21.7 26.4 16 26.4zm5.9-7.8c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.1l-.9 1.1c-.2.2-.4.2-.7.1-1.7-.7-3.1-2-4-3.6-.2-.3 0-.5.1-.7l.7-.9c.2-.2.1-.5 0-.7l-1-2.3c-.2-.4-.4-.4-.7-.4h-.7c-.3 0-.7.1-1 .4-1.1 1-1.4 2.6-.9 4.1.9 2.9 3.9 6.1 7.3 7 1.3.3 2.6.3 3.6-.4.5-.3.8-.9.9-1.5.1-.4.1-.9-.1-1.1z"/>
   </svg>
-  <span>WhatsApp</span>
+  <span>Chat on WhatsApp</span>
 </a>
 
 <script src="assets/app.js"></script>
@@ -413,10 +427,10 @@ def cta(title, sub, primary=("Run a free AI visibility audit", "ai-visibility-au
 <section class="sec">
   <div class="wrap">
     <div class="cta-band">
-      <div class="eyebrow" style="justify-content:center">Next step</div>
+      <div class="eyebrow">Next step</div>
       <h2>{title}</h2>
       <p>{sub}</p>
-      <div class="btn-row" style="justify-content:center">
+      <div class="btn-row">
         <a class="btn btn-primary btn-lg" href="{primary[1]}">{primary[0]}</a>
         <a class="btn btn-ghost btn-lg" href="{secondary[1]}">{secondary[0]}</a>
       </div>
