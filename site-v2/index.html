@@ -713,7 +713,8 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
 #journal .story__meta span { color: #007A55; }
 #journal .story a { color: inherit; text-decoration: none; }
 #journal .story a:hover { text-decoration: underline; text-underline-offset: 4px; }
-#work .case__name a { color: inherit; text-decoration: none; }
+#work .case__name a, #capabilities .service h3 a { color: inherit; text-decoration: none; }
+#capabilities .service h3 a:hover { text-decoration: underline; text-underline-offset: 6px; }
 #work .case__name a:hover { text-decoration: underline; text-underline-offset: 6px; }
 #work .work__lead a { color: inherit; text-underline-offset: 4px; }
 /* The stock 3D shapes are violet; rotate their hue into the brand green. */
@@ -879,12 +880,12 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
 <section id="capabilities" data-8b-section="capabilities" aria-labelledby="capabilities-title">
   <div class="capabilities__head">
     <h2 class="m-text-3" id="capabilities-title" data-8b-motion="rise">What we do<span class="m-dot" aria-hidden="true"></span></h2>
-    <p class="m-text-5 capabilities__lead">Five practices and one team, from the first audit to the monthly report.</p>
+    <p class="m-text-5 capabilities__lead">Five practices and one team, from the first audit to the monthly report. <a href="/services/" style="color:inherit">See all 21 services</a>.</p>
   </div>
   <ol class="capabilities__deck" data-8b-items=":scope > .service" data-8b-fixed="5">
     <li class="service m-surface">
       <div class="service__text">
-        <h3 class="m-text-4">AI search and visibility</h3>
+        <h3 class="m-text-4"><a href="/generative-engine-optimization/">AI search and visibility</a></h3>
         <p class="m-text-5 service__line">Become the brand ChatGPT, Perplexity and Gemini name: entity authority, citation building and answer-ready content.</p>
         <ul class="service__tags" data-8b-items=":scope > li"><li class="m-badge">Answer Engine Optimization</li><li class="m-badge">LLM SEO</li><li class="m-badge">AI citation building</li><li class="m-badge">AI Overviews</li></ul>
       </div>
@@ -893,7 +894,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
     </li>
     <li class="service m-surface">
       <div class="service__text">
-        <h3 class="m-text-4">Search</h3>
+        <h3 class="m-text-4"><a href="/services/">Search</a></h3>
         <p class="m-text-5 service__line">The technical and editorial foundation everything else stands on.</p>
         <ul class="service__tags" data-8b-items=":scope > li"><li class="m-badge">Technical SEO</li><li class="m-badge">Content strategy</li><li class="m-badge">Digital PR</li><li class="m-badge">Local and international</li></ul>
       </div>
@@ -902,7 +903,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
     </li>
     <li class="service m-surface">
       <div class="service__text">
-        <h3 class="m-text-4">Performance marketing</h3>
+        <h3 class="m-text-4"><a href="/services/performance-marketing/">Performance marketing</a></h3>
         <p class="m-text-5 service__line">Paid media bought against margin, with creative made for each platform, not resized for it.</p>
         <ul class="service__tags" data-8b-items=":scope > li"><li class="m-badge">Google Ads</li><li class="m-badge">Meta</li><li class="m-badge">TikTok</li><li class="m-badge">LinkedIn</li></ul>
       </div>
@@ -911,7 +912,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
     </li>
     <li class="service m-surface">
       <div class="service__text">
-        <h3 class="m-text-4">Commerce and apps</h3>
+        <h3 class="m-text-4"><a href="/services/ecommerce-development/">Commerce and apps</a></h3>
         <p class="m-text-5 service__line">Stores, sites and apps built for speed, and for the tracking that plugs into them afterwards.</p>
         <ul class="service__tags" data-8b-items=":scope > li"><li class="m-badge">Shopify</li><li class="m-badge">WooCommerce</li><li class="m-badge">Headless builds</li><li class="m-badge">Mobile apps</li></ul>
       </div>
@@ -920,7 +921,7 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches && CSS.support
     </li>
     <li class="service m-surface">
       <div class="service__text">
-        <h3 class="m-text-4">MarTech and automation</h3>
+        <h3 class="m-text-4"><a href="/services/marketing-automation/">MarTech and automation</a></h3>
         <p class="m-text-5 service__line">Clean tracking, honest attribution, and AI agents that take the repetitive work off your team.</p>
         <ul class="service__tags" data-8b-items=":scope > li"><li class="m-badge">GA4 and server-side GTM</li><li class="m-badge">Consent Mode v2</li><li class="m-badge">AI agents</li><li class="m-badge">Workflow automation</li></ul>
       </div>

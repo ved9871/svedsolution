@@ -9,7 +9,16 @@
  *   LEADS_KV or AUDIT_KV   KV namespace (required to persist leads)
  *   RESEND_KEY             Resend API key (optional; without it, leads are stored only)
  *   TO_EMAIL               where enquiries land (default hello@svedsolution.com)
+ *
+ * Newsletter list: anyone who signs up in the footer, or ticks the optional
+ * consent box on another form, is also stored once under `sub:<email>` with
+ * the date and the wording they agreed to. /api/leads?list=subscribers reads it.
  */
+
+// The exact sentence shown beside the consent box. Stored with each
+// subscriber so there is a record of what they agreed to.
+const CONSENT_WORDING = 'Email me AI search news and tips from SVED Solution. '
+  + 'Optional, and you can unsubscribe at any time.';
 
 const json = (o, s = 200) => new Response(JSON.stringify(o), {
   status: s,
@@ -62,6 +71,12 @@ export async function onRequestPost({ request, env }) {
   };
   for (const f of FIELDS) if (d[f]) lead[f] = String(d[f]).slice(0, 2000);
 
+  // Marketing consent. Signing up to the newsletter is itself the request to
+  // be emailed; on every other form it must be an explicit, optional tick.
+  const consent = type === 'newsletter' || d.consent === true || d.consent === 'yes';
+  lead.consent = consent ? 'yes' : 'no';
+  lead.email = email;
+
   // ---- Persist -----------------------------------------------------------
   let stored = false;
   if (kv) {
@@ -72,6 +87,30 @@ export async function onRequestPost({ request, env }) {
       stored = true;
     } catch (e) {
       console.log('KV write failed', e.message);
+    }
+  }
+
+  // ---- Newsletter list ----------------------------------------------------
+  // One record per address, so signing up twice neither duplicates it nor
+  // overwrites the date consent was first given.
+  let subscribed = false;
+  if (consent && kv) {
+    try {
+      const subKey = `sub:${email}`;
+      if (!(await kv.get(subKey))) {
+        await kv.put(subKey, JSON.stringify({
+          email,
+          name: lead.name || '',
+          source: type,
+          page: lead.page || '',
+          country: lead.country,
+          consented: lead.received,
+          wording: type === 'newsletter' ? 'Footer newsletter signup' : CONSENT_WORDING
+        }));
+      }
+      subscribed = true;
+    } catch (e) {
+      console.log('Subscriber write failed', e.message);
     }
   }
 
@@ -102,7 +141,7 @@ export async function onRequestPost({ request, env }) {
           from: env.FROM_EMAIL || 'SVED Solution <noreply@send.svedsolution.com>',
           to: recipients,
           reply_to: email,
-          subject: `${type === 'newsletter' ? 'Newsletter signup' : 'New enquiry'} — ${esc(d.name || email)}`,
+          subject: `${type === 'newsletter' ? 'Newsletter signup' : type === 'audit' ? 'Free check lead' : 'New enquiry'} — ${esc(d.name || email)}`,
           html: `<h2 style="font-family:sans-serif">${type}</h2>
                  <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">${rows}</table>`
         })
@@ -137,5 +176,5 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (!kv) console.log('LEAD NOT PERSISTED - no KV binding:', JSON.stringify(lead));
-  return json({ ok: true, stored, sheeted });
+  return json({ ok: true, stored, sheeted, subscribed });
 }

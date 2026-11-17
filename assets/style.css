@@ -1013,3 +1013,48 @@ th{ font-size:.82rem; }
 }
 .wa-fab:hover{ color:#fff; box-shadow:0 0 0 2px #fff, 0 14px 34px rgba(11,18,25,.45); }
 @media (max-width:680px){ .wa-fab{ padding:0 14px; } }
+
+/* ---------- AI visibility check: form and result ---------- */
+.audit-form-v2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.audit-form-v2 .af-wide{ grid-column:1 / -1; }
+.af-field{ display:grid; gap:6px; font-size:.85rem; font-weight:600; color:var(--text-dim); }
+.audit-form-v2 input[type=text], .audit-form-v2 input[type=email]{ flex:none; width:100%; }
+.af-consent{ display:flex; gap:12px; align-items:flex-start; font-size:.92rem; color:var(--text-dim); cursor:pointer; }
+.af-consent input{ flex:none; width:22px; height:22px; margin:2px 0 0; accent-color:var(--accent); }
+.af-note{ margin:0; font-size:.82rem; color:var(--text-faint); }
+.af-note a{ color:inherit; text-decoration:underline; }
+/* Honeypot: off-screen for people, still present for bots that fill every field. */
+.af-hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.audit-form-v2 .btn{ justify-content:center; }
+.audit-form-v2 .form-status{ margin:0; text-align:left; }
+.audit-form-v2 .form-status:empty{ display:none; }
+
+.ar{ margin-top:28px; }
+/* Clear the fixed menu bar when the result is scrolled into view. */
+#audit-results{ scroll-margin-top:96px; }
+.ar-top{ display:flex; flex-wrap:wrap; gap:32px; align-items:center; padding:32px; border-bottom:1px solid var(--line); }
+.ar-summary{ flex:1 1 280px; }
+.ar-summary h3{ margin-bottom:.5rem; }
+.ar-summary p{ margin-bottom:1rem; color:var(--text-dim); }
+.ar-groups{ display:grid; grid-template-columns:repeat(2, 1fr); gap:20px 32px; padding:28px 32px; border-bottom:1px solid var(--line); }
+.ar-group-top{ display:flex; justify-content:space-between; gap:12px; font-size:.92rem; }
+.ar-group-top strong{ font-family:var(--font-head); font-size:1.1rem; }
+.ar-fixes{ padding:28px 32px; border-bottom:1px solid var(--line); }
+.ar-fixes h4{ margin-bottom:12px; }
+.ar-fixes ol{ margin:0; padding-left:1.2em; }
+.ar-fixes li{ margin-bottom:10px; color:var(--text-dim); }
+.ar-fixes li strong{ color:var(--white); }
+.ar-checks{ padding:8px 32px 28px; }
+.ar-h{ margin:28px 0 4px; font-size:1.05rem; }
+.ar-row{ padding:16px 0; border-bottom:1px solid var(--line-soft); }
+.ar-row-top{ display:flex; justify-content:space-between; gap:16px; align-items:center; }
+.ar-row p{ margin:6px 0 0; font-size:.92rem; color:var(--text-dim); }
+.ar-row .ar-fix{ color:var(--text); }
+.ar-note{ margin-top:14px; font-size:.82rem; color:var(--text-faint); }
+.ar-fail{ margin-top:28px; }
+.pill{ white-space:nowrap; }
+@media (max-width:680px){
+  .audit-form-v2{ grid-template-columns:1fr; }
+  .ar-top, .ar-groups, .ar-fixes, .ar-checks{ padding-inline:20px; }
+  .ar-groups{ grid-template-columns:1fr; }
+}

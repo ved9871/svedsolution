@@ -2,6 +2,7 @@
  * GET /api/leads            -> JSON list of stored leads
  * GET /api/leads?format=csv -> CSV download
  * GET /api/leads?type=newsletter  -> filter by type (enquiry | newsletter | audit)
+ * GET /api/leads?list=subscribers -> the newsletter list (add &format=csv to download)
  *
  * Auth: send the admin token as `Authorization: Bearer <token>` or `?token=`.
  *
@@ -11,7 +12,7 @@
  */
 
 const COLUMNS = ['received', 'type', 'name', 'email', 'phone', 'website',
-  'service', 'revenue', 'score', 'country', 'message', 'page', 'referer', 'id'];
+  'service', 'revenue', 'score', 'consent', 'country', 'message', 'page', 'referer', 'id'];
 
 const json = (o, s = 200) => new Response(JSON.stringify(o), {
   status: s,
@@ -51,6 +52,10 @@ export async function onRequestGet({ request, env }) {
     || url.searchParams.get('token') || '';
   if (!safeEqual(supplied, env.ADMIN_TOKEN)) {
     return json({ error: 'Unauthorised.' }, 401);
+  }
+
+  if (url.searchParams.get('list') === 'subscribers') {
+    return subscribersResponse(kv, url.searchParams.get('format') === 'csv');
   }
 
   const wantType = url.searchParams.get('type');
@@ -96,6 +101,37 @@ export async function onRequestGet({ request, env }) {
   });
 }
 
+const SUB_COLUMNS = ['consented', 'email', 'name', 'source', 'page', 'country', 'wording'];
+
+/** Everyone who agreed to be emailed, newest consent first. */
+async function subscribersResponse(kv, asCsv) {
+  const subs = [];
+  let cursor;
+  do {
+    const page = await kv.list({ prefix: 'sub:', limit: 1000, cursor });
+    for (const k of page.keys) {
+      const raw = await kv.get(k.name);
+      if (!raw) continue;
+      try { subs.push(JSON.parse(raw)); } catch { /* skip malformed record */ }
+    }
+    cursor = page.list_complete ? null : page.cursor;
+  } while (cursor);
+  subs.sort((a, b) => String(b.consented).localeCompare(String(a.consented)));
+
+  if (asCsv) {
+    const header = SUB_COLUMNS.map(csvCell).join(',');
+    const rows = subs.map(s => SUB_COLUMNS.map(c => csvCell(s[c])).join(','));
+    return new Response('\uFEFF' + [header, ...rows].join('\r\n'), {
+      headers: {
+        'content-type': 'text/csv; charset=utf-8',
+        'content-disposition': `attachment; filename="sved-newsletter-${new Date().toISOString().slice(0, 10)}.csv"`,
+        'cache-control': 'no-store'
+      }
+    });
+  }
+  return json({ count: subs.length, subscribers: subs });
+}
+
 /** DELETE /api/leads?id=lead:...  — remove a single record. */
 export async function onRequestDelete({ request, env }) {
   const url = new URL(request.url);
@@ -107,7 +143,9 @@ export async function onRequestDelete({ request, env }) {
   if (!kv) return json({ error: 'No KV namespace bound.' }, 503);
 
   const id = url.searchParams.get('id');
-  if (!id || !id.startsWith('lead:')) return json({ error: 'Provide the full lead key.' }, 400);
+  if (!id || !(id.startsWith('lead:') || id.startsWith('sub:'))) {
+    return json({ error: 'Provide the full key, for example lead:... or sub:name@example.com.' }, 400);
+  }
 
   await kv.delete(id);
   return json({ ok: true });

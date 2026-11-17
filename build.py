@@ -138,8 +138,12 @@ NAV = """
       <a href="/services/site-migrations/">Site Migrations</a>
       <a href="/services/white-label-seo/">White-Label SEO</a>
       <a href="/services/seo-consulting/">SEO Consulting</a>
+      <div class="drop-head">Paid ads, data and websites</div>
+      <a href="/services/performance-marketing/">Performance Marketing</a>
+      <a href="/services/marketing-automation/">Marketing Automation &amp; Data</a>
+      <a href="/services/ecommerce-development/">Ecommerce &amp; App Development</a>
       <a href="use-cases.html">Use Cases</a>
-      <a href="services.html">All 18 services &rarr;</a>
+      <a href="services.html">All 21 services &rarr;</a>
     </div>
   </div>
   <div class="has-drop">
@@ -485,7 +489,7 @@ PAGES["index"] = dict(
         <a class="btn btn-primary btn-lg" href="ai-visibility-audit.html">Run a free AI visibility audit</a>
         <a class="btn btn-ghost btn-lg" href="CALENDLY_URL" target="_blank" rel="noopener">Book a 15-min call</a>
       </div>
-      <p class="faint" style="font-size:.85rem;margin-top:20px">No card. No call required. 12 eligibility checks in about 60 seconds.</p>
+      <p class="faint" style="font-size:.85rem;margin-top:20px">No card. No call required. 20 checks in about a minute.</p>
     </div>
     <div>
       <div class="panel">
@@ -644,7 +648,7 @@ PAGES["index"] = dict(
       <h2>Diagnosis first. Always.</h2>
     </div>
     <div class="grid g4">
-      <div class="card"><span class="card-num">01</span><h3>Audit</h3><p>12-point AI eligibility check, technical crawl, competitor citation reverse-engineering and an ICP interview.</p></div>
+      <div class="card"><span class="card-num">01</span><h3>Audit</h3><p>20-point AI visibility check, technical crawl, competitor citation reverse-engineering and an ICP interview.</p></div>
       <div class="card"><span class="card-num">02</span><h3>Map</h3><p>Entity map, semantic topic model, citation-source shortlist and a prioritised 90-day roadmap with named owners.</p></div>
       <div class="card"><span class="card-num">03</span><h3>Ship</h3><p>We implement. Schema, content, internal links, technical fixes and citation placements &mdash; not a slide deck of suggestions.</p></div>
       <div class="card"><span class="card-num">04</span><h3>Refresh</h3><p>Monthly narrative reporting on citations, clicks and revenue. Then the 30-day loop runs again.</p></div>
@@ -723,34 +727,44 @@ PAGES["index"] = dict(
 ])}
 
 {cta("Find out if AI can even see you.",
-     "Twelve eligibility checks across schema, entity signals, answer structure, AI crawler access and your Tier-1 citation footprint. No card, no call.")}
+     "Twenty checks covering AI crawler access, how your business is described, how your content is laid out and the search basics. No card, no call.")}
 """)
 
 # ==========================================================================
 # AUDIT TOOL
 # ==========================================================================
 PAGES["ai-visibility-audit"] = dict(
-    title="Free AI Visibility Audit | AEO, GEO &amp; LLM Eligibility Check",
-    desc="Run a free 12-point AI visibility audit. Check schema, llms.txt, AI crawler access, answer structure and citation footprint. Instant score, no card required.",
+    title="Free AI Visibility Check | Can AI Tools Find Your Business? | SVED Solution",
+    desc="Free 20-point check of your website: can ChatGPT, Perplexity, Gemini and Google's AI answers read it, tell who you are and quote you? Your score in about a minute.",
     slug="ai-visibility-audit/",
     body=f"""
 <section class="phero">
   <div class="wrap">
-    <div class="crumbs"><a href="index.html">Home</a> / Free AI Visibility Audit</div>
-    <div class="eyebrow">Free tool &middot; no card &middot; no call</div>
-    <h1 style="max-width:17ch">Can AI actually see your brand?</h1>
-    <p class="lead dim" style="max-width:64ch;margin-top:1.2rem">Twelve eligibility checks that determine whether ChatGPT, Perplexity, Gemini and Google AI Overviews can retrieve, trust and cite your site. Results in about 60 seconds.</p>
+    <div class="crumbs"><a href="index.html">Home</a> / Free AI Visibility Check</div>
+    <div class="eyebrow">Free check &middot; no card &middot; no call</div>
+    <h1 style="max-width:18ch">Can AI tools find and recommend your business?</h1>
+    <p class="lead dim" style="max-width:64ch;margin-top:1.2rem">Enter your website and we run 20 checks on it. You see whether ChatGPT, Perplexity, Gemini and Google's AI answers can read your site, work out who you are and quote you. It takes about a minute.</p>
 
-    <div style="max-width:720px;margin-top:36px">
-      <form id="audit-form" class="audit-form">
+    <div style="max-width:860px;margin-top:36px">
+      <form id="audit-form" class="audit-form audit-form-v2" novalidate>
         <!-- type=text, not url: type=url makes the browser reject "example.com"
              before it ever reaches the API. The API resolves the variations. -->
-        <input type="text" id="audit-url" inputmode="url" autocapitalize="off" spellcheck="false"
-               placeholder="example.com" required aria-label="Website address">
-        <button class="btn btn-primary btn-lg" id="audit-run" type="submit">Run free audit</button>
+        <label class="af-field af-wide"><span>Your website</span>
+          <input type="text" id="audit-url" name="website" inputmode="url" autocapitalize="off" spellcheck="false"
+                 placeholder="example.com" required></label>
+        <label class="af-field"><span>Your name</span>
+          <input type="text" id="audit-name" name="name" autocomplete="name" required></label>
+        <label class="af-field"><span>Work email</span>
+          <input type="email" id="audit-email" name="email" autocomplete="email" required></label>
+        <input class="af-hp" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <!-- Unticked by default and not required: marketing email needs a free, separate choice. -->
+        <label class="af-consent af-wide"><input type="checkbox" id="audit-consent" name="consent">
+          <span>Email me AI search news and tips from SVED Solution. Optional, and you can unsubscribe at any time.</span></label>
+        <button class="btn btn-primary btn-lg af-wide" id="audit-run" type="submit">Check my site</button>
+        <p id="audit-error" class="form-status err af-wide" role="alert"></p>
+        <p class="af-note af-wide">We use your name and email to send your result and to follow up about it. We only add you to the newsletter if you tick the box. See our <a href="privacy.html">privacy policy</a>.</p>
       </form>
-      <p class="faint" style="font-size:.82rem;margin-top:12px">Enter it any way you like &mdash; <span class="mono">example.com</span>, <span class="mono">www.example.com</span> or the full https address. We work out which version resolves. We crawl public pages only, and store nothing unless you ask for the full report.</p>
-      <div id="audit-stage" class="mono" style="display:none;font-size:.82rem;line-height:2;margin-top:24px;color:var(--text-dim)"></div>
+      <div id="audit-stage" style="display:none;font-size:.9rem;line-height:2;margin-top:24px;color:var(--text-dim)"></div>
       <div id="audit-results" style="display:none"></div>
     </div>
   </div>
@@ -760,22 +774,28 @@ PAGES["ai-visibility-audit"] = dict(
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">What we check</div>
-      <h2>The 12 AI eligibility checks</h2>
-      <p class="lead dim">Each one is a documented reason a language model either retrieves your page or skips it. Most sites fail at least six.</p>
+      <h2>Twenty checks, in four groups</h2>
+      <p class="lead dim">Each check comes back as good, needs work or a problem, with a plain explanation and what to do about it.</p>
     </div>
-    <div class="grid g3">
-      <div class="card"><span class="card-num">CHECK 01</span><h3>Organization schema</h3><p>Whether you exist as a resolvable entity with sameAs links, not just a website with a logo.</p></div>
-      <div class="card"><span class="card-num">CHECK 02</span><h3>Person / author schema</h3><p>Named authorship linked to real profiles. The single strongest E-E-A-T signal AI systems weigh.</p></div>
-      <div class="card"><span class="card-num">CHECK 03</span><h3>FAQPage schema</h3><p>Question-and-answer markup is the highest-frequency format cited by generative engines.</p></div>
-      <div class="card"><span class="card-num">CHECK 04</span><h3>llms.txt</h3><p>The emerging standard for declaring your content, structure and licence to LLM crawlers.</p></div>
-      <div class="card"><span class="card-num">CHECK 05</span><h3>AI crawler access</h3><p>GPTBot, PerplexityBot, ClaudeBot, Google-Extended, CCBot. Blocked or undeclared bots cannot cite you.</p></div>
-      <div class="card"><span class="card-num">CHECK 06</span><h3>Answer-first structure</h3><p>Does each page open with a direct answer in the first 100 words, or with a story intro nobody retrieves?</p></div>
-      <div class="card"><span class="card-num">CHECK 07</span><h3>Freshness signals</h3><p>Last-modified dates and update cadence. Retrieval strongly favours recently maintained pages.</p></div>
-      <div class="card"><span class="card-num">CHECK 08</span><h3>Heading hierarchy</h3><p>Clean H1 to H3 nesting so chunking and passage extraction work the way models expect.</p></div>
-      <div class="card"><span class="card-num">CHECK 09</span><h3>Citation-ready formats</h3><p>Lists, tables, comparison matrices and step frameworks. Long essay prose does not get quoted.</p></div>
-      <div class="card"><span class="card-num">CHECK 10</span><h3>Core Web Vitals</h3><p>LCP, INP and CLS on mobile. Slow renders reduce crawl depth and hurt every downstream signal.</p></div>
-      <div class="card"><span class="card-num">CHECK 11</span><h3>Entity consistency</h3><p>Is your brand described identically across your site, socials and third-party profiles? Inconsistency breaks trust loops.</p></div>
-      <div class="card"><span class="card-num">CHECK 12</span><h3>Tier-1 citation footprint</h3><p>Presence on G2, Capterra, Trustpilot, Crunchbase, Product Hunt, Reddit and Quora. AI believes these more than your site.</p></div>
+    <div class="grid g2">
+      <div class="card"><span class="card-num">Group 1</span><h3>Can AI tools reach your site?</h3>
+        <ul style="padding-left:1.1em;margin:14px 0 0;color:var(--text-dim)">
+          <li>AI crawlers are allowed in</li><li>Your text can be read without JavaScript</li>
+          <li>Nothing stops the page being indexed or quoted</li><li>A sitemap lists your pages</li>
+          <li>A guide file for AI tools (llms.txt)</li><li>The page loads quickly on a phone</li></ul></div>
+      <div class="card"><span class="card-num">Group 2</span><h3>Do they know who you are?</h3>
+        <ul style="padding-left:1.1em;margin:14px 0 0;color:var(--text-dim)">
+          <li>Your business is described in a way machines can read</li><li>A real person is named</li>
+          <li>Your name is written the same way everywhere</li><li>You are on sites AI tools already trust</li></ul></div>
+      <div class="card"><span class="card-num">Group 3</span><h3>Is your content easy to quote?</h3>
+        <ul style="padding-left:1.1em;margin:14px 0 0;color:var(--text-dim)">
+          <li>The page gets to the point</li><li>Headings ask the questions people ask</li>
+          <li>Questions and answers are marked up</li><li>Facts are set out in lists and tables</li>
+          <li>Headings are in a sensible order</li><li>The page shows it is kept up to date</li></ul></div>
+      <div class="card"><span class="card-num">Group 4</span><h3>Search basics</h3>
+        <ul style="padding-left:1.1em;margin:14px 0 0;color:var(--text-dim)">
+          <li>Page title and description</li><li>The page names its official address</li>
+          <li>Secure and set up for phones</li><li>Links to your page show a proper preview</li></ul></div>
     </div>
   </div>
 </section>
@@ -785,26 +805,26 @@ PAGES["ai-visibility-audit"] = dict(
     <div class="grid g2" style="gap:52px;align-items:center">
       <div>
         <div class="eyebrow">Go deeper</div>
-        <h2>The full AI Visibility Report</h2>
-        <p class="lead dim">The free audit tells you whether you are eligible. The full report tells you whether you are actually being cited &mdash; and by whom.</p>
+        <h2>The full AI visibility report</h2>
+        <p class="lead dim">The free check tells you whether AI tools can read and trust your site. The full report shows whether they actually mention you, and who they recommend instead.</p>
         <ul style="list-style:none;padding:0;margin:1.6rem 0">
-          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Live prompt testing across ChatGPT, Perplexity and Gemini</li>
-          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;25-cell citation matrix: 5 category prompts &times; 5 engines</li>
-          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Competitor citation reverse-engineering &mdash; every domain AI cites instead of you</li>
-          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Prioritised 90-day fix plan with effort and impact scoring</li>
-          <li style="padding:11px 0"><span class="green mono">&#10003;</span> &nbsp;Loom walkthrough from the strategist who ran it</li>
+          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Real questions tested on ChatGPT, Perplexity and Gemini</li>
+          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Five questions on five AI tools: 25 results in one table</li>
+          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;Every site the AI tools recommend instead of you</li>
+          <li style="padding:11px 0;border-bottom:1px solid var(--line)"><span class="green mono">&#10003;</span> &nbsp;A 90-day plan in priority order</li>
+          <li style="padding:11px 0"><span class="green mono">&#10003;</span> &nbsp;A recorded walkthrough from the strategist who ran it</li>
         </ul>
         <a class="btn btn-primary btn-lg" href="contact.html">Request the full report</a>
       </div>
       <div class="panel">
-        <div class="panel-bar"><i class="tdot"></i><i class="tdot"></i><i class="tdot"></i><span style="margin-left:8px">citation-matrix.csv</span></div>
-        <div class="panel-body" style="font-size:.78rem">
-          <div class="crow"><span class="lbl">&ldquo;best [category] for [ICP]&rdquo;</span><span class="pill pill-bad">not cited</span></div>
-          <div class="crow"><span class="lbl">&ldquo;top tools for [problem]&rdquo;</span><span class="pill pill-warn">cited #7</span></div>
-          <div class="crow"><span class="lbl">&ldquo;who recommends [solution]&rdquo;</span><span class="pill pill-bad">not cited</span></div>
-          <div class="crow"><span class="lbl">&ldquo;best brands in [category]&rdquo;</span><span class="pill pill-warn">cited #4</span></div>
-          <div class="crow"><span class="lbl">&ldquo;[competitor] alternatives&rdquo;</span><span class="pill pill-ok">cited #2</span></div>
-          <div class="crow"><span class="lbl">Competitor cited instead</span><span class="val">14 domains</span></div>
+        <div class="panel-bar"><i class="tdot"></i><i class="tdot"></i><i class="tdot"></i><span style="margin-left:8px">Sample: who the AI tools name</span></div>
+        <div class="panel-body" style="font-size:.85rem">
+          <div class="crow"><span class="lbl">&ldquo;best [product] for [customer]&rdquo;</span><span class="pill pill-bad">not named</span></div>
+          <div class="crow"><span class="lbl">&ldquo;top tools for [problem]&rdquo;</span><span class="pill pill-warn">named 7th</span></div>
+          <div class="crow"><span class="lbl">&ldquo;who do you recommend for [need]&rdquo;</span><span class="pill pill-bad">not named</span></div>
+          <div class="crow"><span class="lbl">&ldquo;best brands in [category]&rdquo;</span><span class="pill pill-warn">named 4th</span></div>
+          <div class="crow"><span class="lbl">&ldquo;[competitor] alternatives&rdquo;</span><span class="pill pill-ok">named 2nd</span></div>
+          <div class="crow"><span class="lbl">Other sites named instead</span><span class="val">14</span></div>
         </div>
       </div>
     </div>
@@ -813,18 +833,20 @@ PAGES["ai-visibility-audit"] = dict(
 
 {faq([
   ("Is this really free?",
-   "The 12-point eligibility audit is free and needs no card. It runs a live crawl of your public pages and returns a score with a specific reason for each check. The full report &mdash; which includes live prompt testing across ChatGPT, Perplexity and Gemini &mdash; is gated because it costs us API credits and strategist time to run."),
-  ("What is llms.txt and do I need one?",
-   "It is a plain-text file at your domain root that tells language-model crawlers what your site contains, how it is structured and how you want it used &mdash; conceptually similar to robots.txt but written for retrieval rather than indexing. Adoption is still early, so it is not yet a ranking factor. It costs almost nothing to add and it removes ambiguity, which is why we include it in every build."),
+   "Yes. The 20-point check is free and needs no card. It reads your public page and gives you a score with a plain reason for each result. The full report takes strategist time and paid tools to run, so we do that one on request."),
+  ("Why do you ask for my name and email?",
+   "So we can send you the result and follow up if you want help acting on it. We do not sell or share your details. The newsletter box is separate and optional: leave it unticked and we will not add you to any mailing list."),
+  ("What is llms.txt, and do I need one?",
+   "It is a plain-text file on your site that tells AI tools what your site contains and which pages matter. It is optional and still new, and no AI company has confirmed relying on it. It takes a few minutes to add, so we include it in every project."),
   ("Should I block AI crawlers to protect my content?",
-   "That is a strategy decision, not a technical one. Blocking GPTBot, ClaudeBot and PerplexityBot protects your content from training and retrieval &mdash; and guarantees you are never cited. If your business depends on brand discovery, blocking is self-harm. If you are a publisher monetising pageviews, the calculation is genuinely different. We will tell you which side you are on."),
-  ("Does the audit store my data?",
-   "No. The free audit runs the crawl and returns the result. Nothing is retained unless you request the full report and give us an email."),
+   "It depends on what your business needs. Blocking them keeps your content out of AI tools, and also means they cannot recommend you. If you rely on being discovered, blocking usually hurts. If you earn from page views, the answer may be different, and you can block the crawlers that train AI models while still allowing the ones that fetch pages for live answers."),
+  ("What do you store?",
+   "Your name, email, the website you entered and its score, so we can follow up. The check result is kept for 24 hours so a repeat check is fast. If you tick the newsletter box we also add your email to our AI news list, and you can leave it at any time."),
 ])}
 
-{cta("Twelve checks. Sixty seconds. One honest answer.",
-     "Most sites fail six or more. Knowing which six is the entire starting point.",
-     primary=("Scroll up and run the audit", "#audit-form"),
+{cta("Twenty checks. About a minute.",
+     "Most sites have a handful of gaps. Knowing which ones is the starting point.",
+     primary=("Scroll up and check your site", "#audit-form"),
      secondary=("Talk to a strategist", "contact.html"))}
 """)
 
@@ -902,7 +924,7 @@ PAGES["why-llm-seo-now"] = dict(
 ])}
 
 {cta("See exactly where you stand today.",
-     "The free audit takes a minute and tells you which of the twelve eligibility signals you are currently failing.")}
+     "The free check takes a minute and shows which of its 20 tests you are currently failing.")}
 """)
 
 # ==========================================================================
@@ -994,7 +1016,7 @@ PAGES["generative-engine-optimization"] = dict(
       <h2>What lands on your desk</h2>
     </div>
     <div class="grid g3">
-      <div class="card"><span class="card-num">MONTH 1</span><h3>Entity &amp; citation baseline</h3><p>Full entity map, 12-point eligibility audit, competitor citation teardown, prioritised 90-day roadmap.</p></div>
+      <div class="card"><span class="card-num">MONTH 1</span><h3>Entity &amp; citation baseline</h3><p>Full entity map, 20-point visibility check, competitor citation teardown, prioritised 90-day roadmap.</p></div>
       <div class="card"><span class="card-num">MONTH 2</span><h3>Structure &amp; schema</h3><p>Organization, Person, Service and FAQPage schema live. Answer blocks on all money pages. llms.txt shipped.</p></div>
       <div class="card"><span class="card-num">MONTH 3</span><h3>Citation placement</h3><p>Tier-1 profiles built and verified. First guest placements and community mentions live. First citations tracked.</p></div>
     </div>
@@ -1013,7 +1035,7 @@ PAGES["generative-engine-optimization"] = dict(
 ])}
 
 {cta("See where your GEO baseline sits.",
-     "The free audit covers eight of the twelve signals that determine whether generative engines can cite you at all.")}
+     "The free check covers the on-site signals that decide whether AI tools can read and quote your pages.")}
 """)
 
 # ==========================================================================
@@ -1040,15 +1062,18 @@ SERVICE_URLS = {
     "whitelabel": "/services/white-label-seo/",
     "consulting": "/services/seo-consulting/",
     "geo": "generative-engine-optimization.html",
+    "paid": "/services/performance-marketing/",
+    "automation": "/services/marketing-automation/",
+    "builds": "/services/ecommerce-development/",
 }
 
 
-def svc(anchor, num, name, desc, bullets, tag="core"):
+def svc(anchor, num, name, desc, bullets, tag="SEO"):
     lis = "".join(f"<li>{b}</li>" for b in bullets)
     url = SERVICE_URLS.get(anchor, "services.html")
     return f"""
 <div class="card" id="{anchor}" style="scroll-margin-top:90px;display:flex;flex-direction:column">
-  <span class="card-num">{num} &middot; {tag.upper()}</span>
+  <span class="card-num">{num} &middot; {tag}</span>
   <h3>{name}</h3>
   <p style="margin-bottom:14px">{desc}</p>
   <ul style="font-size:.88rem;color:var(--text-faint);padding-left:1.1em;margin:0 0 18px">{lis}</ul>
@@ -1062,99 +1087,114 @@ def svc(anchor, num, name, desc, bullets, tag="core"):
 
 AI_SERVICES = "".join([
     svc("geo", "01", '<a href="generative-engine-optimization.html">Generative Engine Optimization</a>',
-        "Be the brand ChatGPT, Perplexity and Gemini name. Entity authority, citation consensus, retrieval-ready structure and a 30-day refresh loop.",
-        ["Entity map + Organization/Person schema", "Tier-1 citation stack placement",
-         "Competitor citation reverse-engineering", "Weekly controlled prompt testing"], "ai search"),
+        "Get your business named when people ask ChatGPT, Perplexity or Gemini for a recommendation. We make it clear who you are, get you mentioned on sites these tools trust, and keep your key pages up to date.",
+        ["A clear, consistent description of your business across the web", "Mentions on the sites AI tools rely on",
+         "A look at who gets recommended instead of you, and why", "Weekly tests of what the AI tools actually say"], "AI search"),
     svc("aeo", "02", "Answer Engine Optimization",
-        "Own the direct answer. Question architecture, FAQ schema and snippet capture so your page is the one quoted rather than one of ten linked.",
-        ["Question clustering by intent", "FAQPage + HowTo + QAPage schema",
-         "Answer-block rewrites in the first 100 words", "Zero-click defence strategy"], "ai search"),
+        "Become the answer, not one of ten links. We find the questions your customers ask and rewrite your pages to answer them directly.",
+        ["The real questions your customers ask, grouped by topic", "A short, direct answer at the top of each page",
+         "FAQ sections marked up so machines can read them", "A plan for searches that no longer send clicks"], "AI search"),
     svc("llm-seo", "03", "LLM SEO",
-        "The technical layer of AI visibility. Templates, markup and rendering engineered so language models can parse, chunk, quote and attribute your content.",
-        ["Chunk-friendly heading and passage structure", "llms.txt authoring and maintenance",
-         "AI crawler directives: GPTBot, ClaudeBot, PerplexityBot, Google-Extended",
-         "Product and category template restructuring"], "ai search"),
+        "The technical side of being read by AI. We make sure AI crawlers can get in, read your pages and tell which part answers what.",
+        ["Pages laid out in clear, self-contained sections", "A guide file for AI tools (llms.txt)",
+         "Rules for AI crawlers such as GPTBot, ClaudeBot and PerplexityBot",
+         "Product and category page templates rebuilt to match"], "AI search"),
     svc("citation", "04", "AI Citation &amp; Entity Building",
-        "The off-site half of AI visibility. We build the independent, consistent third-party footprint models read as authority consensus.",
-        ["G2, Capterra, Trustpilot, Crunchbase, Product Hunt", "Reddit and Quora participation, done properly",
-         "Founder-as-entity: bylines, podcasts, newsletters", "Digital PR aimed at citation, not just DR"], "ai search"),
+        "What other sites say about you counts for more than what you say yourself. We build your presence on the review sites, directories and communities AI tools trust.",
+        ["Profiles on G2, Capterra, Trustpilot, Crunchbase and similar", "Useful answers on Reddit and Quora, done properly",
+         "Articles, podcasts and newsletters under your founder's name", "Press coverage aimed at being mentioned, not just linked"], "AI search"),
     svc("monitoring", "05", "AI Visibility Monitoring &amp; Reporting",
-        "Citation volume, page-level attribution and controlled prompt testing, reported monthly in plain English alongside clicks and revenue.",
-        ["Automated citation tracking + page attribution", "Fixed weekly prompt set across 3+ engines",
-         "Competitor share-of-citation tracking", "Narrative monthly report, not a dashboard dump"], "ai search"),
+        "Know how often AI tools mention you and which pages they use. One monthly report in plain English, next to your clicks and revenue.",
+        ["Tracking of AI mentions, page by page", "The same questions tested every week on three or more AI tools",
+         "How often you are named compared with competitors", "A written monthly report, not a dashboard to decode"], "AI search"),
     svc("aio", "06", "Google AI Overviews Optimization",
-        "Recover and defend the traffic AI Overviews absorbed. Query-level diagnosis of where you lost clicks and what it takes to get named in the summary.",
-        ["AI Overview presence audit by query", "CTR-loss attribution in Search Console",
-         "Content restructuring for summary inclusion", "Schema and entity reinforcement"], "ai search"),
+        "Win back the clicks Google's AI answers took. We find the searches where you lost traffic and work on getting you named in the answer.",
+        ["A list of your searches that now show an AI answer", "Where the lost clicks went, from Search Console",
+         "Pages rewritten so they can be quoted in the answer", "Stronger signals about who you are"], "AI search"),
 ])
 
 CORE_SERVICES = "".join([
     svc("technical", "07", "Technical SEO",
-        "The foundation everything else sits on. Crawl budget, index bloat, rendering, Core Web Vitals, log-file analysis and site architecture.",
-        ["Crawl budget audit and index surgery", "Rendering strategy: SSR, SSG, CSR trade-offs",
-         "Core Web Vitals remediation", "Log-file analysis of real Googlebot behaviour"]),
+        "The groundwork everything else relies on. We make sure search engines can reach, load and understand every page that matters.",
+        ["Pages Google cannot reach, or should not index, found and fixed", "How Google really crawls your site, read from server logs",
+         "Faster loading on phones", "A tidier site structure and internal links"]),
     svc("semantic", "08", "Semantic &amp; On-Page SEO",
-        "Concept coverage over keyword density. We map the full topic ecosystem and entity relationships, then build content that proves expertise.",
-        ["Semantic topic maps before writing", "Entity and co-occurrence mapping",
-         "Position 8-20 recovery programme", "Semantic content audits and gap-filling"]),
+        "Cover the whole topic, not one keyword. We map everything a buyer wants to know and make sure your pages answer it.",
+        ["A topic map before anything is written", "The related subjects and terms your pages should cover",
+         "A programme to lift pages stuck in positions 8 to 20", "Gaps in existing content found and filled"]),
     svc("content", "09", "Content Strategy &amp; Production",
-        "ICP-driven, conversion-first content. We start at the bottom of the funnel where money is, then build the topical depth around it.",
-        ["ICP definition workshop with sales and CS", "Pillar and cluster architecture",
-         "Semantic briefs, not keyword briefs", "Founder-bylined authority content"]),
+        "Content that sells first. We start with the pages closest to a purchase, then build supporting articles around them.",
+        ["A workshop to define your ideal customer", "A plan of main pages and supporting articles",
+         "Briefs built around topics, not keyword lists", "Expert articles under your founder's name"]),
     svc("links", "10", "Link Building &amp; Digital PR",
-        "Links that also function as AI citations. Guest placement, digital PR, resource-page outreach and local citations with real editorial standards.",
-        ["Competitor backlink reverse-engineering", "Guest posting and guestographic campaigns",
-         "Digital PR built around original data", "Local citation and NAP consistency"]),
+        "Links from other sites still matter, and they now double as mentions AI tools pick up. Guest articles, press coverage and local listings, held to real editorial standards.",
+        ["A study of where competitors get their links", "Guest articles on relevant sites",
+         "Press stories built on your own data", "Consistent business listings across directories"]),
     svc("ecommerce", "11", "Ecommerce SEO",
-        "Category and product architecture, faceted navigation, variant handling and shopping-surface visibility for retailers and DTC brands.",
-        ["Money-page keyword mapping framework", "Faceted navigation and parameter control",
-         "Variant and product schema", "GA4 ecommerce measurement setup"]),
+        "More of your category and product pages found on Google and in shopping results, for retailers and direct-to-consumer brands.",
+        ["The right search terms matched to the pages that sell", "Filters and sorting that do not create thousands of duplicate pages",
+         "Product details marked up for richer search results", "Sales tracking set up in Google Analytics"]),
     svc("saas", "12", "SaaS &amp; B2B SEO",
-        "Pipeline over pageviews. Bottom-of-funnel first, comparison and alternatives pages, and integration-led programmatic expansion.",
-        ["Inverted-funnel content sequencing", "Comparison and alternatives page systems",
-         "Integration and use-case programmatic pages", "Lead-magnet and conversion-path design"]),
+        "Sales leads, not page views. We start with the pages buyers read just before choosing, such as comparisons and alternatives.",
+        ["Buying-stage pages written first", "Comparison and alternative pages",
+         "A page for each integration and use case", "Downloads and clear paths to an enquiry"]),
     svc("local", "13", "Local SEO",
-        "Google Business Profile, local citations, review velocity and location-page architecture for service-area and multi-location businesses.",
-        ["GBP optimisation and posting cadence", "Citation consistency cleanup",
-         "Review generation systems", "Multi-location page architecture"]),
+        "Show up in Google Maps and local results. Google Business Profile, local listings, reviews and a page for each location.",
+        ["Google Business Profile set up and kept active", "Name, address and phone number consistent everywhere",
+         "A steady flow of new reviews", "Location pages for businesses with several sites"]),
     svc("international", "14", "International SEO",
-        "Hreflang, ccTLD versus subfolder strategy, localisation that goes beyond translation, and market-by-market keyword research.",
-        ["Hreflang implementation and validation", "Domain structure strategy",
-         "Localised keyword research per market", "Cultural adaptation, not literal translation"]),
+        "Reach customers in other countries with the right page in the right language.",
+        ["Language and country tags set up correctly (hreflang)", "The right domain structure for each market",
+         "Keyword research in each market's own language", "Copy adapted to the culture, not just translated"]),
     svc("programmatic", "15", "Programmatic SEO",
-        "Scaled page generation that survives Google's helpful-content standards. Built on real data, real templates and strict quality gates.",
-        ["Data source and template design", "Quality thresholds and index control",
-         "Internal link automation", "Cannibalisation monitoring"]),
+        "Hundreds of useful pages from one well-built template and your own data, with checks so none are thin or duplicated.",
+        ["Data sources and page templates designed together", "Quality checks before any page goes live",
+         "Automatic internal links", "Watching for pages that compete with each other"]),
     svc("migration", "16", "Site Migrations",
-        "Replatforms, redesigns and domain moves without losing rankings. Pre-migration crawl baselines, redirect mapping and post-launch monitoring.",
-        ["Pre-migration crawl and ranking baseline", "Complete redirect mapping and QA",
-         "Staged rollout schedule", "Post-launch daily monitoring for 30 days"]),
+        "Change platform, design or domain without losing your rankings.",
+        ["A record of every ranking page before the move", "Every old address mapped to its new one",
+         "A staged launch plan", "Daily checks for 30 days after launch"]),
     svc("whitelabel", "17", "White-Label SEO",
-        "Full delivery under your brand, under NDA. Audits, strategy, execution and branded reporting. We stay invisible to your client.",
-        ["NDA-backed anonymous delivery", "Branded reporting in your template",
-         "Scalable capacity: audits to full retainers", "Your account manager, our delivery team"]),
+        "We do the work under your agency's name, under NDA. Audits, strategy, delivery and reports in your branding.",
+        ["Delivery under NDA: your client never sees us", "Reports in your template",
+         "From single audits to full ongoing work", "Your account manager, our delivery team"]),
     svc("consulting", "18", "SEO Consulting",
-        "Direct strategist access at $30 per hour. Teardowns, second opinions, in-house team training and roadmap review.",
-        ["$30/hour, booked by the session", "Live teardown with a recorded Loom",
-         "In-house team enablement and SOP handover", "Roadmap and vendor review"]),
+        "Talk to a strategist for $30 per hour. Site reviews, second opinions, team training and plan reviews.",
+        ["$30 per hour, booked by the session", "A live review of your site, recorded for you",
+         "Training and written processes for your team", "A review of your plan and suppliers"]),
+])
+
+GROWTH_SERVICES = "".join([
+    svc("paid", "19", "Performance Marketing",
+        "Paid ads judged by sales, not clicks. Google, Microsoft, Meta, TikTok, LinkedIn, Amazon and eBay run as one budget.",
+        ["Search and shopping ads on Google and Microsoft", "Paid social on Meta, TikTok and LinkedIn",
+         "Marketplace ads on Amazon and eBay", "One monthly report across every channel"], "Paid ads"),
+    svc("automation", "20", "Marketing Automation &amp; Data",
+        "Tracking you can trust, and the repetitive jobs done for you. Analytics, consent, reporting and automated workflows.",
+        ["Google Analytics 4 and Tag Manager set up properly", "Tracking that meets UK and EU consent rules",
+         "Your website, CRM and email tools connected", "Automations and AI assistants for follow-ups and reports"], "Data and automation"),
+    svc("builds", "21", "Ecommerce &amp; App Development",
+        "The shop, site or app your marketing sends people to. Built to load fast and to work with your tracking from day one.",
+        ["Shopify and WooCommerce builds and redesigns", "Platform moves that protect your rankings",
+         "Custom sites and mobile apps", "Email and SMS for abandoned baskets and repeat orders"], "Websites and apps"),
 ])
 
 PAGES["services"] = dict(
-    title="SEO Services | GEO, AEO, LLM SEO &amp; Full-Stack SEO | SVED Solution",
-    desc="Eighteen SEO services across AI search and core SEO: GEO, AEO, LLM SEO, AI citations, technical, semantic, content, links, ecommerce, SaaS, white-label and consulting.",
+    title="Services | AI Search, SEO, Paid Ads, Data &amp; Websites | SVED Solution",
+    desc="Twenty-one services in three groups: AI search, SEO, and paid ads, marketing data and website builds. Take one, or run them together as a single plan.",
     slug="services/",
     body=f"""
 {phero('<a href="index.html">Home</a> / Services',
        'Services',
-       'AI search first. Full-stack SEO underneath.',
-       'Eighteen services across two clusters. The AI search cluster is what we lead with and what most clients come for. The core SEO cluster is what makes it work &mdash; because GEO on a broken site is theatre.')}
+       'Everything it takes to be found and chosen.',
+       'Twenty-one services in three groups: AI search, SEO, and the paid ads, data and websites that turn attention into sales. Take one, or let us run them together as a single plan.')}
 
 <section class="sec">
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow">Cluster 01 &middot; primary</div>
-      <h2>AI Search Services</h2>
-      <p class="lead dim">Being retrieved, trusted and named by systems that generate answers instead of returning links.</p>
+      <div class="eyebrow">Group 1</div>
+      <h2>AI search</h2>
+      <p class="lead dim">Getting your business named when people ask ChatGPT, Perplexity, Gemini or Google's AI answers for help.</p>
     </div>
     <div class="grid g3">{AI_SERVICES}</div>
   </div>
@@ -1163,9 +1203,9 @@ PAGES["services"] = dict(
 <section class="sec band-alt">
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow">Cluster 02 &middot; foundation</div>
-      <h2>Core SEO Services</h2>
-      <p class="lead dim">The disciplines that make AI visibility possible and keep classic organic revenue compounding.</p>
+      <div class="eyebrow">Group 2</div>
+      <h2>SEO</h2>
+      <p class="lead dim">The groundwork that gets your pages found on Google. AI tools lean on the same foundations.</p>
     </div>
     <div class="grid g3">{CORE_SERVICES}</div>
   </div>
@@ -1173,20 +1213,31 @@ PAGES["services"] = dict(
 
 <section class="sec">
   <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Group 3</div>
+      <h2>Paid ads, data and websites</h2>
+      <p class="lead dim">Buying traffic that pays for itself, measuring it honestly, and building the shop or site it lands on.</p>
+    </div>
+    <div class="grid g3">{GROWTH_SERVICES}</div>
+  </div>
+</section>
+
+<section class="sec band-alt">
+  <div class="wrap">
     <div class="sec-head center">
-      <div class="eyebrow">Engagement models</div>
+      <div class="eyebrow">How we work together</div>
       <h2>Three ways to work with us</h2>
     </div>
     <div class="grid g3">
-      <div class="card"><h3>Audit &amp; roadmap</h3><p style="margin-bottom:16px">One-off diagnostic. Full AI visibility report, technical audit, competitor citation teardown and a prioritised 90-day plan you can execute with anyone.</p><p class="mono green" style="font-size:.85rem">Fixed fee &middot; 2&ndash;3 weeks</p></div>
-      <div class="card" style="border-color:rgba(0,255,178,.35)"><h3>Retained delivery</h3><p style="margin-bottom:16px">We run the roadmap. GEO plus the core SEO work it depends on, shipped by our team, reported monthly in narrative form. Most clients start here.</p><p class="mono green" style="font-size:.85rem">Monthly &middot; scoped after audit</p></div>
-      <div class="card"><h3>Consulting &amp; enablement</h3><p style="margin-bottom:16px">Strategist access by the hour. Teardowns, second opinions, in-house training and our documented SOP library handed to your team.</p><p class="mono green" style="font-size:.85rem">$30 / hour</p></div>
+      <div class="card"><h3>A one-off review and plan</h3><p style="margin-bottom:16px">We check your site, your AI visibility and your competitors, then hand you a 90-day plan in priority order. You can carry it out with anyone.</p><p class="mono green" style="font-size:.85rem">Fixed fee &middot; 2&ndash;3 weeks</p></div>
+      <div class="card"><h3>Ongoing delivery</h3><p style="margin-bottom:16px">We carry out the plan for you and report every month in plain English. Most clients start here.</p><p class="mono green" style="font-size:.85rem">Monthly &middot; agreed after the review</p></div>
+      <div class="card"><h3>Advice by the hour</h3><p style="margin-bottom:16px">Time with a strategist for site reviews, second opinions and team training.</p><p class="mono green" style="font-size:.85rem">$30 per hour</p></div>
     </div>
   </div>
 </section>
 
-{cta("Not sure which of the eighteen you need?",
-     "Start with the free audit. It tells you which signals you are failing, which usually makes the priority obvious.")}
+{cta("Not sure which service you need?",
+     "Start with the free AI visibility check. It shows what is holding you back, which usually makes the first step obvious.")}
 """)
 
 # ==========================================================================
@@ -1674,7 +1725,7 @@ PAGES["insights"] = dict(
 # ==========================================================================
 VIDEOS = [
     ("Live GEO teardown: why this brand is invisible in ChatGPT", "Teardown", "14:22"),
-    ("The 12-point AI eligibility audit, run live", "Walkthrough", "18:05"),
+    ("The 20-point AI visibility check, run live", "Walkthrough", "18:05"),
     ("Index surgery: deleting pages to grow traffic", "Technical", "22:40"),
     ("Position 8-20 recovery, start to finish", "On-Page", "16:11"),
     ("Reverse-engineering a competitor's AI citations", "GEO", "12:58"),
@@ -1907,7 +1958,7 @@ PAGES["contact"] = dict(
         </div>
         <div class="card">
           <h3>Before you write</h3>
-          <p style="margin-bottom:16px">Running the free audit first makes the first call about twice as useful &mdash; you arrive with a score and twelve specific findings instead of a general question.</p>
+          <p style="margin-bottom:16px">Running the free audit first makes the first call about twice as useful &mdash; you arrive with a score and a list of specific findings instead of a general question.</p>
           <a class="btn btn-ghost btn-sm" href="ai-visibility-audit.html">Run the free audit</a>
         </div>
       </div>
@@ -2069,7 +2120,7 @@ def post_page(p):
   </div>
 </section>
 {cta("Find out where your own site stands.",
-     "The free audit runs twelve AI eligibility checks against your live URL in about sixty seconds.")}
+     "The free check runs 20 tests on your live page and takes about a minute.")}
 """
 
 
@@ -2240,16 +2291,26 @@ def industry_page(i):
 {faq(industry_faqs(i))}
 
 {cta(f"See how visible you are in {label} AI answers.",
-     "Twelve eligibility checks against your live URL. No card, no call, about sixty seconds.")}
+     "Twenty checks against your live page. No card and no call. It takes about a minute.")}
 """
 
 
 # ==========================================================================
 # Individual service pages
 # ==========================================================================
-def S(slug, name, cluster, icon, answer, kw, does, deliver, faqs, body=""):
+def S(slug, name, cluster, icon, answer, kw, does, deliver, faqs, body="",
+      title="", who="", surfaces=True):
+    """One service page.
+
+    title    overrides the default "<name> Services | SVED Solution" page title.
+    who      overrides the "Who it is for" paragraph.
+    surfaces False for services that are not about search or AI visibility: the
+             AI-platform band, the ranking-timeline FAQ and the audit call to action
+             are swapped for ones that fit.
+    """
     return dict(slug=slug, name=name, cluster=cluster, icon=icon, answer=answer,
-                kw=kw, does=does, deliver=deliver, faqs=faqs, body=body)
+                kw=kw, does=does, deliver=deliver, faqs=faqs, body=body,
+                title=title, who=who, surfaces=surfaces)
 
 
 SERVICES = [
@@ -2554,6 +2615,91 @@ SERVICES = [
         "A focused teardown of one problem: why a specific page is not ranking, whether a proposed architecture will work, or a review of an agency proposal. Send context in advance and the hour is spent on answers rather than orientation."),
        ("Why is it only $30 an hour?",
         "Because AI tooling has made research, diagnosis and reporting dramatically faster than they were two years ago, and we pass that on as scope rather than margin. It is also the cheapest way for us to meet businesses that later become retainer clients.")]),
+
+    S("performance-marketing", "Performance Marketing", "Paid ads", "&#9650;",
+      "Performance marketing is paid advertising that you judge by sales and enquiries, not by views or clicks. We plan, run and report your ads on Google, Microsoft, Meta, TikTok, LinkedIn, Amazon and eBay as one budget, and move money toward whatever is bringing in customers at a profit.",
+      "performance marketing agency, performance marketing agency UK, performance marketing agency London, paid search, paid social, PPC management",
+      ["Search and shopping ads on Google and Microsoft",
+       "Paid social on Meta, TikTok and LinkedIn, with ads made for each platform",
+       "Marketplace ads on Amazon and eBay",
+       "Tracking fixed first, so every sale is counted once and in the right place",
+       "Spend reviewed every month against profit, with budget moved to what is working"],
+      ["Account review with a list of wasted spend", "Channel plan and monthly budget",
+       "New ads and tests every month", "One monthly report across every channel"],
+      [("How much do we need to spend on ads?",
+        "There is no fixed minimum. We look at your margins and what a new customer is worth to you, then suggest a starting budget small enough to test safely. On one retail account a new channel was proven on under &pound;1,000 of spend before the budget was raised."),
+       ("Which platform should we start with?",
+        "Usually the one where people are already searching for what you sell, which for most businesses is Google. Social platforms such as Meta and TikTok work best once you have ads people want to watch and a way to follow up with visitors who did not buy the first time."),
+       ("How do you report results?",
+        "One monthly report covering every channel, checked against your own sales records and not each ad platform's count. Ad platforms often claim the same sale twice, so we never add their numbers together.")],
+      body="""<h2>What this has looked like</h2>
+<p>One UK specialist retailer, 1 January to 10 November 2026. The client's name is withheld.</p>
+<div class="tbl-wrap"><table>
+<tr><th>Channel</th><th>Ad spend</th><th>Sales tracked</th><th>Return</th></tr>
+<tr><td>Google Ads</td><td>&pound;64,092</td><td>&pound;761,562</td><td><strong>11.9x</strong></td></tr>
+<tr><td>Meta Ads</td><td>&pound;25,945</td><td>&pound;422,107</td><td><strong>16.3x</strong></td></tr>
+<tr><td>eBay Promoted Listings</td><td>&pound;11,886</td><td>&pound;99,353</td><td><strong>8.4x</strong></td></tr>
+<tr><td>Amazon Ads</td><td>&pound;4,362</td><td>&pound;27,107</td><td><strong>6.2x</strong></td></tr>
+<tr><td>All paid channels</td><td>&pound;107,222</td><td>&pound;1,310,129</td><td><strong>12.2x</strong></td></tr>
+</table></div>
+<p>On Meta, spend fell from &pound;33,930 to &pound;25,945 while purchases rose from 671 to 1,080. These are one account's results, not a promise: yours depend on your margins, your market and where you start. <a href="case-studies.html#paid">See the full case study</a>.</p>""",
+      title="Performance Marketing Agency | Google, Meta, TikTok &amp; Marketplace Ads | SVED Solution",
+      who="Businesses that already sell something people want and can tell us what a new customer is worth. If you have never run ads, we start with one channel and a small test budget.",
+      surfaces=False),
+
+    S("marketing-automation", "Marketing Automation &amp; Data", "Data and automation", "&#9881;",
+      "Marketing automation and data is the plumbing behind your marketing: tracking that counts every sale correctly, reports you can trust, and automatic workflows that do the repetitive jobs. We set up analytics, consent and tagging, connect your tools, and build automations for tasks such as lead follow-up, review requests and monthly reporting.",
+      "marketing automation agency, email marketing automation agency, martech agency, GA4 setup, server-side tracking, Consent Mode v2",
+      ["Google Analytics 4 and Tag Manager set up so sales and leads are tracked properly",
+       "Tracking that meets UK and EU consent rules (Consent Mode v2, server-side tagging)",
+       "Every channel in one monthly report, checked against your own sales records",
+       "Your website, CRM and email tool connected, so data moves without copy and paste",
+       "Automations and AI assistants for follow-ups, lead routing and reporting"],
+      ["Tracking review with a fix list", "Working analytics, tags and consent setup",
+       "One dashboard or monthly report", "Written-up automations your team can run"],
+      [("Our numbers never match between tools. Is that normal?",
+        "Small gaps are normal, large ones are not. On one retail account we found a fault at the payment step that was crediting &pound;23,814 of sales and 101 orders to the wrong source, and a further 16-point gap caused by phone and in-store orders that analytics could not see. Finding gaps like these is usually the first job."),
+       ("Which tools do you work with?",
+        "Google Analytics 4, Google Tag Manager, Looker Studio, Supermetrics, HubSpot, Klaviyo, Mailchimp, Zapier, Make and n8n are the most common. We work with what you already have before suggesting anything new."),
+       ("Will automation replace people on our team?",
+        "No. It takes over repeat jobs such as copying leads between tools, sending follow-ups and building the monthly report, so your team spends its time on customers. Every automation is written down, so you do not depend on us to keep it running.")],
+      body="""<h2>What this has looked like</h2>
+<p>Two examples from accounts our founder leads. Client names are withheld.</p>
+<ul>
+<li><strong>A UK retailer.</strong> A fault at the payment step was crediting &pound;23,814 of sales and 101 orders to the wrong source. Phone and in-store orders, which analytics could not see, explained a further 16-point gap between reported and real revenue.</li>
+<li><strong>A UK industrial services firm.</strong> Analytics had recorded nothing at all. After the rebuild it recorded 14,000 users, and for the first time the business could see where its enquiries came from.</li>
+</ul>
+<p><a href="case-studies.html#measurement">See the full case study</a>.</p>""",
+      title="Marketing Automation Agency | Tracking, Data &amp; Workflows | SVED Solution",
+      who="Businesses whose reports do not match their bank account, or whose team loses hours each week copying data between tools.",
+      surfaces=False),
+
+    S("ecommerce-development", "Ecommerce &amp; App Development", "Websites and apps", "&#9635;",
+      "Ecommerce and app development is building the online shop, website or mobile app your marketing sends people to. We build on Shopify, WooCommerce and custom code, move existing shops to a new platform without losing search traffic, and connect the shop to your email, stock and reporting tools.",
+      "ecommerce development agency, Shopify development agency, WooCommerce development, ecommerce migration, mobile app development",
+      ["Shops built and redesigned on Shopify and WooCommerce",
+       "Moves to a new platform that protect your search rankings",
+       "Fast custom sites and web apps (Next.js, Laravel) and mobile apps (React Native, Flutter)",
+       "Email and SMS for abandoned baskets, repeat orders and reviews",
+       "Extra sales channels opened, such as TikTok Shop, Amazon and eBay"],
+      ["Build plan with fixed stages", "Design and build, tested before launch",
+       "Redirect map and ranking check for any move", "Handover and training for your team"],
+      [("How long does a build take?",
+        "A full ecommerce build or platform move usually takes 90 to 115 days from the first workshop to launch. Smaller jobs, such as redesigning your key pages, are much quicker. We agree the stages and dates before work starts."),
+       ("Will we lose our Google rankings if we move platform?",
+        "Not if the move is planned. Before a move we record every page that ranks, map each old address to its new one, and check rankings daily after launch. One retail move was planned as 36 tracked tasks, 16 of them critical, to protect the shop's rankings and around 22,000 links from other sites."),
+       ("Can our own team update the site afterwards?",
+        "Yes. We set the site up so your team can change text, images and products without a developer, and we train them before handover.")],
+      body="""<h2>What this has looked like</h2>
+<p>One UK specialist retailer. The client's name is withheld.</p>
+<ul>
+<li><strong>A new sales channel.</strong> A TikTok Shop opened from nothing took &pound;23,836 in its first six months from 156 orders, with 89.8% of sales coming through affiliates.</li>
+<li><strong>A platform move.</strong> A move to Shopify was planned as 36 tracked tasks, 16 of them critical, to protect the shop's rankings and around 22,000 links from other sites.</li>
+</ul>
+<p><a href="case-studies.html#commerce">See the full case study</a>.</p>""",
+      title="Ecommerce Development Agency | Shopify, WooCommerce &amp; Apps | SVED Solution",
+      who="Retailers and brands that need a new shop, a faster one or a move to a better platform, and businesses that need a website or app built properly the first time.",
+      surfaces=False),
 ]
 
 
@@ -2565,12 +2711,46 @@ SERVICE_EXTRA_FAQS = [
 ]
 
 
+# Shared pieces of the service page. Services about search and AI visibility get the
+# AI-platform band and the audit call to action; the others get ones that fit.
+SERVICE_DEFAULT_WHO = 'Businesses that already have something worth promoting and need it found. If you are pre-launch with no product and no site, start with the <a href="contact.html">consulting hour</a> instead &mdash; a retainer would be premature and we will say so.'
+
+SERVICE_SURFACES_BAND = """<section class="sec band-dark">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Where you show up</div>
+      <h2>The AI tools and search engines this covers</h2>
+    </div>
+    <!--PLATFORMS-->
+  </div>
+</section>
+"""
+
+SERVICE_COST_FAQ = [
+  ("What does it cost?",
+   "We price the work after a first call and a look at your accounts, because quoting before we "
+   "understand the problem is guesswork. One-off advice is $30 per hour."),
+]
+
+
 def service_page(s):
     does = "".join(f"<li>{d}</li>" for d in s["does"])
     deliver = "".join(
         f'<div class="crow"><span class="lbl">{n:02d}</span><span class="val" style="text-align:left;flex:1">{d}</span></div>'
         for n, d in enumerate(s["deliver"], 1))
     plain = s["name"].replace("&amp;", "and")
+    seo = s.get("surfaces", True)
+    who = s.get("who") or SERVICE_DEFAULT_WHO
+    surfaces = SERVICE_SURFACES_BAND if seo else ""
+    if seo:
+        closing = cta(f"See where you stand before you buy {plain}.",
+                      "The free check runs 20 tests on your live page and takes about a minute.")
+    else:
+        closing = cta(f"Talk to us about {lc(plain)}.",
+                      "Tell us what you sell and where you are stuck. We will look at your "
+                      "accounts before the call and bring two or three things you can act on.",
+                      primary=("Book a 15-minute call", "contact.html"),
+                      secondary=("Run the free AI check", "ai-visibility-audit.html"))
     return f"""
 {phero(f'<a href="index.html">Home</a> / <a href="services.html">Services</a> / {s["name"]}',
        f'{s["cluster"]} service', s["name"], "")}
@@ -2586,7 +2766,7 @@ def service_page(s):
         <h2 style="margin-top:2rem">What this service covers</h2>
         <ul>{does}</ul>
         <h2>Who it is for</h2>
-        <p>Businesses that already have something worth promoting and need it found. If you are pre-launch with no product and no site, start with the <a href="contact.html">consulting hour</a> instead &mdash; a retainer would be premature and we will say so.</p>
+        <p>{who}</p>
       </div>
       <aside style="position:sticky;top:96px">
         <div class="panel" style="margin-bottom:20px">
@@ -2605,24 +2785,15 @@ def service_page(s):
   </div>
 </section>
 {('<section class="sec"><div class="wrap wrap-narrow prose">' + s["body"] + '</div></section>') if s.get("body") else ''}
-<section class="sec band-dark">
-  <div class="wrap">
-    <div class="sec-head center">
-      <div class="eyebrow">Surfaces</div>
-      <h2>Where this makes you visible</h2>
-    </div>
-    <!--PLATFORMS-->
-  </div>
-</section>
+{surfaces}
 
-{faq(s["faqs"] + SERVICE_EXTRA_FAQS)}
+{faq(s["faqs"] + (SERVICE_EXTRA_FAQS if seo else SERVICE_COST_FAQ))}
 
-{cta(f"See where you stand before you buy {plain}.",
-     "Twelve AI eligibility checks against your live URL. No card, no call, about sixty seconds.")}
+{closing}
 """
 
 
-LEGAL_UPDATED = "9 August 2026"
+LEGAL_UPDATED = "17 November 2026"
 
 
 def legal_page(title, intro, sections):
@@ -2715,7 +2886,7 @@ TERMS_SECTIONS = [
 PRIVACY_SECTIONS = [
  ("collect", 1, "What we collect",
   "<p><strong>When you submit a form.</strong> Your name, email address, website, phone number if you give it, and whatever you write in the message field. Nothing more.</p>"
-  "<p><strong>When you run the free audit.</strong> The website address you enter. We fetch that site's public pages to score them. The URL is cached for 24 hours so repeat checks are fast. We do not keep the audit result against your identity unless you ask us for the full report.</p>"
+  "<p><strong>When you run the free AI visibility check.</strong> Your name, your email address, the website you enter and the score it gets. We fetch that site's public pages to score them, and keep the result for 24 hours so a repeat check is fast. We use your details to send you the result and to follow up about it.</p><p><strong>If you tick the newsletter box.</strong> We add your email address to our AI news list, with the date and the wording you agreed to. The box is optional and unticked by default; leaving it empty means we will not send you marketing email.</p>"
   "<p><strong>When you browse.</strong> Google Analytics 4 records anonymised, aggregated usage &mdash; pages viewed, approximate region, device type, referrer. We do not use it to identify individuals.</p>"),
 
  ("why", 2, "Why we collect it",
@@ -2762,6 +2933,8 @@ def sitemap_page(posts):
 
     ai = [(s["name"], f'/services/{s["slug"]}/') for s in SERVICES if s["cluster"] == "AI Search"]
     core = [(s["name"], f'/services/{s["slug"]}/') for s in SERVICES if s["cluster"] == "Core SEO"]
+    other = [(s["name"], f'/services/{s["slug"]}/') for s in SERVICES
+             if s["cluster"] not in ("AI Search", "Core SEO")]
     inds = [(i["name"], f'/{i["slug"]}/') for i in INDUSTRIES]
     blog = [(p["title"], f'/insights/{p["slug"]}/') for p in posts]
 
@@ -2802,6 +2975,11 @@ def sitemap_page(posts):
       <div class="card">
         <span class="card-num">CORE SEO SERVICES</span>
         <ul class="sitemap-list">{links(core)}</ul>
+      </div>
+
+      <div class="card">
+        <span class="card-num">PAID ADS, DATA AND WEBSITES</span>
+        <ul class="sitemap-list">{links(other)}</ul>
       </div>
 
       <div class="card">
@@ -2855,7 +3033,7 @@ NOT_FOUND_BODY = """
 <section class="sec">
   <div class="wrap">
     <div class="grid g3">
-      <a class="card card-link" href="services.html"><div class="card-icon">&#9670;</div><h3>Services</h3><p>Eighteen services across AI search and core SEO.</p><span class="card-more">Browse services &rarr;</span></a>
+      <a class="card card-link" href="services.html"><div class="card-icon">&#9670;</div><h3>Services</h3><p>Twenty-one services across AI search, SEO, paid ads, data and websites.</p><span class="card-more">Browse services &rarr;</span></a>
       <a class="card card-link" href="generative-engine-optimization.html"><div class="card-icon">&#10022;</div><h3>GEO</h3><p>Get named by ChatGPT, Perplexity and Gemini.</p><span class="card-more">Explore GEO &rarr;</span></a>
       <a class="card card-link" href="insights.html"><div class="card-icon">&#9998;</div><h3>Insights</h3><p>Practitioner writing on GEO, AEO and technical SEO.</p><span class="card-more">Read insights &rarr;</span></a>
       <a class="card card-link" href="case-studies.html"><div class="card-icon">&#9636;</div><h3>Case studies</h3><p>2,923 AI citations in 29 days, and how.</p><span class="card-more">See results &rarr;</span></a>
@@ -3053,7 +3231,7 @@ def build():
     for s in SERVICES:
         plain = s["name"].replace("&amp;", "and")
         html = render(
-            f'{plain} Services | SVED Solution',
+            s.get("title") or f'{plain} Services | SVED Solution',
             re.sub(r"<[^>]+>", "", s["answer"])[:152],
             f'services/{s["slug"]}/', service_page(s),
             schema=service_ld(s), keywords=s["kw"])
