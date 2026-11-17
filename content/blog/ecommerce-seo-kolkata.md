@@ -1,6 +1,7 @@
 ---
 title: "Ecommerce SEO in Kolkata: Get Products Found & Cited by AI"
 slug: "ecommerce-seo-kolkata"
+image: "blog-ecommerce-seo-kolkata.png"
 description: "Ecommerce SEO in Kolkata that ranks your products on Google and gets your brand recommended by ChatGPT and AI Overviews. Free check of your online shop."
 keywords: "ecommerce SEO Kolkata, ecommerce SEO company Kolkata, online store SEO, product schema, AI shopping search"
 answer: "Ecommerce SEO in Kolkata helps online shops and D2C brands rank category and product pages on Google and get recommended by AI when shoppers ask what to buy. The work covers technical SEO for the catalogue, Product, Review and FAQ schema, buying guides that answer directly, and mentions on the review sites AI trusts. SVED Solution does this from its Sector V, Salt Lake centre."

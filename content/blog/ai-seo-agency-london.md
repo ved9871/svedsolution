@@ -1,6 +1,7 @@
 ---
 title: "AI SEO Agency in London: Rank on Google & Get Cited by AI"
 slug: "ai-seo-agency-london"
+image: "blog-ai-seo-agency-london.png"
 description: "Looking for an AI SEO agency in London? SVED Solution helps London businesses rank on Google and get named by ChatGPT, Perplexity and AI Overviews."
 keywords: "AI SEO agency London, SEO agency London, GEO agency London, get cited by AI, AI Overviews"
 answer: "An AI SEO agency in London helps London and UK businesses rank on Google and get named by AI tools like ChatGPT, Perplexity, Gemini and Google AI Overviews. In one of the world's most competitive search markets, that takes technical SEO, content, Generative Engine Optimization, a clear brand identity and mentions on trusted sites. SVED Solution offers this with transparent, outcome-based pricing and reports AI mentions as a measured number."

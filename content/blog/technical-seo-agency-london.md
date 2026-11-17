@@ -1,6 +1,7 @@
 ---
 title: "Technical SEO Agency in London: The Foundation for AI Search"
 slug: "technical-seo-agency-london"
+image: "blog-technical-seo-agency-london.png"
 description: "A technical SEO agency in London fixes the site problems that stop you ranking on Google or being mentioned in AI answers. Free check of your live site."
 keywords: "technical SEO agency London, technical SEO London, Core Web Vitals, site rendering SEO, technical SEO for AI search"
 answer: "A technical SEO agency in London fixes the parts of a website that decide whether Google and AI tools can read it: crawling, low-value pages in the index, how pages are built, Core Web Vitals, site structure and schema markup. AI tools can only mention pages they can open and read. A site that shows its content only through JavaScript is invisible to both Google and ChatGPT."

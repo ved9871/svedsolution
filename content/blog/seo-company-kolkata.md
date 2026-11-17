@@ -1,6 +1,7 @@
 ---
 title: "SEO Company in Kolkata: Rank on Google & Get Cited by AI"
 slug: "seo-company-kolkata"
+image: "blog-seo-company-kolkata.png"
 description: "SVED Solution is an SEO company in Kolkata with a delivery centre in Sector V. We rank Kolkata businesses on Google and get them named by ChatGPT. Free check."
 keywords: "SEO company Kolkata, SEO company in Kolkata, SEO services Kolkata, SEO agency Kolkata, AI SEO Kolkata"
 answer: "An SEO company in Kolkata helps local and national businesses rank on Google and get named by AI tools like ChatGPT, Perplexity and Google AI Overviews. Demand is real: 'seo company kolkata' gets about 1,900 monthly searches at low competition. SVED Solution runs a delivery centre in Sector V, Salt Lake, and combines technical SEO, content and Generative Engine Optimization with outcome-based pricing, reporting AI mentions as a measured number."

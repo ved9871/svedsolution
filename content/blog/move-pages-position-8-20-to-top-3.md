@@ -1,6 +1,7 @@
 ---
 title: "How to Move Pages From Position 8-20 Into the Top 3"
 slug: "move-pages-position-8-20-to-top-3"
+image: "blog-move-pages-position-8-20-to-top-3.png"
 description: "How to move pages from position 8-20 into the top 3: an eight-step process with no new content and no backlinks. Movement typically appears in 7 to 21 days."
 keywords: "move pages to top 3, position 8-20 SEO, improve Google rankings, striking distance keywords, on-page SEO"
 answer: "Pages ranking between positions 8 and 20 already have Google's trust and partial relevance. They miss what most searchers want. To reach the top 3, pull that page's queries from Search Console, use AI to find the gap, rewrite the title and meta for clicks, add the missing queries as subheadings, and link in from related pages with traffic. Movement usually appears within 7 to 21 days without new backlinks."

@@ -1,6 +1,7 @@
 ---
 title: "Digital Marketing Agency in Kolkata: SEO & AI Visibility"
 slug: "digital-marketing-agency-kolkata"
+image: "blog-digital-marketing-agency-kolkata.png"
 description: "SVED Solution is a digital marketing agency in Kolkata focused on SEO and AI visibility. Rank on Google and get named by ChatGPT and AI Overviews."
 keywords: "digital marketing agency Kolkata, digital marketing company Kolkata, SEO Kolkata, AI visibility, GEO services"
 answer: "A digital marketing agency in Kolkata helps businesses grow online through search, content and reputation. In 2026 that also means being visible in AI answers. 'Digital marketing agency Kolkata' draws about 4,400 searches a month. SVED Solution is a Kolkata agency that focuses on SEO and AI search, so your brand ranks on Google and gets named by ChatGPT, Perplexity and AI Overviews."

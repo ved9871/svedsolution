@@ -1,6 +1,7 @@
 ---
 title: "Should You Block GPTBot? An Honest Cost-Benefit"
 slug: "should-you-block-gptbot"
+image: "blog-should-you-block-gptbot.png"
 description: "Should you block GPTBot? Blocking AI crawlers keeps your content out of AI training, but it also means AI never mentions you. When that trade is worth it."
 keywords: "block GPTBot, GPTBot robots.txt, AI crawlers, OAI-SearchBot, should you block AI crawlers"
 answer: "Block GPTBot only if you earn money from people reading content on your pages: publishers, ad-supported media, paid archives. If you earn by being found and recommended, blocking AI crawlers means you are never mentioned, and that only hurts you. Most businesses are in the second group. Training crawlers and answer crawlers are separate decisions: GPTBot handles training, while OAI-SearchBot and ChatGPT-User fetch pages for live AI answers."

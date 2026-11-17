@@ -1,6 +1,7 @@
 ---
 title: "Local SEO Agency in London: Win the Map Pack & AI Answers"
 slug: "local-seo-agency-london"
+image: "blog-local-seo-agency-london.png"
 description: "A local SEO agency in London that wins the Google map pack and gets your business named by ChatGPT and AI Overviews for 'near me' searches. Free check."
 keywords: "local SEO agency London, local SEO London, Google Business Profile London, map pack ranking, near me SEO"
 answer: "A local SEO agency in London helps a business win the Google map pack and 'near me' searches, and get recommended by AI when locals ask for the best option nearby. The work covers your Google Business Profile, matching name, address and phone (NAP) listings, a steady flow of reviews, borough and service-area pages, and LocalBusiness schema. In London, local SEO decides who gets the walk-in and the call."

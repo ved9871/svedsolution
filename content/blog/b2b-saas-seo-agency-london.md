@@ -1,6 +1,7 @@
 ---
 title: "B2B & SaaS SEO Agency in London: Pipeline from Search & AI"
 slug: "b2b-saas-seo-agency-london"
+image: "blog-b2b-saas-seo-agency-london.png"
 description: "A B2B and SaaS SEO agency in London built for sales leads: rank the pages closest to a sale and get named by ChatGPT and Perplexity. Free check."
 keywords: "B2B SEO agency London, SaaS SEO agency London, B2B SaaS SEO, comparison pages, SaaS AI search"
 answer: "A B2B and SaaS SEO agency in London works for sales leads rather than page views. It ranks the pages closest to a sale on Google and gets the product or service named by AI when buyers ask for recommendations. The work covers comparison, alternatives and integration pages, review sites, documentation AI tools can read, and outside mentions. In London's crowded B2B and tech market, you need both."

@@ -1,6 +1,7 @@
 ---
 title: "AI SEO Company in Kolkata: Get Named by ChatGPT & AI"
 slug: "ai-seo-company-kolkata"
+image: "blog-ai-seo-company-kolkata.png"
 description: "SVED Solution is an AI SEO company in Kolkata (Sector V). We help brands get named by ChatGPT, Perplexity, Gemini and Google AI Overviews. Free check."
 keywords: "AI SEO company Kolkata, AI SEO Kolkata, GEO services Kolkata, SEO company Kolkata, ChatGPT SEO"
 answer: "An AI SEO company in Kolkata helps a brand get named by ChatGPT, Perplexity, Gemini and Google AI Overviews, and rank on Google. The work covers Generative Engine Optimization, a clear brand identity, answer-first content and outside mentions, plus technical SEO. 'AI SEO company Kolkata' is a new search with almost no competition, so brands that start now can lead. SVED Solution works from Sector V, Salt Lake."
