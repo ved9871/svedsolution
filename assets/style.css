@@ -794,3 +794,267 @@ tr:last-child td{ border-bottom:0; }
   .kpi-val{ font-size:1.75rem; }
   .kpi-lab{ font-size:.78rem; }
 }
+
+
+/* ==========================================================================
+   SVED Solution v2 theme
+   --------------------------------------------------------------------------
+   Everything above this line is the original dark design system. It is driven
+   entirely by custom properties, so the redesign does not rewrite it: this
+   block flips the properties to a light canvas, restores the dark set inside
+   the bands that stay navy, and then reshapes the components (type, pills,
+   radii, header, call-to-action, footer) to match the new homepage.
+
+   The one trap: --green used to be both a text colour and a fill. On a light
+   canvas the brand green is unreadable as text (1.26:1), so in the light scope
+   --green becomes a dark green for text and --accent carries the bright fill.
+   ========================================================================== */
+@font-face{
+  font-family:'Gabarito'; font-style:normal; font-weight:400 800; font-display:swap;
+  src:url('/assets/fonts/gabarito-var.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Onest'; font-style:normal; font-weight:400 600; font-display:swap;
+  src:url('/assets/fonts/onest-var.woff2') format('woff2');
+}
+
+:root{
+  --accent:#00FFB2;
+  --font-head:'Gabarito','Arial Black',Arial,sans-serif;
+  --font-body:'Onest',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --font-mono:var(--font-body);
+  --wrap:1280px;
+  --r-sm:14px; --r:24px; --r-lg:28px;
+  --shadow:0 24px 60px -32px rgba(11,18,25,.45);
+
+  /* Light canvas. The names are historical: --navy-900 is "page background",
+     --navy-800 "card background", --white "heading colour". */
+  --ink:#0B1219;
+  --navy-900:#FFFFFF; --navy-800:#EEF2F5; --navy-700:#E2E8EE; --navy-600:#D5DCE3; --navy-500:#B4BFCA;
+  --line:#D5DCE3; --line-soft:#E4E9EE;
+  --green:#007A55; --green-600:#00694A; --green-900:rgba(0,255,178,.18); --green-glow:rgba(0,255,178,.45);
+  --white:#0B1219; --text:#0B1219; --text-dim:#4B5563; --text-faint:#5C6B79;
+  --amber:#8A5A00; --red:#B3261E;
+}
+
+/* Bands and components that stay navy get the original dark values back. */
+.phero, .hero, .band-dark, .site-footer, .pmarks, .panel, .yt-embed,
+.site-header .nav, .site-header .logo{
+  --ink:#0B1219;
+  --navy-900:#0B1219; --navy-800:#141F2B; --navy-700:#1B2835; --navy-600:#223040; --navy-500:#2F4155;
+  --line:#26364A; --line-soft:#1C2937;
+  --green:#00FFB2; --green-600:#00D294; --green-900:rgba(0,255,178,.10); --green-glow:rgba(0,255,178,.28);
+  --white:#FFFFFF; --text:#FFFFFF; --text-dim:#CBD8E5; --text-faint:#A7B8C9;
+  --amber:#FFB020; --red:#FF5C5C;
+  color:var(--text);
+}
+
+/* ---------- Type ---------- */
+body{ font-size:17px; line-height:1.6; }
+h1,h2,h3,h4,h5{ font-weight:700; letter-spacing:-.03em; line-height:1.08; }
+h1{ font-size:clamp(2.6rem, 7vw, 5.8rem); font-weight:800; letter-spacing:-.045em; line-height:.96; }
+h2{ font-size:clamp(2rem, 4.6vw, 3.7rem); font-weight:800; letter-spacing:-.04em; line-height:1; }
+h3{ font-size:clamp(1.25rem, 2vw, 1.6rem); }
+h4{ font-size:1.15rem; }
+a{ text-underline-offset:3px; }
+.lead{ font-size:clamp(1.1rem, 1.5vw, 1.3rem); line-height:1.45; }
+
+/* Article subheads sit inside running text, so they stay well below page scale. */
+.prose h2{ font-size:clamp(1.7rem, 3vw, 2.4rem); letter-spacing:-.03em; line-height:1.1; }
+.prose h3{ font-size:1.35rem; }
+
+/* Labels were uppercase monospace. They keep their job but lose the costume. */
+.card-num, .crumbs, .tl-when, th, .answer-block .q, .drop-head, .foot-grid h5,
+.foot-office h5, .pmark span, .yt-label span, .card .card-more, .tlink, .pill,
+.quote .who, .score-of{
+  letter-spacing:.01em; text-transform:none; font-weight:600;
+}
+.card-num, .tl-when, .crumbs{ font-size:.82rem; }
+
+.eyebrow{
+  font-family:var(--font-body); font-size:.78rem; font-weight:600; letter-spacing:0;
+  text-transform:none; color:var(--text); gap:0; padding:6px 13px; margin-bottom:1.2rem;
+  border:1px solid color-mix(in srgb, currentColor 28%, transparent); border-radius:999px;
+}
+.eyebrow::before{ display:none; }
+
+/* ---------- Layout ---------- */
+.wrap{ padding-inline:clamp(16px, 3.4vw, 48px); }
+.wrap-narrow{ max-width:860px; }
+.sec{ padding:clamp(72px, 11vh, 128px) 0; }
+.sec-sm{ padding:clamp(48px, 8vh, 88px) 0; }
+.sec-lg{ padding:clamp(88px, 13vh, 150px) 0; }
+.sec-head{ max-width:900px; margin-bottom:clamp(36px, 6vh, 64px); }
+.band-alt{ border-block:0; }
+.band-green{ background:var(--navy-800); border-block:0; }
+
+/* ---------- Buttons ---------- */
+.btn{ font-family:var(--font-body); font-weight:600; border-radius:999px; padding:15px 24px; }
+.btn-lg{ padding:18px 30px; }
+.btn-sm{ padding:12px 18px; }
+.btn-primary{ background:var(--accent); color:#0B1219; }
+.btn-primary:hover{ color:#0B1219; }
+.btn-ghost{ color:var(--text); border-color:color-mix(in srgb, var(--text) 35%, transparent); }
+.btn-ghost:hover{ color:var(--navy-900); background:var(--text); border-color:var(--text); }
+
+/* ---------- Header: three floating pills ---------- */
+.site-header{
+  position:fixed; inset:0 0 auto 0; z-index:100; background:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none; border-bottom:0; pointer-events:none;
+}
+.site-header .wrap{ max-width:none; }
+.header-inner{ height:auto; padding-block:14px; gap:12px; }
+.header-inner > *{ pointer-events:auto; }
+.logo{
+  min-height:48px; padding:0 18px; gap:0; border-radius:999px; background:#0B1219; color:#fff;
+  font-size:25px; font-weight:800; letter-spacing:-.05em;
+}
+.logo:hover{ color:#fff; }
+.logo-dot{
+  display:inline-block; width:.19em; height:.19em; margin-left:.04em; border-radius:50%;
+  background:var(--accent); align-self:flex-end; margin-bottom:.56em;
+}
+.site-header .nav{ background:#0B1219; border-radius:999px; padding:0 8px; gap:0; margin-inline:auto; }
+.site-header .nav a{ color:#fff; font-size:15px; font-weight:600; padding:14px; border-radius:999px; }
+.site-header .nav a:hover{ color:#fff; background:rgba(255,255,255,.12); }
+.site-header .drop{ top:calc(100% + 8px); border:0; border-radius:20px; padding:12px; background:#0B1219; }
+/* Bridges the gap between the pill and its menu so the hover does not drop. */
+.site-header .drop::before{ content:''; position:absolute; left:0; right:0; top:-12px; height:12px; }
+.site-header .drop a{ padding:10px 12px; border-radius:12px; font-size:.9rem; font-weight:500; }
+.header-cta .btn{ min-height:48px; box-shadow:0 0 0 2px #0B1219; }
+.header-cta .btn-ghost{ background:#fff; color:#0B1219; border-color:transparent; }
+.header-cta .btn-ghost:hover{ background:#0B1219; color:#fff; border-color:transparent; }
+.nav-toggle{ width:48px; height:48px; border:0; border-radius:50%; background:#0B1219; color:#fff; }
+
+@media (max-width:1100px){
+  .nav-toggle{ display:grid; place-items:center; width:48px; height:48px; }
+  .site-header .nav{
+    display:none; position:fixed; top:76px; left:12px; right:12px; margin:0;
+    flex-direction:column; align-items:stretch; padding:12px; border-radius:24px;
+    max-height:calc(100vh - 96px); overflow-y:auto; box-shadow:var(--shadow);
+  }
+  .site-header .nav.open{ display:flex; }
+  .site-header .nav a{ display:flex; align-items:center; min-height:48px; padding:14px 16px; }
+  .mobile-only-cta{ display:flex; }
+  .site-header .drop{ display:none; }
+  .has-drop > a::after{ content:''; }
+  .header-cta{ margin-left:auto; }
+  .header-cta .btn-ghost{ display:none; }
+}
+
+/* ---------- Page hero ----------
+   The header is fixed now, so the hero carries the space it used to occupy. */
+.phero{
+  padding:clamp(132px, 21vh, 200px) 0 clamp(56px, 9vh, 96px);
+  background:var(--navy-900); border-bottom:0;
+}
+
+/* ---------- Components ---------- */
+.card{ border:0; border-radius:var(--r-lg); padding:clamp(24px, 2.6vw, 36px); }
+.card-link:hover{ background:var(--navy-700); }
+.card p{ font-size:1rem; }
+.card-num{ color:var(--text-faint); }
+.card-icon{ border:0; border-radius:50%; }
+.kpis, .stat-band, .pmarks{ border-radius:var(--r-lg); }
+.kpi-val{ font-size:clamp(2.2rem, 4vw, 3.4rem); font-weight:800; letter-spacing:-.04em; }
+.kpi-val .u{ color:inherit; }
+.stat b{ font-size:clamp(1.8rem, 3vw, 2.6rem); font-weight:800; }
+.tbl-wrap{ border-radius:20px; }
+th{ font-size:.82rem; }
+.faq summary{ font-size:clamp(1.05rem, 1.6vw, 1.3rem); font-weight:700; padding:24px 0; }
+.faq summary::after{ color:var(--text); }
+.quote{ border:0; border-radius:var(--r-lg); padding:clamp(24px, 2.6vw, 36px); }
+.quote p{ font-style:normal; font-size:1.08rem; }
+.quote .who{ font-size:.85rem; }
+.stars{ color:var(--text); }
+.answer-block{ border:0; border-radius:20px; }
+.answer-block p, .answer-block .q{ color:var(--text); }
+.answer-block .q{ font-size:.82rem; }
+.cert, .tool, .clogo{ border:0; }
+.clogo{ border-radius:999px; }
+.cert-tick, .tool-ico{ border:0; background:var(--accent); color:#0B1219; }
+.dot{ background:var(--accent); }
+.skip-link{ background:var(--accent); color:#0B1219; }
+.sved-form input, .sved-form select, .sved-form textarea, .audit-form input{ border-radius:14px; }
+.team-avatar{ background:var(--accent); }
+.team-photo{ width:100%; height:auto; aspect-ratio:4 / 5; object-fit:cover; border-radius:20px; margin-bottom:18px; }
+
+/* ---------- Call to action: a solid block of the brand green ---------- */
+.cta-band{
+  --white:#0B1219; --text:#0B1219; --text-dim:#0B1219; --green:#0B1219;
+  background:var(--accent); color:#0B1219; border:0; border-radius:var(--r-lg);
+  padding:clamp(40px, 7vw, 96px) clamp(24px, 5vw, 72px); text-align:left;
+}
+.cta-band h2{ max-width:14ch; margin-inline:0; font-size:clamp(2.4rem, 7vw, 5.4rem); letter-spacing:-.05em; line-height:.92; }
+.cta-band p{ margin-inline:0; color:#0B1219; font-size:clamp(1.05rem, 1.5vw, 1.25rem); }
+.cta-band .btn-primary{ background:#0B1219; color:#fff; }
+.cta-band .btn-primary:hover{ color:#fff; }
+.cta-band .btn-ghost{ color:#0B1219; border-color:#0B1219; }
+.cta-band .btn-ghost:hover{ background:#0B1219; color:#fff; }
+
+/* ---------- Footer ---------- */
+.site-footer{ background:#0B1219; border-top:0; padding:clamp(72px, 11vh, 128px) 0 28px; }
+.foot-bye{
+  margin:0 0 clamp(40px, 7vh, 80px); font-family:var(--font-head); font-weight:800;
+  font-size:min(30vw, 300px); line-height:.9; letter-spacing:-.06em; color:#fff;
+}
+.foot-bye .logo-dot{ margin-bottom:.12em; align-self:auto; }
+.site-footer .logo{ min-height:0; padding:0; background:none; font-size:28px; }
+.socials a{ width:44px; height:44px; border-radius:50%; }
+.news input{ border-radius:999px; padding:14px 18px; }
+
+/* ---------- WhatsApp button: matches the homepage ----------
+   The dark WhatsApp green carries a white icon at about 4.1:1; the light one
+   manages only 2:1. */
+.wa-fab{
+  right:16px; bottom:16px; z-index:90; min-height:56px; padding:0 20px 0 16px;
+  background:#128C7E; color:#fff; font-family:var(--font-body);
+  box-shadow:0 0 0 2px #fff, 0 10px 28px rgba(11,18,25,.35);
+}
+.wa-fab:hover{ color:#fff; box-shadow:0 0 0 2px #fff, 0 14px 34px rgba(11,18,25,.45); }
+@media (max-width:680px){ .wa-fab{ padding:0 14px; } }
+
+/* ---------- AI visibility check: form and result ---------- */
+.audit-form-v2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.audit-form-v2 .af-wide{ grid-column:1 / -1; }
+.af-field{ display:grid; gap:6px; font-size:.85rem; font-weight:600; color:var(--text-dim); }
+.audit-form-v2 input[type=text], .audit-form-v2 input[type=email]{ flex:none; width:100%; }
+.af-consent{ display:flex; gap:12px; align-items:flex-start; font-size:.92rem; color:var(--text-dim); cursor:pointer; }
+.af-consent input{ flex:none; width:22px; height:22px; margin:2px 0 0; accent-color:var(--accent); }
+.af-note{ margin:0; font-size:.82rem; color:var(--text-faint); }
+.af-note a{ color:inherit; text-decoration:underline; }
+/* Honeypot: off-screen for people, still present for bots that fill every field. */
+.af-hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.audit-form-v2 .btn{ justify-content:center; }
+.audit-form-v2 .form-status{ margin:0; text-align:left; }
+.audit-form-v2 .form-status:empty{ display:none; }
+
+.ar{ margin-top:28px; }
+/* Clear the fixed menu bar when the result is scrolled into view. */
+#audit-results{ scroll-margin-top:96px; }
+.ar-top{ display:flex; flex-wrap:wrap; gap:32px; align-items:center; padding:32px; border-bottom:1px solid var(--line); }
+.ar-summary{ flex:1 1 280px; }
+.ar-summary h3{ margin-bottom:.5rem; }
+.ar-summary p{ margin-bottom:1rem; color:var(--text-dim); }
+.ar-groups{ display:grid; grid-template-columns:repeat(2, 1fr); gap:20px 32px; padding:28px 32px; border-bottom:1px solid var(--line); }
+.ar-group-top{ display:flex; justify-content:space-between; gap:12px; font-size:.92rem; }
+.ar-group-top strong{ font-family:var(--font-head); font-size:1.1rem; }
+.ar-fixes{ padding:28px 32px; border-bottom:1px solid var(--line); }
+.ar-fixes h4{ margin-bottom:12px; }
+.ar-fixes ol{ margin:0; padding-left:1.2em; }
+.ar-fixes li{ margin-bottom:10px; color:var(--text-dim); }
+.ar-fixes li strong{ color:var(--white); }
+.ar-checks{ padding:8px 32px 28px; }
+.ar-h{ margin:28px 0 4px; font-size:1.05rem; }
+.ar-row{ padding:16px 0; border-bottom:1px solid var(--line-soft); }
+.ar-row-top{ display:flex; justify-content:space-between; gap:16px; align-items:center; }
+.ar-row p{ margin:6px 0 0; font-size:.92rem; color:var(--text-dim); }
+.ar-row .ar-fix{ color:var(--text); }
+.ar-note{ margin-top:14px; font-size:.82rem; color:var(--text-faint); }
+.ar-fail{ margin-top:28px; }
+.pill{ white-space:nowrap; }
+@media (max-width:680px){
+  .audit-form-v2{ grid-template-columns:1fr; }
+  .ar-top, .ar-groups, .ar-fixes, .ar-checks{ padding-inline:20px; }
+  .ar-groups{ grid-template-columns:1fr; }
+}
